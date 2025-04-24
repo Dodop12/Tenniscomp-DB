@@ -1,5 +1,7 @@
 package tenniscomp.data;
 
+import java.sql.Connection;
+
 public class Referee {
     private final int refereeId;
     private final String name;
@@ -63,6 +65,17 @@ public class Referee {
 
     public final class DAO {
 
+        public static boolean checkLogin(final Connection connection, final String username, final String password) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.CHECK_GA_LOGIN, username, password);
+                var resultSet = statement.executeQuery();
+            ) {
+                return resultSet.next();
+            } catch (final Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
     }
     
 }
