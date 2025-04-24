@@ -9,15 +9,15 @@ public final class DAOException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public DAOException(String message) {
+    public DAOException(final String message) {
         super(message);
     }
 
-    public DAOException(Throwable cause) {
+    public DAOException(final Throwable cause) {
         super(cause);
     }
 
-    public DAOException(String message, Throwable cause) {
+    public DAOException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

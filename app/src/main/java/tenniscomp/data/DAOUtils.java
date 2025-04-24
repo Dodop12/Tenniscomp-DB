@@ -19,7 +19,7 @@ public final class DAOUtils {
         }
     }
 
-    public static PreparedStatement prepare(Connection connection, String query, Object... values) throws SQLException {
+    public static PreparedStatement prepare(final Connection connection, final String query, final Object... values) throws SQLException {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(query);
@@ -27,7 +27,7 @@ public final class DAOUtils {
                 statement.setObject(i + 1, values[i]);
             }
             return statement;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             if (statement != null) {
                 statement.close();
             }

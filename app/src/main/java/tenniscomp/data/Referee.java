@@ -13,9 +13,9 @@ public class Referee {
     private final String username;
     private final String password;
 
-    public Referee(int refereeId, String name, String surname,
-            String email, String birthDate, String gender,
-            String phone, String username, String password) {
+    public Referee(final int refereeId, final String name, final String surname,
+            final String email, final String birthDate, final String gender,
+            final String phone, final String username, final String password) {
         this.refereeId = refereeId;
         this.name = name;
         this.surname = surname;

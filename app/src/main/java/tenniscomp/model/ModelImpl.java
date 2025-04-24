@@ -21,12 +21,12 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean loginPlayer(String username, String password) {
+    public boolean loginPlayer(final String username, final String password) {
         return Player.DAO.checkLogin(this.connection, username, password);
     }
 
     @Override
-    public boolean loginReferee(String username, String password) {
+    public boolean loginReferee(final String username, final String password) {
         return Referee.DAO.checkLogin(this.connection, username, password);
     }
     

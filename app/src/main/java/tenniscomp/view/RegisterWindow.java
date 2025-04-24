@@ -1,6 +1,7 @@
 package tenniscomp.view;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -8,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -109,6 +111,14 @@ public class RegisterWindow extends JFrame {
 
     public String getConfirmedPassword() {
         return new String(this.confirmField.getPassword());
+    }
+
+    public void addRegisterListener(final ActionListener listener) {
+        this.registerButton.addActionListener(listener);
+    }
+
+    public void showMessage(final String message, final int messageType) {
+        JOptionPane.showMessageDialog(this, message, "Registrazione", messageType);
     }
 
     private DatePicker createDatePicker() {
