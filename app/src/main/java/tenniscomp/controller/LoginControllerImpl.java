@@ -11,7 +11,7 @@ public class LoginControllerImpl implements LoginController {
     private final LoginWindow view;
     private final Model model;
 
-    public LoginControllerImpl(LoginWindow view, Model model) {
+    public LoginControllerImpl(final LoginWindow view, final Model model) {
         this.view = view;
         this.model = model;
 
@@ -21,12 +21,12 @@ public class LoginControllerImpl implements LoginController {
 
     @Override
     public void executeLogin() {
-        String username = view.getUsername();
-        String password = view.getPassword();
+        final String username = view.getUsername();
+        final String password = view.getPassword();
 
-        boolean isAdmin = view.isAdmin();
+        final boolean isAdmin = view.isAdmin();
 
-        boolean success = isAdmin
+        final boolean success = isAdmin
             ? model.loginReferee(username, password)
             : model.loginPlayer(username, password);
 
@@ -41,8 +41,8 @@ public class LoginControllerImpl implements LoginController {
 
     private void openRegisterWindow() {
         view.dispose();
-        var registerView = new RegisterWindow();
-        //new RegisterControllerImpl(registerView, model);
+        final var registerView = new RegisterWindow();
+        new RegisterControllerImpl(registerView, model);
     }
     
 }
