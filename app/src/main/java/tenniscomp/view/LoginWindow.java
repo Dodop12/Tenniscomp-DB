@@ -1,8 +1,11 @@
 package tenniscomp.view;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -62,6 +65,18 @@ public class LoginWindow extends JFrame {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    public void setLoginListener(final ActionListener listener) {
+        this.loginButton.addActionListener(listener);
+    }
+
+    public void setRegisterListener(final ActionListener listener) {
+        this.registerButton.addActionListener(listener);
+    }
+
+    public void showMessage(final String message, final int messageType) {
+        JOptionPane.showMessageDialog(this, message, "Login", messageType);
     }
 
 }

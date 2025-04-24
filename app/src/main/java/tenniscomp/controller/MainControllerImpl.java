@@ -26,7 +26,7 @@ public class MainControllerImpl implements MainController {
         loginSelector.dispose();
         final var model = new ModelImpl(connection);
         final var loginView = new LoginWindow(isReferee);
-        //new LoginControllerImpl(loginView, model);
+        new LoginControllerImpl(loginView, model);
     }
     
 }
