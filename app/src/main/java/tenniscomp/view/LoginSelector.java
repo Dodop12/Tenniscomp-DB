@@ -1,6 +1,7 @@
 package tenniscomp.view;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,6 +34,14 @@ public class LoginSelector extends JFrame {
         add(buttonPanel, BorderLayout.CENTER);
 
         add(buttonPanel);
+    }
+
+    public void setPlayerListener(final ActionListener listener) {
+        playerButton.addActionListener(listener);
+    }
+    
+    public void setRefereeListener(final ActionListener listener) {
+        refereeButton.addActionListener(listener);
     }
 
     public void display() {
