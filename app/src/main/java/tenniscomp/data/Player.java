@@ -14,10 +14,11 @@ public class Player {
     private final String phone;
     private final String username;
     private final String password;
+    private final String ranking;
 
     public Player(final int playerId, final String name, final String surname,
             final String email, final String birthDate, final String gender,
-            final String phone, final String username, final String password) {
+            final String phone, final String username, final String password, final String ranking) {
         this.playerId = playerId;
         this.name = name;
         this.surname = surname;
@@ -27,6 +28,7 @@ public class Player {
         this.phone = phone;
         this.username = username;
         this.password = password;
+        this.ranking = ranking;
     }
 
     public int getPlayerId() {
@@ -65,6 +67,10 @@ public class Player {
         return password;
     }
 
+    public String getRanking() {
+        return ranking;
+    }
+
     public final class DAO {
 
         public static int insertPlayer(final Connection connection, final String name, final String surname,
@@ -90,6 +96,31 @@ public class Player {
             } catch (final Exception e) {
                 e.printStackTrace();
                 return false;
+            }
+        }
+
+        public static Player getPlayerByUsername(final Connection connection, final String username) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_PLAYER_BY_USERNAME, username);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new Player(
+                        resultSet.getInt("id_giocatore"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("cognome"),
+                        resultSet.getString("email"),
+                        resultSet.getString("data_nascita"),
+                        resultSet.getString("sesso"),
+                        resultSet.getString("telefono"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password_hash"),
+                        resultSet.getString("classifica")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
             }
         }
 

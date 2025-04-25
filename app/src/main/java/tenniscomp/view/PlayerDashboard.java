@@ -84,7 +84,7 @@ public class PlayerDashboard extends JFrame {
         rankingLabel.setText(ranking);
     }
 
-    public void setPlayerCategory(String category) {
+    public void setPlayerCategory(final String category) {
         categoryLabel.setText(category);
     }
     

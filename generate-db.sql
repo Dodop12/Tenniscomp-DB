@@ -84,7 +84,7 @@ CREATE TABLE GIOCATORE (
     telefono VARCHAR(15),
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    categoria VARCHAR(20) DEFAULT '4.NC',
+    classifica VARCHAR(20) DEFAULT '4.NC',
     id_circolo INT,
     id_squadra INT,
     FOREIGN KEY (id_circolo) REFERENCES CIRCOLO(id_circolo),
