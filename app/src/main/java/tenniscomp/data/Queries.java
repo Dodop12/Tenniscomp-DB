@@ -16,11 +16,18 @@ public final class Queries {
         AND password_hash = ?
         """;
 
-        public static final String CHECK_GA_LOGIN =
+    public static final String CHECK_GA_LOGIN =
         """
         SELECT *
         FROM giudice_arbitro
         WHERE username = ?
         AND password_hash = ?
+        """;
+
+    public static final String GET_PLAYER_BY_USERNAME =
+        """
+        SELECT *
+        FROM giocatore
+        WHERE username = ?
         """;
 }

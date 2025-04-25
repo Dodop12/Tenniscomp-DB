@@ -29,5 +29,10 @@ public class ModelImpl implements Model {
     public boolean loginReferee(final String username, final String password) {
         return Referee.DAO.checkLogin(this.connection, username, password);
     }
+
+    @Override
+    public Player getPlayerByUsername(final String username) {
+        return Player.DAO.getPlayerByUsername(this.connection, username);
+    }
     
 }

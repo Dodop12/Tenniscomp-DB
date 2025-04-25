@@ -1,5 +1,7 @@
 package tenniscomp.model;
 
+import tenniscomp.data.Player;
+
 public interface Model {
 
     boolean registerPlayer(final String name, final String surname, final String email, final String birthDate,
@@ -8,4 +10,6 @@ public interface Model {
     boolean loginPlayer(final String username, final String password);
     
     boolean loginReferee(final String username, final String password);
+
+    Player getPlayerByUsername(final String username);
 }
