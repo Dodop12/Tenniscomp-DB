@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import tenniscomp.model.Model;
 import tenniscomp.view.LoginWindow;
+import tenniscomp.view.PlayerDashboard;
 import tenniscomp.view.RegisterWindow;
 
 public class LoginControllerImpl implements LoginController {
@@ -31,9 +32,19 @@ public class LoginControllerImpl implements LoginController {
             : model.loginPlayer(username, password);
 
         if (success) {
-            view.showMessage("Login effettuato con successo!", JOptionPane.INFORMATION_MESSAGE);
             view.dispose();
-            // TODO: Open main window
+            
+            if (!isAdmin) {
+                final var player = model.getPlayerByUsername(username);
+                if (player == null) {
+                    view.showMessage("Errore durante il recupero dei dati del giocatore.", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                var dashboard = new PlayerDashboard();
+                new PlayerDashboardController(dashboard, model, player);
+            } else {
+                // TODO: ref implementation
+            }
         } else {
             view.showMessage("Credenziali non valide.", JOptionPane.ERROR_MESSAGE);
         }
