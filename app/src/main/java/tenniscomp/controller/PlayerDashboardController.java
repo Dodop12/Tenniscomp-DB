@@ -2,6 +2,7 @@ package tenniscomp.controller;
 
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
+import tenniscomp.utils.PlayerUtils;
 import tenniscomp.view.PlayerDashboard;
 
 public class PlayerDashboardController {
@@ -21,6 +22,9 @@ public class PlayerDashboardController {
     private void loadPlayerData() {
         view.setPlayerName(player.getName() + " " + player.getSurname());
         view.setPlayerRanking(player.getRanking());
+
+        String category = PlayerUtils.calculateCategory(player.getBirthDate());
+        view.setPlayerCategory(category);
     }
     
 }
