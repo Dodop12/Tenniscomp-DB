@@ -8,7 +8,7 @@ CREATE TABLE GIUDICE_ARBITRO (
     telefono VARCHAR(15),
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    qualifica VARCHAR(10)
+    qualifica VARCHAR(10) DEFAULT 'GAQR'
 );
 
 CREATE TABLE ARBITRO (
@@ -24,17 +24,22 @@ CREATE TABLE ARBITRO (
 
 CREATE TABLE COMPETIZIONE (
     id_competizione INT PRIMARY KEY AUTO_INCREMENT
+    id_ga INT,
+    FOREIGN KEY (id_ga) REFERENCES GIUDICE_ARBITRO(id_ga)
 );
 
 CREATE TABLE TORNEO (
     id_competizione INT PRIMARY KEY,
+    nome VARCHAR(100),
     data_inizio DATE,
     data_fine DATE,
     scadenza_iscrizioni DATE,
     tipo VARCHAR(50),
     limite_classifica VARCHAR(20),
     montepremi DECIMAL(10,2),
-    FOREIGN KEY (id_competizione) REFERENCES COMPETIZIONE(id_competizione)
+    id_circolo INT NOT NULL,
+    FOREIGN KEY (id_competizione) REFERENCES COMPETIZIONE(id_competizione),
+    FOREIGN KEY (id_circolo) REFERENCES CIRCOLO(id_circolo)
 );
 
 CREATE TABLE CAMPIONATO (
@@ -50,8 +55,8 @@ CREATE TABLE PREMIO (
     id_premio INT PRIMARY KEY AUTO_INCREMENT,
     posizione INT,
     valore DECIMAL(10,2),
-    id_competizione INT,
-    FOREIGN KEY (id_competizione) REFERENCES TORNEO(id_competizione)
+    id_torneo INT NOT NULL,
+    FOREIGN KEY (id_torneo) REFERENCES TORNEO(id_competizione)
 );
 
 CREATE TABLE CIRCOLO (
@@ -66,12 +71,14 @@ CREATE TABLE CAMPO (
     numero INT,
     superficie VARCHAR(50),
     indoor BOOLEAN,
-    id_circolo INT,
+    id_circolo INT NOT NULL,
     FOREIGN KEY (id_circolo) REFERENCES CIRCOLO(id_circolo)
 );
 
 CREATE TABLE SQUADRA (
     id_squadra INT PRIMARY KEY AUTO_INCREMENT
+    id_circolo INT NOT NULL,
+    FOREIGN KEY (id_circolo) REFERENCES CIRCOLO(id_circolo)
 );
 
 CREATE TABLE GIOCATORE (
@@ -93,9 +100,9 @@ CREATE TABLE GIOCATORE (
 
 CREATE TABLE TESSERA (
     id_tessera INT PRIMARY KEY,
-    numero VARCHAR(20),
+    numero VARCHAR(20) UNIQUE NOT NULL,
     scadenza DATE,
-    id_giocatore INT UNIQUE,
+    id_giocatore INT UNIQUE NOT NULL,
     FOREIGN KEY (id_giocatore) REFERENCES GIOCATORE(id_giocatore)
 );
 
@@ -104,10 +111,12 @@ CREATE TABLE PARTITA (
     tipo VARCHAR(20), -- "singolare" o "doppio"
     vincitore VARCHAR(100),
     risultato VARCHAR(20),
-    id_competizione INT,
-    id_campo INT,
+    id_competizione INT NOT NULL,
+    id_campo INT NOT NULL,
+    id_arbitro INT,
     FOREIGN KEY (id_competizione) REFERENCES COMPETIZIONE(id_competizione),
-    FOREIGN KEY (id_campo) REFERENCES CAMPO(id_campo)
+    FOREIGN KEY (id_campo) REFERENCES CAMPO(id_campo),
+    FOREIGN KEY (id_arbitro) REFERENCES ARBITRO(id_arbitro)
 );
 
 CREATE TABLE INCONTRO_CAMPIONATO (
@@ -120,8 +129,8 @@ CREATE TABLE INCONTRO_CAMPIONATO (
 CREATE TABLE ISCRIZIONE (
     id_iscrizione INT PRIMARY KEY AUTO_INCREMENT,
     data DATE,
-    id_giocatore INT,
-    id_competizione INT,
+    id_giocatore INT NOT NULL,
+    id_torneo INT NOT NULL,
     FOREIGN KEY (id_giocatore) REFERENCES GIOCATORE(id_giocatore),
-    FOREIGN KEY (id_competizione) REFERENCES TORNEO(id_competizione)
+    FOREIGN KEY (id_torneo) REFERENCES TORNEO(id_competizione)
 );
