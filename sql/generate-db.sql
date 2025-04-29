@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS tenniscomp;
+USE tenniscomp;
+
 CREATE TABLE GIUDICE_ARBITRO (
     id_ga INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50),
@@ -22,8 +25,15 @@ CREATE TABLE ARBITRO (
     qualifica VARCHAR(10)
 );
 
+CREATE TABLE CIRCOLO (
+    id_circolo INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    indirizzo VARCHAR(100),
+    citta VARCHAR(50)
+);
+
 CREATE TABLE COMPETIZIONE (
-    id_competizione INT PRIMARY KEY AUTO_INCREMENT
+    id_competizione INT PRIMARY KEY AUTO_INCREMENT,
     id_ga INT,
     FOREIGN KEY (id_ga) REFERENCES GIUDICE_ARBITRO(id_ga)
 );
@@ -59,13 +69,6 @@ CREATE TABLE PREMIO (
     FOREIGN KEY (id_torneo) REFERENCES TORNEO(id_competizione)
 );
 
-CREATE TABLE CIRCOLO (
-    id_circolo INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    indirizzo VARCHAR(100),
-    citta VARCHAR(50)
-);
-
 CREATE TABLE CAMPO (
     id_campo INT PRIMARY KEY AUTO_INCREMENT,
     numero INT,
@@ -76,7 +79,7 @@ CREATE TABLE CAMPO (
 );
 
 CREATE TABLE SQUADRA (
-    id_squadra INT PRIMARY KEY AUTO_INCREMENT
+    id_squadra INT PRIMARY KEY AUTO_INCREMENT,
     id_circolo INT NOT NULL,
     FOREIGN KEY (id_circolo) REFERENCES CIRCOLO(id_circolo)
 );
