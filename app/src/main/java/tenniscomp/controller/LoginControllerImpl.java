@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import tenniscomp.model.Model;
 import tenniscomp.view.LoginWindow;
 import tenniscomp.view.PlayerDashboard;
+import tenniscomp.view.RefereeDashboard;
 import tenniscomp.view.RegisterWindow;
 
 public class LoginControllerImpl implements LoginController {
@@ -43,7 +44,13 @@ public class LoginControllerImpl implements LoginController {
                 var dashboard = new PlayerDashboard();
                 new PlayerDashboardController(dashboard, model, player);
             } else {
-                // TODO: ref implementation
+                final var referee = model.getRefereeByUsername(username);
+                if (referee == null) {
+                    view.showMessage("Errore durante il recupero dei dati del giudice arbitro.", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                final var refereeDashboard = new RefereeDashboard();
+                new RefereeDashboardController(refereeDashboard, model, referee);
             }
         } else {
             view.showMessage("Credenziali non valide.", JOptionPane.ERROR_MESSAGE);
