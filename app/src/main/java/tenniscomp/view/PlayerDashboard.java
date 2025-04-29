@@ -1,6 +1,7 @@
 package tenniscomp.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -9,19 +10,37 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
+import tenniscomp.utils.ImmutableTableModel;
 
 public class PlayerDashboard extends JFrame {
 
     private static final String CARD_TITLE = "Tessera Giocatore";
     private static final String CARD_NUMBER_TEXT = "Numero tessera: ";
     private static final String EXP_DATE_TEXT = "Data di scadenza: ";
+    private static final String TOURNAMENTS_TITLE = "Tornei";
+    private static final String MATCHES_TITLE = "Partite";
+    private static final String STATS_TITLE = "Statistiche";
+    private static final String MATCHES_PLAYED_STAT = "Partite giocate";
+    private static final String MATCHES_WON_STAT = "Partite vinte";
+    private static final String WIN_RATE_STAT = "Win rate";
+    private static final String TOURNAMENTS_WON_STAT = "Tornei vinti";
 
     private final JLabel nameLabel;
     private final JLabel rankingLabel;
     private final JLabel categoryLabel;
-
     private final JLabel cardNumberLabel;
     private final JLabel cardExpiryDateLabel;
+
+    private final DefaultTableModel tournamentsModel;
+    private final DefaultTableModel matchesModel;
+    private final JTable tournamentsTable;
+    private final JTable matchesTable;
+    private final JPanel statsPanel;
 
     public PlayerDashboard() {
         setTitle("TennisComp - Player Dashboard");
@@ -64,16 +83,61 @@ public class PlayerDashboard extends JFrame {
         topPanel.add(playerInfoPanel, BorderLayout.WEST);
         topPanel.add(cardPanel, BorderLayout.EAST);
         
-        // TODO: Tournaments panel
+        // Tournaments panel
+        final String[] tournamentColumns = {"ID", "Nome", "Data inizio", "Data fine", "Stato", "Categoria"};
+        this.tournamentsModel = new ImmutableTableModel(tournamentColumns, 0);
+        this.tournamentsTable = new JTable(tournamentsModel);
+        final var tournamentsScrollPane = new JScrollPane(tournamentsTable);
+        tournamentsScrollPane.setBorder(BorderFactory.createTitledBorder(TOURNAMENTS_TITLE));
         
-        // TODO: Matches panel
+        // Matches panel
+        final String[] matchColumns = {"ID", "Torneo", "Data", "Avversario", "Risultato", "Punteggio"};
+        this.matchesModel = new ImmutableTableModel(matchColumns, 0);
+        this.matchesTable = new JTable(matchesModel);
+        final var matchesScrollPane = new JScrollPane(matchesTable);
+        matchesScrollPane.setBorder(BorderFactory.createTitledBorder(MATCHES_TITLE));
+
+        final var centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        centerPanel.add(tournamentsScrollPane);
+        centerPanel.add(matchesScrollPane);
         
-        // TODO: Bottom stats panel
+        // Bottom stats panel
+        statsPanel = new JPanel(new GridLayout(1, 4, 10, 0));
+        statsPanel.setBorder(BorderFactory.createTitledBorder(STATS_TITLE));
+        
+        // TODO: calculate data
+        final var matchesPlayedPanel = createStatPanel(MATCHES_PLAYED_STAT, "0");
+        final var matchesWonPanel = createStatPanel(MATCHES_WON_STAT, "0");
+        final var winRatePanel = createStatPanel(WIN_RATE_STAT, "0%");
+        final var tournamentWinsPanel = createStatPanel(TOURNAMENTS_WON_STAT, "0");
+        
+        this.statsPanel.add(matchesPlayedPanel);
+        this.statsPanel.add(matchesWonPanel);
+        this.statsPanel.add(winRatePanel);
+        this.statsPanel.add(tournamentWinsPanel);
         
         add(topPanel, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
+        add(statsPanel, BorderLayout.SOUTH);
         
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private JPanel createStatPanel(final String title, final String value) {
+        final var panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        
+        final var titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        
+        final var valueLabel = new JLabel(value, SwingConstants.CENTER);
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(valueLabel, BorderLayout.CENTER);
+        
+        return panel;
     }
     
     public void setPlayerName(final String name) {
