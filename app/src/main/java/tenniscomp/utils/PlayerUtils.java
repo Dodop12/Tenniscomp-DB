@@ -7,7 +7,8 @@ import java.time.format.DateTimeFormatter;
 public final class PlayerUtils {
 
     public static String calculateCategory(final String birthDate) {
-        final int age = calculateAge(birthDate);
+        // Category changes only on the first day of every year
+        final int age = calculateAgeAtYearEnd(birthDate);
 
         // "Under" categories
         if (age <= 10) return "U10";
@@ -22,13 +23,13 @@ public final class PlayerUtils {
         return "O" + baseCategory;
     }
 
-    private static int calculateAge(final String birthDate) {
+    private static int calculateAgeAtYearEnd(final String birthDate) {
         try {
             final var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final var birth = LocalDate.parse(birthDate, formatter);
             
-            final var now = LocalDate.now();
-            return Period.between(birth, now).getYears();
+            final var yearEnd = LocalDate.of(LocalDate.now().getYear(), 12, 31);
+            return Period.between(birth, yearEnd).getYears();
         } catch (final Exception e) {
             throw new IllegalArgumentException(birthDate + " is not a valid date format. Expected format: yyyy-MM-dd", e);
         }
