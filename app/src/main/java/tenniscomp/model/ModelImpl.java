@@ -34,5 +34,10 @@ public class ModelImpl implements Model {
     public Player getPlayerByUsername(final String username) {
         return Player.DAO.getPlayerByUsername(this.connection, username);
     }
+
+    @Override
+    public Referee getRefereeByUsername(String username) {
+        return Referee.DAO.getRefereeByUsername(this.connection, username);
+    }
     
 }

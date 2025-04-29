@@ -30,4 +30,11 @@ public final class Queries {
         FROM giocatore
         WHERE username = ?
         """;
+
+        public static final String GET_REFEREE_BY_USERNAME =
+        """
+        SELECT *
+        FROM giudice_arbitro
+        WHERE username = ?
+        """;
 }

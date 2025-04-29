@@ -1,6 +1,7 @@
 package tenniscomp.model;
 
 import tenniscomp.data.Player;
+import tenniscomp.data.Referee;
 
 public interface Model {
 
@@ -12,4 +13,7 @@ public interface Model {
     boolean loginReferee(final String username, final String password);
 
     Player getPlayerByUsername(final String username);
+
+    Referee getRefereeByUsername(final String username);
+
 }
