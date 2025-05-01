@@ -41,7 +41,8 @@ public class RegisterControllerImpl implements RegisterController {
         if (success) {
             view.showMessage("Registrazione completata con successo!", JOptionPane.INFORMATION_MESSAGE);
             this.view.dispose();
-            new LoginWindow(false);
+            final var loginView = new LoginWindow(false);
+            new LoginControllerImpl(loginView, model); // Create a controller for the new login view
         } else {
             view.showMessage("Errore nella registrazione.", JOptionPane.ERROR_MESSAGE);
         }
