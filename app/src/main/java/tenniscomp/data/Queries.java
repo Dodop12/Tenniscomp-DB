@@ -4,7 +4,7 @@ public final class Queries {
 
     public static final String ADD_PLAYER =
         """
-        INSERT INTO giocatore (nome, cognome, email, data_nascita, sesso, telefono, username, password_hash)
+        INSERT INTO giocatore (cognome, nome, email, data_nascita, sesso, telefono, username, password_hash)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
     

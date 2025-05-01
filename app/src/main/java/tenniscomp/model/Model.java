@@ -8,7 +8,7 @@ import tenniscomp.data.Referee;
 
 public interface Model {
 
-    boolean registerPlayer(String name, String surname, String email, String birthDate,
+    boolean registerPlayer(String surname, String name, String email, String birthDate,
             String gender, String phone, String username, String password);
 
     boolean loginPlayer(String username, String password);

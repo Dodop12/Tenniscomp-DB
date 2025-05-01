@@ -20,8 +20,8 @@ public class RegisterControllerImpl implements RegisterController {
 
     @Override
     public void executeRegistration() {
-        final String name = this.view.getName();
         final String surname = this.view.getSurname();
+        final String name = this.view.getName();
         final String email = this.view.getEmail();
         final String birthDate = this.view.getBirthDate();
         final String username = this.view.getUsername();
@@ -36,7 +36,7 @@ public class RegisterControllerImpl implements RegisterController {
             return;
         }
 
-        final boolean success = model.registerPlayer(name, surname, email, birthDate, gender, phone, username, password);
+        final boolean success = model.registerPlayer(surname, name, email, birthDate, gender, phone, username, password);
 
         if (success) {
             view.showMessage("Registrazione completata con successo!", JOptionPane.INFORMATION_MESSAGE);

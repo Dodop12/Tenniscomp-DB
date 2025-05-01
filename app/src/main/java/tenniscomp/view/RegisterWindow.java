@@ -27,7 +27,7 @@ public class RegisterWindow extends JFrame {
     private final JTextField usernameField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
     private final JPasswordField confirmField = new JPasswordField();
-    private final JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Maschio", "Femmina", "Altro"});
+    private final JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Maschio", "Femmina"});
 
     private final JButton registerButton = new JButton("Registrati");
 
@@ -43,10 +43,10 @@ public class RegisterWindow extends JFrame {
 
         this.birthDatePicker = createDatePicker();
 
-        panel.add(new JLabel("Nome:"));
-        panel.add(nameField);
         panel.add(new JLabel("Cognome:"));
         panel.add(surnameField);
+        panel.add(new JLabel("Nome:"));
+        panel.add(nameField);
         panel.add(new JLabel("Email:"));
         panel.add(emailField);
         panel.add(new JLabel("Data di nascita:"));
@@ -69,12 +69,12 @@ public class RegisterWindow extends JFrame {
         setVisible(true);
     }
 
-    public String getName() {
-        return this.nameField.getText().trim();
-    }
-
     public String getSurname() {
         return this.surnameField.getText().trim();
+    }
+
+    public String getName() {
+        return this.nameField.getText().trim();
     }
 
     public String getBirthDate() {

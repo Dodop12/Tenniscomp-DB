@@ -14,12 +14,12 @@ public class Referee {
     private final String password;
     private final String title;
 
-    public Referee(final int refereeId, final String name, final String surname,
+    public Referee(final int refereeId, final String surname, final String name,
             final String email, final String birthDate, final String gender,
             final String phone, final String username, final String password, final String title) {
         this.refereeId = refereeId;
-        this.name = name;
         this.surname = surname;
+        this.name = name;
         this.email = email;
         this.birthDate = birthDate;
         this.gender = gender;
@@ -33,12 +33,12 @@ public class Referee {
         return refereeId;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getSurname() {
         return surname;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
@@ -91,8 +91,8 @@ public class Referee {
                 if (resultSet.next()) {
                     return new Referee(
                         resultSet.getInt("id_ga"),
-                        resultSet.getString("nome"),
                         resultSet.getString("cognome"),
+                        resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
                         resultSet.getString("sesso"),

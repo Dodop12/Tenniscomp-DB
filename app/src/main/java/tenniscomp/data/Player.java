@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Player {
     private final int playerId;
-    private final String name;
     private final String surname;
+    private final String name;
     private final String email;
     private final String birthDate;
     private final String gender;
@@ -18,12 +18,12 @@ public class Player {
     private final String password;
     private final String ranking;
 
-    public Player(final int playerId, final String name, final String surname,
+    public Player(final int playerId, final String surname, final String name,
             final String email, final String birthDate, final String gender,
             final String phone, final String username, final String password, final String ranking) {
         this.playerId = playerId;
-        this.name = name;
         this.surname = surname;
+        this.name = name;
         this.email = email;
         this.birthDate = birthDate;
         this.gender = gender;
@@ -37,12 +37,12 @@ public class Player {
         return playerId;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getSurname() {
         return surname;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
@@ -75,12 +75,12 @@ public class Player {
 
     public final class DAO {
 
-        public static int insertPlayer(final Connection connection, final String name, final String surname,
+        public static int insertPlayer(final Connection connection, final String surname, final String name,
                 final String email, final String birthDate, final String gender,
                 final String phone, final String username, final String password) {
             final var convertedDate = getConvertedDateFormat(birthDate);
             try ( 
-                var statement = DAOUtils.prepare(connection, Queries.ADD_PLAYER, name, surname, email,
+                var statement = DAOUtils.prepare(connection, Queries.ADD_PLAYER, surname, name, email,
                     convertedDate, gender, phone, username, password);
             ) {
                 return statement.executeUpdate();
@@ -109,8 +109,8 @@ public class Player {
                 if (resultSet.next()) {
                     return new Player(
                         resultSet.getInt("id_giocatore"),
-                        resultSet.getString("nome"),
                         resultSet.getString("cognome"),
+                        resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
                         resultSet.getString("sesso"),
@@ -135,8 +135,8 @@ public class Player {
                 while (resultSet.next()) {
                     players.add(new Player(
                         resultSet.getInt("id_giocatore"),
-                        resultSet.getString("nome"),
                         resultSet.getString("cognome"),
+                        resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
                         resultSet.getString("sesso"),

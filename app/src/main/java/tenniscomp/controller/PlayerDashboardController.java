@@ -20,7 +20,7 @@ public class PlayerDashboardController {
     }
     
     private void loadPlayerData() {
-        view.setPlayerName(player.getName() + " " + player.getSurname());
+        view.setPlayerName(player.getSurname() + " " + player.getName());
         view.setPlayerRanking(player.getRanking());
 
         String category = PlayerUtils.calculateCategory(player.getBirthDate());

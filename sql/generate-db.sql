@@ -3,8 +3,8 @@ USE tenniscomp;
 
 CREATE TABLE GIUDICE_ARBITRO (
     id_ga INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50),
     cognome VARCHAR(50),
+    nome VARCHAR(50),
     email VARCHAR(100) UNIQUE NOT NULL,
     data_nascita DATE,
     sesso CHAR(1),
@@ -16,8 +16,8 @@ CREATE TABLE GIUDICE_ARBITRO (
 
 CREATE TABLE ARBITRO (
     id_arbitro INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50),
     cognome VARCHAR(50),
+    nome VARCHAR(50),
     email VARCHAR(100) UNIQUE NOT NULL,
     data_nascita DATE,
     sesso CHAR(1),
@@ -86,8 +86,8 @@ CREATE TABLE SQUADRA (
 
 CREATE TABLE GIOCATORE (
     id_giocatore INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50),
     cognome VARCHAR(50),
+    nome VARCHAR(50),
     email VARCHAR(100) UNIQUE NOT NULL,
     data_nascita DATE,
     sesso CHAR(1),

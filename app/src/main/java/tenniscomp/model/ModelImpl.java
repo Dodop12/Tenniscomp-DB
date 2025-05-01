@@ -16,9 +16,9 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean registerPlayer(final String name, final String surname, final String email, final String birthDate,
+    public boolean registerPlayer(final String surname, final String name, final String email, final String birthDate,
             final String gender, final String phone, final String username, final String password) {
-        return Player.DAO.insertPlayer(this.connection, name, surname, email,
+        return Player.DAO.insertPlayer(this.connection, surname, name, email,
             birthDate, gender, phone, username, password) == 1;
     }
 
