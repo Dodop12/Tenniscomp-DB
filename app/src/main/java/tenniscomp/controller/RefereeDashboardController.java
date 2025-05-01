@@ -33,12 +33,14 @@ public class RefereeDashboardController {
 
      private void openPlayerManager() {
         final var playerManager = new PlayerManager();
+        new PlayerManagerController(playerManager, model);
         playerManager.setCloseButtonListener(e -> playerManager.dispose());
         playerManager.display();
     }
     
     private void openClubManager() {
         final var clubManager = new ClubManager();
+        // final var clubManagerController = new ClubManagerController(clubManager, model);
         clubManager.setCloseButtonListener(e -> clubManager.dispose());
         clubManager.setAddClubButtonListener(e -> {
             // TODO
