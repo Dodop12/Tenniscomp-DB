@@ -3,6 +3,8 @@ package tenniscomp.data;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private final int playerId;
@@ -119,6 +121,32 @@ public class Player {
                     );
                 }
                 return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static List<Player> getAllPlayers(final Connection connection) {
+            try (
+                var statement = connection.prepareStatement(Queries.GET_ALL_PLAYERS);
+                var resultSet = statement.executeQuery();
+            ) {
+                final var players = new ArrayList<Player>();
+                while (resultSet.next()) {
+                    players.add(new Player(
+                        resultSet.getInt("id_giocatore"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("cognome"),
+                        resultSet.getString("email"),
+                        resultSet.getString("data_nascita"),
+                        resultSet.getString("sesso"),
+                        resultSet.getString("telefono"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password_hash"),
+                        resultSet.getString("classifica")
+                    ));
+                }
+                return players;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

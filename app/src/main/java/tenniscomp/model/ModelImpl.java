@@ -1,6 +1,7 @@
 package tenniscomp.model;
 
 import java.sql.Connection;
+import java.util.List;
 
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
@@ -31,13 +32,19 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<Player> getAllPlayers() {
+        return Player.DAO.getAllPlayers(this.connection);
+    }
+
+    @Override
     public Player getPlayerByUsername(final String username) {
         return Player.DAO.getPlayerByUsername(this.connection, username);
     }
 
     @Override
-    public Referee getRefereeByUsername(String username) {
+    public Referee getRefereeByUsername(final String username) {
         return Referee.DAO.getRefereeByUsername(this.connection, username);
     }
+
     
 }

@@ -24,6 +24,13 @@ public final class Queries {
         AND password_hash = ?
         """;
 
+    public static final String GET_ALL_PLAYERS =
+        """
+        SELECT *
+        FROM giocatore
+        ORDER BY cognome, nome
+        """;
+
     public static final String GET_PLAYER_BY_USERNAME =
         """
         SELECT *
@@ -31,7 +38,7 @@ public final class Queries {
         WHERE username = ?
         """;
 
-        public static final String GET_REFEREE_BY_USERNAME =
+    public static final String GET_REFEREE_BY_USERNAME =
         """
         SELECT *
         FROM giudice_arbitro

@@ -1,5 +1,7 @@
 package tenniscomp.model;
 
+import java.util.List;
+
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
 
@@ -11,6 +13,8 @@ public interface Model {
     boolean loginPlayer(final String username, final String password);
     
     boolean loginReferee(final String username, final String password);
+
+    List<Player> getAllPlayers();
 
     Player getPlayerByUsername(final String username);
 
