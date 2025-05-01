@@ -19,15 +19,16 @@ import javax.swing.table.TableRowSorter;
 
 import tenniscomp.utils.ImmutableTableModel;
 
-public class PlayerManager extends JFrame {
+public class ClubManager extends JFrame {
     
     private final JTextField searchField;
+    private final JButton addClubButton;
     private final JButton closeButton;
-    private final JTable playersTable;
+    private final JTable clubsTable;
     private final TableRowSorter<ImmutableTableModel> sorter;
 
-    public PlayerManager() {
-        setTitle("Gestione Giocatori");
+    public ClubManager() {
+        setTitle("Gestione Circoli");
         setSize(800, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
@@ -36,11 +37,13 @@ public class PlayerManager extends JFrame {
         final var searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         
-        final var searchLabel = new JLabel("Cerca per cognome:");
+        final var searchLabel = new JLabel("Cerca per nome:");
         this.searchField = new JTextField(20);
+        this.addClubButton = new JButton("Aggiungi Circolo");
         
         searchPanel.add(searchLabel);
         searchPanel.add(this.searchField);
+        searchPanel.add(this.addClubButton);
         
         // Close button
         final var buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -48,15 +51,15 @@ public class PlayerManager extends JFrame {
         this.closeButton = new JButton("Chiudi");
         buttonPanel.add(this.closeButton);
         
-        // Players table
-        final String[] columns = {"ID", "Nome", "Cognome", "Data Nascita", "Sesso", "Email", "Telefono", "Classifica", "Circolo"};
+        // Clubs table
+        final String[] columns = {"ID", "Nome", "Indirizzo", "Città", "Numero Campi"};
         final var tableModel = new ImmutableTableModel(columns, 0);
-        this.playersTable = new JTable(tableModel);
+        this.clubsTable = new JTable(tableModel);
         
         // Set up the row sorter for filtering
         this.sorter = new TableRowSorter<>(tableModel);
-        playersTable.setRowSorter(sorter);
-
+        clubsTable.setRowSorter(sorter);
+        
         // Search functionality
         this.searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -75,7 +78,7 @@ public class PlayerManager extends JFrame {
             }
         });
         
-        final var tableScrollPane = new JScrollPane(playersTable);
+        final var tableScrollPane = new JScrollPane(clubsTable);
         tableScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         add(searchPanel, BorderLayout.NORTH);
@@ -83,6 +86,10 @@ public class PlayerManager extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
         
         setLocationRelativeTo(null);
+    }
+    
+    public void setAddClubButtonListener(final ActionListener listener) {
+        this.addClubButton.addActionListener(listener);
     }
     
     public void setCloseButtonListener(final ActionListener listener) {
@@ -98,8 +105,8 @@ public class PlayerManager extends JFrame {
         if (text.trim().length() == 0) {
             sorter.setRowFilter(null);
         } else {
-            // Filter on the surname column (index 2)
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
+            // Filter on the name column (index 1)
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
         }
     }
 }
