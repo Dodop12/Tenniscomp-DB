@@ -24,6 +24,7 @@ public class PlayerManager extends JFrame {
     private final JTextField searchField;
     private final JButton closeButton;
     private final JTable playersTable;
+    private final ImmutableTableModel tableModel;
     private final TableRowSorter<ImmutableTableModel> sorter;
 
     public PlayerManager() {
@@ -49,8 +50,8 @@ public class PlayerManager extends JFrame {
         buttonPanel.add(this.closeButton);
         
         // Players table
-        final String[] columns = {"ID", "Nome", "Cognome", "Data Nascita", "Sesso", "Email", "Telefono", "Classifica", "Circolo"};
-        final var tableModel = new ImmutableTableModel(columns, 0);
+        final String[] columns = {"ID", "Cognome", "Nome", "Data Nascita", "Sesso", "Email", "Telefono", "Classifica", "Circolo"};
+        this.tableModel = new ImmutableTableModel(columns, 0);
         this.playersTable = new JTable(tableModel);
         
         // Set up the row sorter for filtering
@@ -85,6 +86,10 @@ public class PlayerManager extends JFrame {
         setLocationRelativeTo(null);
     }
     
+    public ImmutableTableModel getTableModel() {
+        return tableModel;
+    }
+
     public void setCloseButtonListener(final ActionListener listener) {
         this.closeButton.addActionListener(listener);
     }
@@ -94,12 +99,12 @@ public class PlayerManager extends JFrame {
     }
 
     private void applySearchFilter() {
-        final String text = searchField.getText();
+        final String text = this.searchField.getText();
         if (text.trim().length() == 0) {
-            sorter.setRowFilter(null);
+            this.sorter.setRowFilter(null);
         } else {
-            // Filter on the surname column (index 2)
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
+            // Filter on the surname column (index 1)
+            this.sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
         }
     }
 }

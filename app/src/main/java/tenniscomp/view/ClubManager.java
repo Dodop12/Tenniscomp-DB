@@ -25,6 +25,7 @@ public class ClubManager extends JFrame {
     private final JButton addClubButton;
     private final JButton closeButton;
     private final JTable clubsTable;
+    private final ImmutableTableModel tableModel;
     private final TableRowSorter<ImmutableTableModel> sorter;
 
     public ClubManager() {
@@ -53,7 +54,7 @@ public class ClubManager extends JFrame {
         
         // Clubs table
         final String[] columns = {"ID", "Nome", "Indirizzo", "Città", "Numero Campi"};
-        final var tableModel = new ImmutableTableModel(columns, 0);
+        this.tableModel = new ImmutableTableModel(columns, 0);
         this.clubsTable = new JTable(tableModel);
         
         // Set up the row sorter for filtering
@@ -87,6 +88,10 @@ public class ClubManager extends JFrame {
         
         setLocationRelativeTo(null);
     }
+
+    public ImmutableTableModel getTableModel() {
+        return tableModel;
+    }
     
     public void setAddClubButtonListener(final ActionListener listener) {
         this.addClubButton.addActionListener(listener);
@@ -101,12 +106,12 @@ public class ClubManager extends JFrame {
     }
 
     private void applySearchFilter() {
-        final String text = searchField.getText();
+        final String text = this.searchField.getText();
         if (text.trim().length() == 0) {
-            sorter.setRowFilter(null);
+            this.sorter.setRowFilter(null);
         } else {
             // Filter on the name column (index 1)
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
+            this.sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
         }
     }
 }
