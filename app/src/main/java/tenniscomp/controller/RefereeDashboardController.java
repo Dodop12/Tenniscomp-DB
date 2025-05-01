@@ -2,6 +2,8 @@ package tenniscomp.controller;
 
 import tenniscomp.data.Referee;
 import tenniscomp.model.Model;
+import tenniscomp.view.ClubManager;
+import tenniscomp.view.PlayerManager;
 import tenniscomp.view.RefereeDashboard;
 
 public class RefereeDashboardController {
@@ -16,12 +18,31 @@ public class RefereeDashboardController {
         this.referee = referee;
         
         loadRefereeData();
+        setupListeners();
     }
     
     private void loadRefereeData() {
         view.setRefereeName(referee.getName() + " " + referee.getSurname());
         view.setRefereeTitle(referee.getTitle());
-        
-        // TODO: Load tournaments and team competitions data
+    }
+
+    private void setupListeners() {
+        view.setManagePlayersListener(e -> openPlayerManager());
+        view.setManageClubsListener(e -> openClubManager());
+    }
+
+     private void openPlayerManager() {
+        final var playerManager = new PlayerManager();
+        playerManager.setCloseButtonListener(e -> playerManager.dispose());
+        playerManager.display();
+    }
+    
+    private void openClubManager() {
+        final var clubManager = new ClubManager();
+        clubManager.setCloseButtonListener(e -> clubManager.dispose());
+        clubManager.setAddClubButtonListener(e -> {
+            // TODO
+        }); 
+        clubManager.display();
     }
 }

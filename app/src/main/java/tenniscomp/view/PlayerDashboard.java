@@ -19,6 +19,7 @@ import tenniscomp.utils.ImmutableTableModel;
 
 public class PlayerDashboard extends JFrame {
 
+    private static final String FONT_STYLE = "Arial";
     private static final String CARD_TITLE = "Tessera Giocatore";
     private static final String CARD_NUMBER_TEXT = "Numero tessera: ";
     private static final String EXP_DATE_TEXT = "Data di scadenza: ";
@@ -54,13 +55,13 @@ public class PlayerDashboard extends JFrame {
         playerInfoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         this.nameLabel = new JLabel("Nome");
-        this.nameLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        this.nameLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 22));
         
         this.rankingLabel = new JLabel("Classifica");
-        this.rankingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        this.rankingLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 16));
 
         this.categoryLabel = new JLabel("Categoria");
-        this.categoryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        this.categoryLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 16));
         
         playerInfoPanel.add(this.nameLabel);
         playerInfoPanel.add(this.rankingLabel);
@@ -129,10 +130,10 @@ public class PlayerDashboard extends JFrame {
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         
         final var titleLabel = new JLabel(title, SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        titleLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
         
         final var valueLabel = new JLabel(value, SwingConstants.CENTER);
-        valueLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        valueLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 24));
         
         panel.add(titleLabel, BorderLayout.NORTH);
         panel.add(valueLabel, BorderLayout.CENTER);
