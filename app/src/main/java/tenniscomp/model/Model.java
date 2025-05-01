@@ -2,22 +2,27 @@ package tenniscomp.model;
 
 import java.util.List;
 
+import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
 
 public interface Model {
 
-    boolean registerPlayer(final String name, final String surname, final String email, final String birthDate,
-            final String gender, final String phone, final String username, final String password);
+    boolean registerPlayer(String name, String surname, String email, String birthDate,
+            String gender, String phone, String username, String password);
 
-    boolean loginPlayer(final String username, final String password);
+    boolean loginPlayer(String username, String password);
     
-    boolean loginReferee(final String username, final String password);
+    boolean loginReferee(String username, String password);
 
     List<Player> getAllPlayers();
 
-    Player getPlayerByUsername(final String username);
+    Player getPlayerByUsername(String username);
 
-    Referee getRefereeByUsername(final String username);
+    Referee getRefereeByUsername(String username);
+
+    List<Club> getAllClubs();
+
+    boolean addClub(String name, String address, String city);
 
 }

@@ -44,4 +44,17 @@ public final class Queries {
         FROM giudice_arbitro
         WHERE username = ?
         """;
+
+    public static final String GET_ALL_CLUBS =
+        """
+        SELECT *
+        FROM circolo
+        ORDER BY nome
+        """;
+
+    public static final String ADD_CLUB =
+        """
+        INSERT INTO circolo (nome, indirizzo, citta)
+        VALUES (?, ?, ?)
+        """;
 }

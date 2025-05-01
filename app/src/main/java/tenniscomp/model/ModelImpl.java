@@ -3,6 +3,7 @@ package tenniscomp.model;
 import java.sql.Connection;
 import java.util.List;
 
+import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
 
@@ -44,6 +45,16 @@ public class ModelImpl implements Model {
     @Override
     public Referee getRefereeByUsername(final String username) {
         return Referee.DAO.getRefereeByUsername(this.connection, username);
+    }
+
+    @Override
+    public List<Club> getAllClubs() {
+        return Club.DAO.getAllClubs(this.connection);
+    }
+    
+    @Override
+    public boolean addClub(final String name, final String address, final String city) {
+        return Club.DAO.insertClub(this.connection, name, address, city) == 1;
     }
 
     
