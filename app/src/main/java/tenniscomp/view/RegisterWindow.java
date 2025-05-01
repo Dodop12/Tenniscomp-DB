@@ -63,9 +63,11 @@ public class RegisterWindow extends JFrame {
         panel.add(confirmField);
 
         panel.add(new JLabel());
-        panel.add(registerButton);
-
+        panel.add(this.registerButton);
+        
         add(panel);
+        getRootPane().setDefaultButton(this.registerButton);
+
         setVisible(true);
     }
 

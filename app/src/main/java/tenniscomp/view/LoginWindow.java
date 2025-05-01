@@ -44,6 +44,7 @@ public class LoginWindow extends JFrame {
         this.add(passwordField);
         this.add(loginButton);
         this.add(registerButton);
+        this.getRootPane().setDefaultButton(this.loginButton);
 
         this.isAdmin = isAdmin;
         if(isAdmin) {
