@@ -86,7 +86,7 @@ CREATE TABLE squadra (
 
 CREATE TABLE tessera (
     id_tessera INT PRIMARY KEY,
-    numero VARCHAR(20) UNIQUE NOT NULL,
+    numero VARCHAR(7) UNIQUE NOT NULL,
     scadenza DATE
 );
 
