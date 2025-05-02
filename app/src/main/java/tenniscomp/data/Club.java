@@ -56,7 +56,7 @@ public class Club {
         }
 
         public static int insertClub(final Connection connection, final String name, 
-                                    final String address, final String city) {
+                final String address, final String city) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.ADD_CLUB,
                     name, address, city);
