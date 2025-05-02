@@ -1,5 +1,7 @@
 package tenniscomp.controller;
 
+import java.util.Optional;
+
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.PlayerUtils;
@@ -20,11 +22,15 @@ public class PlayerDashboardController {
     }
     
     private void loadPlayerData() {
-        view.setPlayerName(player.getSurname() + " " + player.getName());
-        view.setPlayerRanking(player.getRanking());
+        this.view.setPlayerName(player.getSurname() + " " + player.getName());
+        this.view.setPlayerRanking(player.getRanking());
 
-        String category = PlayerUtils.calculateCategory(player.getBirthDate());
-        view.setPlayerCategory(category);
+        final String category = PlayerUtils.calculateCategory(player.getBirthDate());
+        this.view.setPlayerCategory(category);
+
+        Optional.ofNullable(player.getCardId())
+            .map(model::getCardById)
+            .ifPresent(card -> view.setCardInfo(card.getCardNumber(), card.getExpiryDate()));
     }
     
 }

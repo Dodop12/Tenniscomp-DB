@@ -153,8 +153,8 @@ public class PlayerDashboard extends JFrame {
         categoryLabel.setText(category);
     }
     
-    public void setCardInfo(final String cardId, final String membership, final String expiryDate) {
-        cardNumberLabel.setText(CARD_NUMBER_TEXT + cardId);
+    public void setCardInfo(final String cardNumber, final String expiryDate) {
+        cardNumberLabel.setText(CARD_NUMBER_TEXT + cardNumber);
         cardExpiryDateLabel.setText(EXP_DATE_TEXT + expiryDate);
     }
 }
