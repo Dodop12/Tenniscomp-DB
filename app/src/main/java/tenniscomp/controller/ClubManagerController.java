@@ -18,7 +18,7 @@ public class ClubManagerController {
         loadClubs();
     }
     
-    private void loadClubs() {
+    public void loadClubs() {
         final var tableModel = view.getTableModel();
         clearTable(tableModel);
         

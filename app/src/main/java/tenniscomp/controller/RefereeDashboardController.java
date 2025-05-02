@@ -2,6 +2,7 @@ package tenniscomp.controller;
 
 import tenniscomp.data.Referee;
 import tenniscomp.model.Model;
+import tenniscomp.view.AddClubWindow;
 import tenniscomp.view.ClubManager;
 import tenniscomp.view.PlayerManager;
 import tenniscomp.view.RefereeDashboard;
@@ -31,7 +32,7 @@ public class RefereeDashboardController {
         view.setManageClubsListener(e -> openClubManager());
     }
 
-     private void openPlayerManager() {
+    private void openPlayerManager() {
         final var playerManager = new PlayerManager();
         new PlayerManagerController(playerManager, model);
         playerManager.setCloseButtonListener(e -> playerManager.dispose());
@@ -40,11 +41,32 @@ public class RefereeDashboardController {
     
     private void openClubManager() {
         final var clubManager = new ClubManager();
-        // final var clubManagerController = new ClubManagerController(clubManager, model);
+        final var clubManagerController = new ClubManagerController(clubManager, model);
         clubManager.setCloseButtonListener(e -> clubManager.dispose());
-        clubManager.setAddClubButtonListener(e -> {
-            // TODO
-        }); 
+        clubManager.setAddClubButtonListener(e -> 
+            openAddClubWindow(clubManager, clubManagerController)
+        ); 
         clubManager.display();
+    }
+
+    private void openAddClubWindow(final ClubManager clubManager, final ClubManagerController controller) {
+        final var addClubWindow = new AddClubWindow(clubManager);
+        
+        addClubWindow.setSaveButtonListener(e -> {
+            final String name = addClubWindow.getClubName();
+            final String address = addClubWindow.getClubAddress();
+            final String city = addClubWindow.getClubCity();
+            
+            if (!name.isEmpty() && !address.isEmpty() && !city.isEmpty()) {
+                if (model.addClub(name, address, city)) {
+                    // Refresh the list
+                    controller.loadClubs();
+                    addClubWindow.dispose();
+                }
+            }
+        });
+        
+        addClubWindow.setCancelButtonListener(e -> addClubWindow.dispose());
+        addClubWindow.setVisible(true);
     }
 }
