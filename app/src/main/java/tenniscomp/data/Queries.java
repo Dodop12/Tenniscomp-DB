@@ -16,7 +16,7 @@ public final class Queries {
         AND password_hash = ?
         """;
 
-    public static final String CHECK_GA_LOGIN =
+    public static final String CHECK_REFEREE_LOGIN =
         """
         SELECT *
         FROM giudice_arbitro

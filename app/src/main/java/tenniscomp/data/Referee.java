@@ -73,7 +73,7 @@ public class Referee {
 
         public static boolean checkLogin(final Connection connection, final String username, final String password) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.CHECK_GA_LOGIN, username, password);
+                var statement = DAOUtils.prepare(connection, Queries.CHECK_REFEREE_LOGIN, username, password);
                 var resultSet = statement.executeQuery();
             ) {
                 return resultSet.next();
