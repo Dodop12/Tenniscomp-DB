@@ -95,8 +95,10 @@ CREATE TABLE GIOCATORE (
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     classifica VARCHAR(20) DEFAULT '4.NC',
+    id_tessera INT UNIQUE,
     id_circolo INT,
     id_squadra INT,
+    FOREIGN KEY (id_tessera) REFERENCES TESSERA(id_tessera),
     FOREIGN KEY (id_circolo) REFERENCES CIRCOLO(id_circolo),
     FOREIGN KEY (id_squadra) REFERENCES SQUADRA(id_squadra)
 );

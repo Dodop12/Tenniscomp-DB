@@ -17,10 +17,14 @@ public class Player {
     private final String username;
     private final String password;
     private final String ranking;
+    private final Integer cardId;
+    private final Integer clubId;
+    private final Integer teamId;
 
-    public Player(final int playerId, final String surname, final String name,
-            final String email, final String birthDate, final String gender,
-            final String phone, final String username, final String password, final String ranking) {
+    public Player(final int playerId, final String surname, final String name, final String email,
+            final String birthDate, final String gender, final String phone, final String username,
+            final String password, final String ranking, final Integer cardId, final Integer clubId,
+            final Integer teamId) {
         this.playerId = playerId;
         this.surname = surname;
         this.name = name;
@@ -31,6 +35,9 @@ public class Player {
         this.username = username;
         this.password = password;
         this.ranking = ranking;
+        this.cardId = cardId;
+        this.clubId = clubId;
+        this.teamId = teamId;
     }
 
     public int getPlayerId() {
@@ -71,6 +78,18 @@ public class Player {
 
     public String getRanking() {
         return ranking;
+    }
+
+    public Integer getCardId() {
+        return cardId;
+    }
+
+    public Integer getClubId() {
+        return clubId;
+    }
+
+    public Integer getTeamId() {
+        return teamId;
     }
 
     public final class DAO {
@@ -117,7 +136,10 @@ public class Player {
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica")
+                        resultSet.getString("classifica"),
+                        resultSet.getObject("id_tessera", Integer.class),
+                        resultSet.getObject("id_circolo", Integer.class),
+                        resultSet.getObject("id_squadra", Integer.class)
                     );
                 }
                 return null;
@@ -143,7 +165,10 @@ public class Player {
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica")
+                        resultSet.getString("classifica"),
+                        resultSet.getObject("id_tessera", Integer.class),
+                        resultSet.getObject("id_circolo", Integer.class),
+                        resultSet.getObject("id_squadra", Integer.class)
                     ));
                 }
                 return players;
