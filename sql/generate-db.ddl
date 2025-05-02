@@ -93,6 +93,13 @@ CREATE TABLE squadra (
     FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo)
 );
 
+DROP TABLE IF EXISTS tessera;
+CREATE TABLE tessera (
+    id_tessera INT PRIMARY KEY,
+    numero VARCHAR(20) UNIQUE NOT NULL,
+    scadenza DATE,
+);
+
 DROP TABLE IF EXISTS giocatore;
 CREATE TABLE giocatore (
     id_giocatore INT PRIMARY KEY AUTO_INCREMENT,
@@ -111,15 +118,6 @@ CREATE TABLE giocatore (
     FOREIGN KEY (id_tessera) REFERENCES tessera(id_tessera),
     FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo),
     FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
-);
-
-DROP TABLE IF EXISTS tessera;
-CREATE TABLE tessera (
-    id_tessera INT PRIMARY KEY,
-    numero VARCHAR(20) UNIQUE NOT NULL,
-    scadenza DATE,
-    id_giocatore INT UNIQUE NOT NULL,
-    FOREIGN KEY (id_giocatore) REFERENCES giocatore(id_giocatore)
 );
 
 DROP TABLE IF EXISTS partita;
