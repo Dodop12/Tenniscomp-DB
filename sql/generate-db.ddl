@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS tenniscomp;
 USE tenniscomp;
 
-DROP TABLE IF EXISTS giudice_arbitro;
 CREATE TABLE giudice_arbitro (
     id_ga INT PRIMARY KEY AUTO_INCREMENT,
     cognome VARCHAR(50),
@@ -15,7 +14,6 @@ CREATE TABLE giudice_arbitro (
     qualifica VARCHAR(10) DEFAULT 'GAQR'
 );
 
-DROP TABLE IF EXISTS arbitro;
 CREATE TABLE arbitro (
     id_arbitro INT PRIMARY KEY AUTO_INCREMENT,
     cognome VARCHAR(50),
@@ -27,7 +25,6 @@ CREATE TABLE arbitro (
     qualifica VARCHAR(10)
 );
 
-DROP TABLE IF EXISTS circolo;
 CREATE TABLE circolo (
     id_circolo INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
@@ -35,14 +32,12 @@ CREATE TABLE circolo (
     citta VARCHAR(50)
 );
 
-DROP TABLE IF EXISTS competizione;
 CREATE TABLE competizione (
     id_competizione INT PRIMARY KEY AUTO_INCREMENT,
     id_ga INT,
     FOREIGN KEY (id_ga) REFERENCES giudice_arbitro(id_ga)
 );
 
-DROP TABLE IF EXISTS torneo;
 CREATE TABLE torneo (
     id_competizione INT PRIMARY KEY,
     nome VARCHAR(100),
@@ -57,7 +52,6 @@ CREATE TABLE torneo (
     FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo)
 );
 
-DROP TABLE IF EXISTS campionato;
 CREATE TABLE campionato (
     id_competizione INT PRIMARY KEY,
     serie VARCHAR(20),
@@ -67,7 +61,6 @@ CREATE TABLE campionato (
     FOREIGN KEY (id_competizione) REFERENCES competizione(id_competizione)
 );
 
-DROP TABLE IF EXISTS premio;
 CREATE TABLE premio (
     id_premio INT PRIMARY KEY AUTO_INCREMENT,
     posizione INT,
@@ -76,7 +69,6 @@ CREATE TABLE premio (
     FOREIGN KEY (id_torneo) REFERENCES torneo(id_competizione)
 );
 
-DROP TABLE IF EXISTS campo;
 CREATE TABLE campo (
     id_campo INT PRIMARY KEY AUTO_INCREMENT,
     numero INT,
@@ -86,21 +78,18 @@ CREATE TABLE campo (
     FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo)
 );
 
-DROP TABLE IF EXISTS squadra;
 CREATE TABLE squadra (
     id_squadra INT PRIMARY KEY AUTO_INCREMENT,
     id_circolo INT NOT NULL,
     FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo)
 );
 
-DROP TABLE IF EXISTS tessera;
 CREATE TABLE tessera (
     id_tessera INT PRIMARY KEY,
     numero VARCHAR(20) UNIQUE NOT NULL,
-    scadenza DATE,
+    scadenza DATE
 );
 
-DROP TABLE IF EXISTS giocatore;
 CREATE TABLE giocatore (
     id_giocatore INT PRIMARY KEY AUTO_INCREMENT,
     cognome VARCHAR(50),
@@ -120,7 +109,6 @@ CREATE TABLE giocatore (
     FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
 );
 
-DROP TABLE IF EXISTS partita;
 CREATE TABLE partita (
     id_partita INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(20), -- "singolare" o "doppio"
@@ -134,7 +122,6 @@ CREATE TABLE partita (
     FOREIGN KEY (id_arbitro) REFERENCES arbitro(id_arbitro)
 );
 
-DROP TABLE IF EXISTS incontro_campionato;
 CREATE TABLE incontro_campionato (
     id_incontro INT PRIMARY KEY AUTO_INCREMENT,
     data DATE,
@@ -142,7 +129,6 @@ CREATE TABLE incontro_campionato (
     FOREIGN KEY (id_campionato) REFERENCES campionato(id_competizione)
 );
 
-DROP TABLE IF EXISTS iscrizione;
 CREATE TABLE iscrizione (
     id_iscrizione INT PRIMARY KEY AUTO_INCREMENT,
     data DATE,
