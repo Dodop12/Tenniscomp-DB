@@ -57,4 +57,11 @@ public final class Queries {
         INSERT INTO circolo (nome, indirizzo, citta)
         VALUES (?, ?, ?)
         """;
+
+    public static final String GET_CARD_BY_ID =
+        """
+        SELECT *
+        FROM tessera
+        WHERE id_tessera = ?
+        """;
 }

@@ -2,6 +2,7 @@ package tenniscomp.model;
 
 import java.util.List;
 
+import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
@@ -24,5 +25,7 @@ public interface Model {
     List<Club> getAllClubs();
 
     boolean addClub(String name, String address, String city);
+
+    Card getCardById(int cardId);
 
 }
