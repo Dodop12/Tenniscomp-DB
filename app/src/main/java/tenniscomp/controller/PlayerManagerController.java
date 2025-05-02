@@ -1,6 +1,9 @@
 package tenniscomp.controller;
 
 import java.util.List;
+import java.util.Optional;
+
+import tenniscomp.data.Card;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.view.PlayerManager;
@@ -24,6 +27,9 @@ public class PlayerManagerController {
 
         final List<Player> players = model.getAllPlayers();
         for (final Player player : players) {
+            final Card card = Optional.ofNullable(player.getCardId())
+                              .map(model::getCardById)
+                              .orElse(null);
             final Object[] rowData = {
                 player.getPlayerId(),
                 player.getSurname(),
@@ -32,7 +38,9 @@ public class PlayerManagerController {
                 player.getGender(),
                 player.getEmail(),
                 player.getPhone(),
-                player.getRanking()
+                player.getRanking(),
+                card != null ? card.getCardNumber() : "",
+                card != null ? card.getExpiryDate() : ""
                 // TODO: circolo
             };
             tableModel.addRow(rowData);

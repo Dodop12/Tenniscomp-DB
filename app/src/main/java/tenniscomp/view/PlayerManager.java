@@ -29,7 +29,7 @@ public class PlayerManager extends JFrame {
 
     public PlayerManager() {
         setTitle("Gestione Giocatori");
-        setSize(800, 600);
+        setSize(1000, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
@@ -50,7 +50,8 @@ public class PlayerManager extends JFrame {
         buttonPanel.add(this.closeButton);
         
         // Players table
-        final String[] columns = {"ID", "Cognome", "Nome", "Data Nascita", "Sesso", "Email", "Telefono", "Classifica", "Circolo"};
+        final String[] columns = {"ID", "Cognome", "Nome", "Data Nascita", "Sesso", "Email", "Telefono",
+                "Classifica", "Numero Tessera", "Scadenza Tessera", "Circolo"};
         this.tableModel = new ImmutableTableModel(columns, 0);
         this.playersTable = new JTable(tableModel);
         
