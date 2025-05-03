@@ -21,8 +21,8 @@ public class PlayerDashboard extends JFrame {
 
     private static final String FONT_STYLE = "Arial";
     private static final String CARD_TITLE = "Tessera Giocatore";
-    private static final String CARD_NUMBER_TEXT = "Numero tessera: ";
-    private static final String EXP_DATE_TEXT = "Data di scadenza: ";
+    private static final String CARD_NUMBER_TEXT = "Numero tessera";
+    private static final String EXP_DATE_TEXT = "Data di scadenza";
     private static final String TOURNAMENTS_TITLE = "Tornei";
     private static final String MATCHES_TITLE = "Partite";
     private static final String STATS_TITLE = "Statistiche";
@@ -154,7 +154,7 @@ public class PlayerDashboard extends JFrame {
     }
     
     public void setCardInfo(final String cardNumber, final String expiryDate) {
-        cardNumberLabel.setText(CARD_NUMBER_TEXT + cardNumber);
-        cardExpiryDateLabel.setText(EXP_DATE_TEXT + expiryDate);
+        cardNumberLabel.setText(CARD_NUMBER_TEXT + ":  " + cardNumber);
+        cardExpiryDateLabel.setText(EXP_DATE_TEXT + ":  " + expiryDate);
     }
 }
