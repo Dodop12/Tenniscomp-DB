@@ -31,6 +31,13 @@ public final class Queries {
         ORDER BY cognome, nome
         """;
 
+    public static final String GET_PLAYER_BY_ID =
+        """
+        SELECT *
+        FROM giocatore
+        WHERE id_giocatore = ?
+        """;
+
     public static final String GET_PLAYER_BY_USERNAME =
         """
         SELECT *
@@ -63,5 +70,12 @@ public final class Queries {
         SELECT *
         FROM tessera
         WHERE id_tessera = ?
+        """;
+
+    public static final String UPDATE_PLAYER_RANKING =
+        """
+        UPDATE giocatore
+        SET classifica = ?
+        WHERE id_giocatore = ?
         """;
 }

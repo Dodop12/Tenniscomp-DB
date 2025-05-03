@@ -120,6 +120,34 @@ public class Player {
             }
         }
 
+        public static Player getPlayerById(final Connection connection, final int playerId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_PLAYER_BY_ID, playerId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new Player(
+                        resultSet.getInt("id_giocatore"),
+                        resultSet.getString("cognome"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("email"),
+                        resultSet.getString("data_nascita"),
+                        resultSet.getString("sesso"),
+                        resultSet.getString("telefono"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password_hash"),
+                        resultSet.getString("classifica"),
+                        resultSet.getObject("id_tessera", Integer.class),
+                        resultSet.getObject("id_circolo", Integer.class),
+                        resultSet.getObject("id_squadra", Integer.class)
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static Player getPlayerByUsername(final Connection connection, final String username) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_PLAYER_BY_USERNAME, username);
@@ -172,6 +200,16 @@ public class Player {
                     ));
                 }
                 return players;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean updatePlayerRanking(final Connection connection, final int playerId, final String newRanking) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_RANKING, newRanking, playerId);
+            ) {
+                return statement.executeUpdate() == 1;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

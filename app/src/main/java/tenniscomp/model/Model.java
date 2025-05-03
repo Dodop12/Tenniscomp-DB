@@ -16,9 +16,11 @@ public interface Model {
     
     boolean loginReferee(String username, String password);
 
-    List<Player> getAllPlayers();
+    Player getPlayerById(int playerId);
 
     Player getPlayerByUsername(String username);
+
+    List<Player> getAllPlayers();
 
     Referee getRefereeByUsername(String username);
 
@@ -27,5 +29,7 @@ public interface Model {
     boolean addClub(String name, String address, String city);
 
     Card getCardById(int cardId);
+
+    boolean updatePlayerRanking(int playerId, String newRanking);
 
 }

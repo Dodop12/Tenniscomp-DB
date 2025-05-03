@@ -34,13 +34,18 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public List<Player> getAllPlayers() {
-        return Player.DAO.getAllPlayers(this.connection);
+    public Player getPlayerById(int playerId) {
+        return Player.DAO.getPlayerById(this.connection, playerId);
     }
 
     @Override
     public Player getPlayerByUsername(final String username) {
         return Player.DAO.getPlayerByUsername(this.connection, username);
+    }
+
+    @Override
+    public List<Player> getAllPlayers() {
+        return Player.DAO.getAllPlayers(this.connection);
     }
 
     @Override
@@ -55,12 +60,17 @@ public class ModelImpl implements Model {
     
     @Override
     public boolean addClub(final String name, final String address, final String city) {
-        return Club.DAO.insertClub(this.connection, name, address, city) == 1;
+        return Club.DAO.insertClub(this.connection, name, address, city);
     }
 
     @Override
     public Card getCardById(final int cardId) {
         return Card.DAO.getCardById(this.connection, cardId);
+    }
+
+    @Override
+    public boolean updatePlayerRanking(final int playerId, final String newRanking) {
+        return Player.DAO.updatePlayerRanking(this.connection, playerId, newRanking);
     }
     
 }
