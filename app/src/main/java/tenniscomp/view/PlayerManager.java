@@ -87,6 +87,10 @@ public class PlayerManager extends JFrame {
         setLocationRelativeTo(null);
     }
     
+    public JTable getPlayersTable() {
+        return playersTable;
+    }
+
     public ImmutableTableModel getTableModel() {
         return tableModel;
     }
