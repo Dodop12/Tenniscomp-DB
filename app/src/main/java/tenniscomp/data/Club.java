@@ -55,13 +55,13 @@ public class Club {
             }
         }
 
-        public static int insertClub(final Connection connection, final String name, 
+        public static boolean insertClub(final Connection connection, final String name, 
                 final String address, final String city) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.ADD_CLUB,
                     name, address, city);
             ) {
-                return statement.executeUpdate();
+                return statement.executeUpdate() == 1;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }
