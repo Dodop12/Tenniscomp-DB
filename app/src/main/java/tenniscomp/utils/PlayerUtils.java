@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
 import tenniscomp.data.Card;
 
 public final class PlayerUtils {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter YMD_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter DMY_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private static final List<String> RANKINGS = List.of(
             "1", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8",
@@ -57,6 +59,35 @@ public final class PlayerUtils {
         }
     }
 
+    public static String generateCardNumber() {
+        final var random = new Random();
+        // Generate a random 7-digit number between 1000000 and 9999999
+        return String.format("%07d", 1000000 + random.nextInt(9000000));
+    }
+    
+    public static String generateCardExpiryDate() {
+        // When the card is generated, it is valid until the end of the current year
+        final int currentYear = LocalDate.now().getYear();
+        return LocalDate.of(currentYear, 12, 31).format(YMD_DATE_FORMATTER);
+    }
+
+    /**
+     * Converts a date from the format yyyy-MM-dd to dd/MM/yyyy.
+     * @param date
+     * @return
+     */
+    public static String convertDateFormat(final String date) {
+        try {
+            final var parsedDate = LocalDate.parse(date, YMD_DATE_FORMATTER);
+            return parsedDate.format(DMY_DATE_FORMATTER);
+        } catch (final Exception e) {
+            throw new IllegalArgumentException(
+                date + " is not a valid date format. Expected format: yyyy-MM-dd",
+                e
+            );
+        }
+    }
+
     private static int calculateAgeAtYearEnd(final String birthDate) {
         final var birth = parseDate(birthDate);
         
@@ -66,7 +97,7 @@ public final class PlayerUtils {
 
     private static LocalDate parseDate(final String dateString) {
         try {
-            return LocalDate.parse(dateString, DATE_FORMATTER);
+            return LocalDate.parse(dateString, YMD_DATE_FORMATTER);
         } catch (final Exception e) {
             throw new IllegalArgumentException(
                 dateString + " is not a valid date format. Expected format: yyyy-MM-dd",
