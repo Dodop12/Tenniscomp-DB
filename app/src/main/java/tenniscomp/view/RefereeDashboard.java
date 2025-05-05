@@ -35,7 +35,7 @@ public class RefereeDashboard extends JFrame {
     private final JTable teamCompetitionsTable;
 
     public RefereeDashboard() {
-        setTitle("TennisComp - Referee Dashboard");
+        setTitle("TennisComp - Giudice Arbitro");
         setSize(1000, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));

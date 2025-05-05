@@ -44,7 +44,7 @@ public class PlayerDashboard extends JFrame {
     private final JPanel statsPanel;
 
     public PlayerDashboard() {
-        setTitle("TennisComp - Player Dashboard");
+        setTitle("TennisComp - Giocatore");
         setSize(1000, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
