@@ -96,8 +96,7 @@ public class PlayerManagerController {
                 if (row >= 0 && row < table.getRowCount()) {
                     table.setRowSelectionInterval(row, row);
 
-                    final int playerId = getSelectedPlayerId(table);
-                    final var player = model.getPlayerById(playerId);
+                    final var player = getSelectedPlayer(table);
 
                     // Can add a new card only if the player does not have one
                     addCardItem.setEnabled(player.getCardId() == null);
@@ -109,32 +108,61 @@ public class PlayerManagerController {
             }
         });
         
-        addCardItem.addActionListener(e -> handleAddCardAction(getSelectedPlayerId(table)));
-        renewCardItem.addActionListener(e -> handleRenewCardAction(getSelectedPlayerId(table)));
-        rankingItem.addActionListener(e -> handleEditRankingAction(getSelectedPlayerId(table)));
-        clubItem.addActionListener(e -> handleAssignClubAction(getSelectedPlayerId(table)));
+        addCardItem.addActionListener(e -> handleAddCardAction(getSelectedPlayer(table)));
+        renewCardItem.addActionListener(e -> handleRenewCardAction(getSelectedPlayer(table)));
+        rankingItem.addActionListener(e -> handleEditRankingAction(getSelectedPlayer(table)));
+        clubItem.addActionListener(e -> handleAssignClubAction(getSelectedPlayer(table)));
     }
 
-    private int getSelectedPlayerId(final JTable table) {
+    private Player getSelectedPlayer(final JTable table) {
         final int selectedRow = table.getSelectedRow();
         // Invalid row selected
         if (selectedRow < 0) {
-            return -1;
+            return null;
         }
-        return (int) table.getValueAt(selectedRow, 0); // ID is the first column
+
+        final int playerId = (int) table.getValueAt(selectedRow, 0); // ID is the first column
+        return model.getPlayerById(playerId); 
     }
 
-    private void handleAddCardAction(final int playerId) {
+    private void handleAddCardAction(final Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player not found");
+        }
 
+        String cardNumber;
+        do {
+            cardNumber = PlayerUtils.generateCardNumber();
+        } while (model.checkCardNumberExists(cardNumber));
+
+        final String expiryDate = PlayerUtils.generateCardExpiryDate();
+
+        final int result = JOptionPane.showConfirmDialog(
+            view,
+            "Conferma tesseramento giocatore " + player.getSurname() + " " + player.getName()
+                + "\n\nNumero tessera: " + cardNumber
+                + "\nData di scadenza: " + PlayerUtils.convertDateFormat(expiryDate),
+            "Tesseramento - " + player.getSurname() + " " + player.getName(),
+            JOptionPane.OK_CANCEL_OPTION
+        );
+        if (result == JOptionPane.OK_OPTION) {
+            model.addCard(cardNumber, expiryDate);
+            final var card = model.getCardByNumber(cardNumber);
+            if (card == null) {
+                showError("Errore durante il tesseramento del giocatore.");
+                return;
+            }
+            model.updatePlayerCard(player.getPlayerId(), card.getCardId());
+            loadPlayers(); // Refresh the table
+        }
     }
 
-    private void handleRenewCardAction(final int playerId) {
+    private void handleRenewCardAction(final Player player) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'handleRenewCardAction'");
     }
 
-    private void handleEditRankingAction(final int playerId) {
-        final var player = model.getPlayerById(playerId);
+    private void handleEditRankingAction(final Player player) {
         if (player == null) {
             throw new IllegalArgumentException("Player not found");
         }
@@ -150,7 +178,8 @@ public class PlayerManagerController {
                 .toArray(String[]::new);
         final var newRanking = JOptionPane.showInputDialog(
             null,
-            "Inserisci la classifica aggiornata per " + player.getSurname() + " " + player.getName(),
+            "Inserisci la classifica aggiornata per " + player.getSurname() + " " + player.getName()
+            + "\nClassifica attuale: " + player.getRanking(),
             "Modifica Classifica",
             JOptionPane.PLAIN_MESSAGE,
             null,
@@ -160,12 +189,12 @@ public class PlayerManagerController {
 
         // If ranking editing has been confirmed, update it in the database
         if (newRanking != null) {
-            model.updatePlayerRanking(playerId, newRanking.toString());
+            model.updatePlayerRanking(player.getPlayerId(), newRanking.toString());
             loadPlayers(); // Refresh the table
         }
     }
 
-    private void handleAssignClubAction(final int playerId) {
+    private void handleAssignClubAction(final Player player) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'handleClubAction'");
     }
