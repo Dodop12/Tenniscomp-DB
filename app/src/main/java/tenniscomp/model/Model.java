@@ -28,8 +28,16 @@ public interface Model {
 
     boolean addClub(String name, String address, String city);
 
+    boolean addCard(String cardNumber, String expiryDate);
+
     Card getCardById(int cardId);
 
+    Card getCardByNumber(String cardNumber);
+
     boolean updatePlayerRanking(int playerId, String newRanking);
+
+    boolean updatePlayerCard(int playerId, int cardId);
+
+    boolean checkCardNumberExists(String cardNumber);
 
 }

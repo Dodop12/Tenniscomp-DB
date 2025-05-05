@@ -94,7 +94,7 @@ public class Player {
 
     public final class DAO {
 
-        public static int insertPlayer(final Connection connection, final String surname, final String name,
+        public static boolean insertPlayer(final Connection connection, final String surname, final String name,
                 final String email, final String birthDate, final String gender,
                 final String phone, final String username, final String password) {
             final var convertedDate = getConvertedDateFormat(birthDate);
@@ -102,7 +102,7 @@ public class Player {
                 var statement = DAOUtils.prepare(connection, Queries.ADD_PLAYER, surname, name, email,
                     convertedDate, gender, phone, username, password);
             ) {
-                return statement.executeUpdate();
+                return statement.executeUpdate() == 1;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }
@@ -208,6 +208,16 @@ public class Player {
         public static boolean updatePlayerRanking(final Connection connection, final int playerId, final String newRanking) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_RANKING, newRanking, playerId);
+            ) {
+                return statement.executeUpdate() == 1;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean updatePlayerCard(final Connection connection, final int playerId, final int cardId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_CARD, cardId, playerId);
             ) {
                 return statement.executeUpdate() == 1;
             } catch (final Exception e) {

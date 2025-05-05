@@ -20,7 +20,7 @@ public class ModelImpl implements Model {
     public boolean registerPlayer(final String surname, final String name, final String email, final String birthDate,
             final String gender, final String phone, final String username, final String password) {
         return Player.DAO.insertPlayer(this.connection, surname, name, email,
-            birthDate, gender, phone, username, password) == 1;
+            birthDate, gender, phone, username, password);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public Player getPlayerById(int playerId) {
+    public Player getPlayerById(final int playerId) {
         return Player.DAO.getPlayerById(this.connection, playerId);
     }
 
@@ -64,13 +64,33 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public boolean addCard(final String cardNumber, final String expiryDate) {
+        return Card.DAO.insertCard(this.connection, cardNumber, expiryDate);
+    }
+
+    @Override
     public Card getCardById(final int cardId) {
         return Card.DAO.getCardById(this.connection, cardId);
     }
 
     @Override
+    public Card getCardByNumber(final String cardNumber) {
+        return Card.DAO.getCardByNumber(this.connection, cardNumber);
+    }
+
+    @Override
     public boolean updatePlayerRanking(final int playerId, final String newRanking) {
         return Player.DAO.updatePlayerRanking(this.connection, playerId, newRanking);
+    }
+
+    @Override
+    public boolean updatePlayerCard(final int playerId, final int cardId) {
+        return Player.DAO.updatePlayerCard(this.connection, playerId, cardId);
+    }
+
+    @Override
+    public boolean checkCardNumberExists(final String cardNumber) {
+        return Card.DAO.checkCardNumberExists(this.connection, cardNumber);
     }
     
 }

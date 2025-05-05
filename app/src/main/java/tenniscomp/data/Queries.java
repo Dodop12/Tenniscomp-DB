@@ -52,6 +52,12 @@ public final class Queries {
         WHERE username = ?
         """;
 
+    public static final String ADD_CLUB =
+        """
+        INSERT INTO circolo (nome, indirizzo, citta)
+        VALUES (?, ?, ?)
+        """;
+
     public static final String GET_ALL_CLUBS =
         """
         SELECT *
@@ -59,10 +65,10 @@ public final class Queries {
         ORDER BY nome
         """;
 
-    public static final String ADD_CLUB =
+    public static final String ADD_CARD =
         """
-        INSERT INTO circolo (nome, indirizzo, citta)
-        VALUES (?, ?, ?)
+        INSERT INTO tessera (numero, scadenza)
+        VALUES (?, ?)
         """;
 
     public static final String GET_CARD_BY_ID =
@@ -72,10 +78,33 @@ public final class Queries {
         WHERE id_tessera = ?
         """;
 
+    public static final String GET_CARD_BY_NUMBER =
+        """
+        SELECT *
+        FROM tessera
+        WHERE numero = ?
+        """;
+
     public static final String UPDATE_PLAYER_RANKING =
         """
         UPDATE giocatore
         SET classifica = ?
         WHERE id_giocatore = ?
+        """;
+
+    public static final String UPDATE_PLAYER_CARD =
+        """
+        UPDATE giocatore
+        SET id_tessera = ?
+        WHERE id_giocatore = ?
+        """;
+
+    public static final String CHECK_CARD_NUMBER_EXISTS =
+        """
+        SELECT EXISTS(
+            SELECT 1
+            FROM tessera
+            WHERE numero = ?
+        )
         """;
 }
