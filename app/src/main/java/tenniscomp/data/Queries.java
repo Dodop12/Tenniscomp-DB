@@ -58,6 +58,13 @@ public final class Queries {
         VALUES (?, ?, ?)
         """;
 
+    public static final String GET_CLUB_BY_ID =
+        """
+        SELECT *
+        FROM circolo
+        WHERE id_circolo = ?
+        """;
+
     public static final String GET_ALL_CLUBS =
         """
         SELECT *
@@ -106,5 +113,12 @@ public final class Queries {
             FROM tessera
             WHERE numero = ?
         )
+        """;
+
+    public static final String UPDATE_CARD_EXPIRY_DATE =
+        """
+        UPDATE tessera
+        SET scadenza = ?
+        WHERE id_tessera = ?
         """;
 }

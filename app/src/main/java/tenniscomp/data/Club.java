@@ -35,6 +35,37 @@ public class Club {
 
     public final class DAO {
         
+        public static boolean insertClub(final Connection connection, final String name, 
+                final String address, final String city) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.ADD_CLUB,
+                    name, address, city);
+            ) {
+                return statement.executeUpdate() == 1;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static Club getClubById(final Connection connection, final int clubId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_CLUB_BY_ID, clubId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new Club(
+                        resultSet.getInt("id_circolo"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("indirizzo"),
+                        resultSet.getString("citta")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+        
         public static List<Club> getAllClubs(final Connection connection) {
             try (
                 var statement = connection.prepareStatement(Queries.GET_ALL_CLUBS);
@@ -55,16 +86,5 @@ public class Club {
             }
         }
 
-        public static boolean insertClub(final Connection connection, final String name, 
-                final String address, final String city) {
-            try (
-                var statement = DAOUtils.prepare(connection, Queries.ADD_CLUB,
-                    name, address, city);
-            ) {
-                return statement.executeUpdate() == 1;
-            } catch (final Exception e) {
-                throw new DAOException(e);
-            }
-        }
     }
 }

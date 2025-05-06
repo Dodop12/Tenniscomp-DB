@@ -86,6 +86,16 @@ public class Card {
                 throw new DAOException(e);
             }
         }
-        
+
+        public static boolean updateCardExpiryDate(final Connection connection, final int cardId, final String newExpiryDate) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_CARD_EXPIRY_DATE, newExpiryDate, cardId);
+            ) {
+                return statement.executeUpdate() == 1;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
     }
 }

@@ -54,13 +54,18 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public List<Club> getAllClubs() {
-        return Club.DAO.getAllClubs(this.connection);
-    }
-    
-    @Override
     public boolean addClub(final String name, final String address, final String city) {
         return Club.DAO.insertClub(this.connection, name, address, city);
+    }
+
+    @Override
+    public Club getClubById(final int clubId) {
+        return Club.DAO.getClubById(this.connection, clubId);
+    }
+
+    @Override
+    public List<Club> getAllClubs() {
+        return Club.DAO.getAllClubs(this.connection);
     }
 
     @Override
@@ -91,6 +96,11 @@ public class ModelImpl implements Model {
     @Override
     public boolean checkCardNumberExists(final String cardNumber) {
         return Card.DAO.checkCardNumberExists(this.connection, cardNumber);
+    }
+
+    @Override
+    public boolean updateCardExpiryDate(int cardId, String newExpiryDate) {
+        return Card.DAO.updateCardExpiryDate(this.connection, cardId, newExpiryDate);
     }
     
 }

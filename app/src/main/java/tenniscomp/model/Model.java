@@ -24,9 +24,11 @@ public interface Model {
 
     Referee getRefereeByUsername(String username);
 
-    List<Club> getAllClubs();
-
     boolean addClub(String name, String address, String city);
+
+    Club getClubById(int clubId);
+
+    List<Club> getAllClubs();
 
     boolean addCard(String cardNumber, String expiryDate);
 
@@ -39,5 +41,7 @@ public interface Model {
     boolean updatePlayerCard(int playerId, int cardId);
 
     boolean checkCardNumberExists(String cardNumber);
+
+    boolean updateCardExpiryDate(int cardId, String newExpiryDate);
 
 }
