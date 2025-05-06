@@ -40,6 +40,8 @@ public interface Model {
 
     boolean updatePlayerCard(int playerId, int cardId);
 
+    boolean updatePlayerClub(final int playerId, final Integer clubId);
+
     boolean checkCardNumberExists(String cardNumber);
 
     boolean updateCardExpiryDate(int cardId, String newExpiryDate);

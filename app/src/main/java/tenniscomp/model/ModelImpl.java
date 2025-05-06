@@ -94,12 +94,17 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public boolean updatePlayerClub(final int playerId, final Integer clubId) {
+        return Player.DAO.updatePlayerClub(this.connection, playerId, clubId);
+    }
+
+    @Override
     public boolean checkCardNumberExists(final String cardNumber) {
         return Card.DAO.checkCardNumberExists(this.connection, cardNumber);
     }
 
     @Override
-    public boolean updateCardExpiryDate(int cardId, String newExpiryDate) {
+    public boolean updateCardExpiryDate(final int cardId, final String newExpiryDate) {
         return Card.DAO.updateCardExpiryDate(this.connection, cardId, newExpiryDate);
     }
     

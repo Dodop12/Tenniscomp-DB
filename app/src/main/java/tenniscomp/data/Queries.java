@@ -106,6 +106,13 @@ public final class Queries {
         WHERE id_giocatore = ?
         """;
 
+    public static final String UPDATE_PLAYER_CLUB =
+        """
+        UPDATE giocatore
+        SET id_circolo = ?
+        WHERE id_giocatore = ?
+        """;
+
     public static final String CHECK_CARD_NUMBER_EXISTS =
         """
         SELECT EXISTS(

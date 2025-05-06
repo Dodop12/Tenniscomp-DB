@@ -225,6 +225,16 @@ public class Player {
             }
         }
 
+        public static boolean updatePlayerClub(final Connection connection, final int playerId, final Integer clubId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_CLUB, clubId, playerId);
+            ) {
+                return statement.executeUpdate() == 1;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         private static String getConvertedDateFormat(final String date) {
             try {
                 final var oldFormat = new SimpleDateFormat("dd/MM/yyyy");
