@@ -11,6 +11,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import tenniscomp.data.Card;
+import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
@@ -39,6 +40,9 @@ public class PlayerManagerController {
             final Card card = Optional.ofNullable(player.getCardId())
                     .map(model::getCardById)
                     .orElse(null);
+            final Club club = Optional.ofNullable(player.getClubId())
+                    .map(model::getClubById)
+                    .orElse(null);
             final Object[] rowData = {
                     player.getPlayerId(),
                     player.getSurname(),
@@ -49,8 +53,8 @@ public class PlayerManagerController {
                     player.getPhone(),
                     player.getRanking(),
                     card != null ? card.getCardNumber() : "",
-                    card != null ? card.getExpiryDate() : ""
-                    // TODO: circolo
+                    card != null ? PlayerUtils.convertDateFormat(card.getExpiryDate()) : "",
+                    club != null ? club.getName() : ""
             };
             tableModel.addRow(rowData);
         }
@@ -97,11 +101,13 @@ public class PlayerManagerController {
                     table.setRowSelectionInterval(row, row);
 
                     final var player = getSelectedPlayer(table);
+                    final var cardId = player.getCardId();
 
                     // Can add a new card only if the player does not have one
-                    addCardItem.setEnabled(player.getCardId() == null);
+                    addCardItem.setEnabled(cardId == null);
                     // Can renew the card only if the player has one
-                    renewCardItem.setEnabled(player.getCardId() != null);
+                    renewCardItem.setEnabled(cardId != null
+                        && PlayerUtils.isCardExpired(model.getCardById(cardId)));
                 }
 
                 contextMenu.show(e.getComponent(), e.getX(), e.getY());
@@ -158,8 +164,35 @@ public class PlayerManagerController {
     }
 
     private void handleRenewCardAction(final Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'handleRenewCardAction'");
+        if (player == null) {
+            throw new IllegalArgumentException("Player not found");
+        }
+        if (player.getCardId() == null) {
+            showError("Il giocatore non ha una tessera da rinnovare.");
+            return;
+        }
+
+        final var card = model.getCardById(player.getCardId());
+        if (card == null) {
+            showError("Tessera non trovata.");
+            return;
+        }
+
+        final String newExpiryDate = PlayerUtils.generateCardExpiryDate();
+        final int result = JOptionPane.showConfirmDialog(
+            view,
+            "Conferma rinnovo tessera per " + player.getSurname() + " " + player.getName()
+                + "\nNumero tessera: " + card.getCardNumber()
+                + "\n\nVecchia scadenza: " + PlayerUtils.convertDateFormat(card.getExpiryDate())
+                + "\nNuova scadenza: " + PlayerUtils.convertDateFormat(newExpiryDate),
+            "Rinnovo tessera - " + player.getSurname() + " " + player.getName(),
+            JOptionPane.OK_CANCEL_OPTION
+        );
+        
+        if (result == JOptionPane.OK_OPTION) {
+            model.updateCardExpiryDate(card.getCardId(), newExpiryDate);
+            loadPlayers();
+        }
     }
 
     private void handleEditRankingAction(final Player player) {
@@ -190,13 +223,20 @@ public class PlayerManagerController {
         // If ranking editing has been confirmed, update it in the database
         if (newRanking != null) {
             model.updatePlayerRanking(player.getPlayerId(), newRanking.toString());
-            loadPlayers(); // Refresh the table
+            loadPlayers();
         }
     }
 
     private void handleAssignClubAction(final Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'handleClubAction'");
+        if (player == null) {
+            throw new IllegalArgumentException("Player not found");
+        }
+
+        final List<Club> clubs = model.getAllClubs();
+        if (clubs.isEmpty()) {
+            showError("Nessun circolo disponibile nel sistema.");
+            return;
+        }
     }
 
     private void showError(final String message) {
