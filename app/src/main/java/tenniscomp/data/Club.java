@@ -33,6 +33,10 @@ public class Club {
         return city;
     }
 
+    public String toString() {
+        return name + " - " + city;
+    }
+
     public final class DAO {
         
         public static boolean insertClub(final Connection connection, final String name, 
