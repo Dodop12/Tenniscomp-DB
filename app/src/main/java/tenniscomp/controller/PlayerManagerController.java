@@ -2,6 +2,7 @@ package tenniscomp.controller;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.PlayerUtils;
+import tenniscomp.view.AssignClubWindow;
 import tenniscomp.view.PlayerManager;
 
 public class PlayerManagerController {
@@ -47,7 +49,7 @@ public class PlayerManagerController {
                     player.getPlayerId(),
                     player.getSurname(),
                     player.getName(),
-                    player.getBirthDate(),
+                    PlayerUtils.convertDateFormat(player.getBirthDate()),
                     player.getGender(),
                     player.getEmail(),
                     player.getPhone(),
@@ -232,11 +234,31 @@ public class PlayerManagerController {
             throw new IllegalArgumentException("Player not found");
         }
 
-        final List<Club> clubs = model.getAllClubs();
+        final List<Club> clubs = new ArrayList<>(model.getAllClubs());
         if (clubs.isEmpty()) {
             showError("Nessun circolo disponibile nel sistema.");
             return;
         }
+
+        // Remove the current club from the list
+        if (player.getClubId() != null) {
+            final var currentClub = model.getClubById(player.getClubId());
+            clubs.removeIf(club -> club.getClubId() == currentClub.getClubId());
+        }
+
+        final var assignClubWindow = new AssignClubWindow(view, player, model, clubs);
+
+        assignClubWindow.setSaveButtonListener(e -> {
+            final Club selectedClub = assignClubWindow.getSelectedClub();
+            if (selectedClub != null) {
+                model.updatePlayerClub(player.getPlayerId(), selectedClub.getClubId());
+                loadPlayers();
+                assignClubWindow.dispose();
+            }
+        });
+        assignClubWindow.setCancelButtonListener(e -> assignClubWindow.dispose());
+        
+        assignClubWindow.setVisible(true);
     }
 
     private void showError(final String message) {
