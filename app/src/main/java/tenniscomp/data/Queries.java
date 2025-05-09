@@ -69,7 +69,7 @@ public final class Queries {
         """
         SELECT *
         FROM circolo
-        ORDER BY nome
+        ORDER BY citta, nome
         """;
 
     public static final String ADD_CARD =
