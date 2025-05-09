@@ -1,0 +1,48 @@
+package tenniscomp.data;
+
+public class League {
+    private final int competitionId;
+    private final String series;
+    private final String category;
+    private final String gender;
+    private final int year;
+    private final int refereeId;
+
+    public League(final int competitionId, final String series, final String category, 
+            final String gender, final int year, final int refereeId) {
+        this.competitionId = competitionId;
+        this.series = series;
+        this.category = category;
+        this.gender = gender;
+        this.year = year;
+        this.refereeId = refereeId;
+    }
+
+    public int getCompetitionId() {
+        return competitionId;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getRefereeId() {
+        return refereeId;
+    }
+
+    public final class DAO {
+        
+    }
+}
