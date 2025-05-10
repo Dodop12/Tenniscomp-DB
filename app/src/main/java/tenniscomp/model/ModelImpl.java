@@ -5,8 +5,10 @@ import java.util.List;
 
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
+import tenniscomp.data.League;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
+import tenniscomp.data.Tournament;
 
 public class ModelImpl implements Model {
 
@@ -106,6 +108,20 @@ public class ModelImpl implements Model {
     @Override
     public boolean updateCardExpiryDate(final int cardId, final String newExpiryDate) {
         return Card.DAO.updateCardExpiryDate(this.connection, cardId, newExpiryDate);
+    }
+
+    @Override
+    public boolean addTournament(final String name, final String startDate, final String endDate, 
+            final String registrationDeadline, final String type, final String rankingLimit, 
+            final double prizeMoney, final int refereeId, final int clubId) {
+        return Tournament.DAO.insertTournament(this.connection, name, startDate, endDate, 
+            registrationDeadline, type, rankingLimit, prizeMoney, refereeId, clubId);
+    }
+
+    @Override
+    public boolean addLeague(final String series, final String category, final String gender, 
+            final int year, final int refereeId) {
+        return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);
     }
     
 }

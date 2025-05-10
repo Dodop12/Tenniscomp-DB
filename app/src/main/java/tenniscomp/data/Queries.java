@@ -128,4 +128,17 @@ public final class Queries {
         SET scadenza = ?
         WHERE id_tessera = ?
         """;
+
+    public static final String ADD_TOURNAMENT =
+        """
+        INSERT INTO torneo (nome, data_inizio, data_fine, scadenza_iscrizioni,
+                tipo, limite_classifica, montepremi, id_ga, id_circolo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+
+    public static final String ADD_LEAGUE =
+        """
+        INSERT INTO campionato (serie, categoria, sesso, anno, id_ga)
+        VALUES (?, ?, ?, ?, ?)
+        """;
 }

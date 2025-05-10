@@ -46,4 +46,9 @@ public interface Model {
 
     boolean updateCardExpiryDate(int cardId, String newExpiryDate);
 
+    boolean addTournament(String name, String startDate, String endDate, String registrationDeadline, 
+            String type, String rankingLimit, double prizeMoney, int refereeId, int clubId);
+
+    boolean addLeague(String series, String category, String gender, int year, int refereeId);
+
 }

@@ -1,5 +1,7 @@
 package tenniscomp.data;
 
+import java.sql.Connection;
+
 public class Tournament {
     private final int tournamentId;
     private final String name;
@@ -68,6 +70,19 @@ public class Tournament {
     }
 
     public final class DAO {
+
+        public static boolean insertTournament(final Connection connection, final String name, final String startDate, 
+                final String endDate, final String registrationDeadline, final String type, final String rankingLimit, 
+                final double prizeMoney, final int refereeId, final int clubId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.ADD_TOURNAMENT, name, startDate, endDate, 
+                        registrationDeadline, type, rankingLimit, prizeMoney, refereeId, clubId)
+            ) {
+                return statement.executeUpdate() > 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
         
     }
 }
