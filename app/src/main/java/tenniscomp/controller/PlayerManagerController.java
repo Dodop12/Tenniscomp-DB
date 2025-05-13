@@ -17,6 +17,7 @@ import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AssignClubWindow;
 import tenniscomp.view.PlayerManager;
 
@@ -60,6 +61,8 @@ public class PlayerManagerController {
             };
             tableModel.addRow(rowData);
         }
+
+        TableUtils.adjustColumnWidths(view.getPlayersTable());
     }
 
     private void clearTable(final ImmutableTableModel model) {

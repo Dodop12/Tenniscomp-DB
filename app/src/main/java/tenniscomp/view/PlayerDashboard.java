@@ -125,20 +125,12 @@ public class PlayerDashboard extends JFrame {
         setVisible(true);
     }
 
-    private JPanel createStatPanel(final String title, final String value) {
-        final var panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        
-        final var titleLabel = new JLabel(title, SwingConstants.CENTER);
-        titleLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
-        
-        final var valueLabel = new JLabel(value, SwingConstants.CENTER);
-        valueLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 24));
-        
-        panel.add(titleLabel, BorderLayout.NORTH);
-        panel.add(valueLabel, BorderLayout.CENTER);
-        
-        return panel;
+     public JTable getTournamentsTable() {
+        return tournamentsTable;
+    }
+    
+    public JTable getMatchesTable() {
+        return matchesTable;
     }
     
     public void setPlayerName(final String name) {
@@ -156,5 +148,21 @@ public class PlayerDashboard extends JFrame {
     public void setCardInfo(final String cardNumber, final String expiryDate) {
         cardNumberLabel.setText(CARD_NUMBER_TEXT + ":  " + cardNumber);
         cardExpiryDateLabel.setText(EXP_DATE_TEXT + ":  " + expiryDate);
+    }
+
+    private JPanel createStatPanel(final String title, final String value) {
+        final var panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        
+        final var titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
+        
+        final var valueLabel = new JLabel(value, SwingConstants.CENTER);
+        valueLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 24));
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(valueLabel, BorderLayout.CENTER);
+        
+        return panel;
     }
 }

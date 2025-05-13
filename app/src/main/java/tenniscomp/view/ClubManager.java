@@ -92,6 +92,10 @@ public class ClubManager extends JFrame {
     public ImmutableTableModel getTableModel() {
         return tableModel;
     }
+
+    public JTable getClubsTable() {
+        return clubsTable;
+    }
     
     public void setAddClubButtonListener(final ActionListener listener) {
         this.addClubButton.addActionListener(listener);

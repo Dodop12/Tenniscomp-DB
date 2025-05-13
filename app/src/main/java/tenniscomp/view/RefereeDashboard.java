@@ -110,6 +110,14 @@ public class RefereeDashboard extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    public JTable getTournamentsTable() {
+        return tournamentsTable;
+    }
+    
+    public JTable getTeamCompetitionsTable() {
+        return teamCompetitionsTable;
+    }
     
     public void setRefereeName(final String name) {
         nameLabel.setText(name);

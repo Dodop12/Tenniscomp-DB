@@ -2,6 +2,7 @@ package tenniscomp.controller;
 
 import tenniscomp.data.Referee;
 import tenniscomp.model.Model;
+import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AddClubWindow;
 import tenniscomp.view.ClubManager;
 import tenniscomp.view.PlayerManager;
@@ -25,6 +26,9 @@ public class RefereeDashboardController {
     private void loadRefereeData() {
         view.setRefereeName(referee.getName() + " " + referee.getSurname());
         view.setRefereeTitle(referee.getTitle());
+
+        TableUtils.adjustColumnWidths(view.getTournamentsTable());
+        TableUtils.adjustColumnWidths(view.getTeamCompetitionsTable());
     }
 
     private void setupListeners() {

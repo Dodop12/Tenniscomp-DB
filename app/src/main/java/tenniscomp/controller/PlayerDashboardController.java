@@ -5,6 +5,7 @@ import java.util.Optional;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.TableUtils;
 import tenniscomp.view.PlayerDashboard;
 
 public class PlayerDashboardController {
@@ -31,6 +32,9 @@ public class PlayerDashboardController {
         Optional.ofNullable(player.getCardId())
             .map(model::getCardById)
             .ifPresent(card -> view.setCardInfo(card.getCardNumber(), card.getExpiryDate()));
+
+        TableUtils.adjustColumnWidths(view.getTournamentsTable());
+        TableUtils.adjustColumnWidths(view.getMatchesTable());
     }
     
 }

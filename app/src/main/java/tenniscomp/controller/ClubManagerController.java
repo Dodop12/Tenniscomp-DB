@@ -1,10 +1,12 @@
 package tenniscomp.controller;
 
 import java.util.List;
+
 import tenniscomp.data.Club;
 import tenniscomp.model.Model;
 import tenniscomp.view.ClubManager;
 import tenniscomp.utils.ImmutableTableModel;
+import tenniscomp.utils.TableUtils;
 
 public class ClubManagerController {
     
@@ -32,6 +34,8 @@ public class ClubManagerController {
             };
             tableModel.addRow(rowData);
         }
+
+        TableUtils.adjustColumnWidths(view.getClubsTable());
     }
     
     private void clearTable(final ImmutableTableModel model) {
