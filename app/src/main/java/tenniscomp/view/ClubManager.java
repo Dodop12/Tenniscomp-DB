@@ -89,10 +89,6 @@ public class ClubManager extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    public ImmutableTableModel getTableModel() {
-        return tableModel;
-    }
-
     public JTable getClubsTable() {
         return clubsTable;
     }

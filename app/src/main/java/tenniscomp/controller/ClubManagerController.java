@@ -1,7 +1,5 @@
 package tenniscomp.controller;
 
-import java.util.List;
-
 import tenniscomp.data.Club;
 import tenniscomp.model.Model;
 import tenniscomp.view.ClubManager;
@@ -21,10 +19,10 @@ public class ClubManagerController {
     }
     
     public void loadClubs() {
-        final var tableModel = view.getTableModel();
-        clearTable(tableModel);
+        final var tableModel = (ImmutableTableModel) view.getClubsTable().getModel();
+        TableUtils.clearTable(tableModel);
         
-        final List<Club> clubs = model.getAllClubs();
+        final var clubs = model.getAllClubs();
         for (final Club club : clubs) {
             final Object[] rowData = {
                 club.getClubId(),
@@ -38,9 +36,4 @@ public class ClubManagerController {
         TableUtils.adjustColumnWidths(view.getClubsTable());
     }
     
-    private void clearTable(final ImmutableTableModel model) {
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
-    }
 }

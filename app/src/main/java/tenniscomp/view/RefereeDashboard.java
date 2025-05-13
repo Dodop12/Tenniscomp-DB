@@ -27,12 +27,12 @@ public class RefereeDashboard extends JFrame {
     private final JLabel titleLabel;
 
     private final JButton addTournamentButton;
-    private final JButton addTeamCompetitionButton;
+    private final JButton addLeagueButton;
     private final JButton managePlayersButton;
     private final JButton manageClubsButton;
 
     private final JTable tournamentsTable;
-    private final JTable teamCompetitionsTable;
+    private final JTable leaguesTable;
 
     public RefereeDashboard() {
         setTitle("TennisComp - Giudice Arbitro");
@@ -80,25 +80,25 @@ public class RefereeDashboard extends JFrame {
         tournamentsPanel.add(tournamentsScrollPane, BorderLayout.CENTER);
         
         // Team competitions panel
-        final var teamCompPanel = new JPanel(new BorderLayout());
-        final String[] teamCompColumns = {"ID", "Serie", "Categoria", "Sesso", "Anno"};
-        final var teamCompModel = new ImmutableTableModel(teamCompColumns, 0);
-        this.teamCompetitionsTable = new JTable(teamCompModel);
+        final var leaguesPanel = new JPanel(new BorderLayout());
+        final String[] leaguesColumns = {"ID", "Serie", "Categoria", "Sesso", "Anno"};
+        final var leaguesModel = new ImmutableTableModel(leaguesColumns, 0);
+        this.leaguesTable = new JTable(leaguesModel);
         
-        final var teamCompButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        this.addTeamCompetitionButton = new JButton("Aggiungi Campionato");
-        teamCompButtonPanel.add(this.addTeamCompetitionButton);
+        final var leaguesButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        this.addLeagueButton = new JButton("Aggiungi Campionato");
+        leaguesButtonPanel.add(this.addLeagueButton);
         
-        final var teamCompScrollPane = new JScrollPane(teamCompetitionsTable);
-        teamCompScrollPane.setBorder(BorderFactory.createTitledBorder(TEAM_COMPETITIONS_TITLE));
+        final var leaguesScrollPane = new JScrollPane(leaguesTable);
+        leaguesScrollPane.setBorder(BorderFactory.createTitledBorder(TEAM_COMPETITIONS_TITLE));
         
-        teamCompPanel.add(teamCompButtonPanel, BorderLayout.NORTH);
-        teamCompPanel.add(teamCompScrollPane, BorderLayout.CENTER);
+        leaguesPanel.add(leaguesButtonPanel, BorderLayout.NORTH);
+        leaguesPanel.add(leaguesScrollPane, BorderLayout.CENTER);
         
         final var centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         centerPanel.add(tournamentsPanel);
-        centerPanel.add(teamCompPanel);
+        centerPanel.add(leaguesPanel);
         
         add(refereeInfoPanel, BorderLayout.NORTH);
         add(managementPanel, BorderLayout.CENTER);
@@ -115,8 +115,8 @@ public class RefereeDashboard extends JFrame {
         return tournamentsTable;
     }
     
-    public JTable getTeamCompetitionsTable() {
-        return teamCompetitionsTable;
+    public JTable getLeaguesTable() {
+        return leaguesTable;
     }
     
     public void setRefereeName(final String name) {
@@ -132,7 +132,7 @@ public class RefereeDashboard extends JFrame {
     }
     
     public void setAddTeamCompetitionListener(final ActionListener listener) {
-        this.addTeamCompetitionButton.addActionListener(listener);
+        this.addLeagueButton.addActionListener(listener);
     }
     
     public void setManagePlayersListener(final ActionListener listener) {

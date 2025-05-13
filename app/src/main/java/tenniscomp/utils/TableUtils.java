@@ -1,6 +1,7 @@
 package tenniscomp.utils;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Utility class for JTable operations.
@@ -14,6 +15,10 @@ public final class TableUtils {
 
     private TableUtils() {
         
+    }
+
+    public static void clearTable(final DefaultTableModel model) {
+        model.setRowCount(0);
     }
     
     /**
