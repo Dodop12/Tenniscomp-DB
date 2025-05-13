@@ -18,7 +18,6 @@ import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 
-
 public class AssignClubWindow extends JDialog {
     
     private final ClubSelector clubSelector;
@@ -40,7 +39,11 @@ public class AssignClubWindow extends JDialog {
             infoPanel.add(new JLabel("Circolo attuale: " + model.getClubById(player.getClubId()).getName()));
         }
         
+        final JPanel clubPanel = new JPanel();
+        clubPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 0));
         this.clubSelector = new ClubSelector(clubs);
+        clubPanel.add(new JLabel("Seleziona circolo:"));
+        clubPanel.add(clubSelector);
         
         final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.saveButton = new JButton("Salva");
@@ -51,7 +54,7 @@ public class AssignClubWindow extends JDialog {
         
         final JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
-        contentPanel.add(clubSelector, BorderLayout.CENTER);
+        contentPanel.add(clubPanel, BorderLayout.CENTER);
         
         add(infoPanel, BorderLayout.NORTH);
         add(contentPanel, BorderLayout.CENTER);
