@@ -19,8 +19,36 @@ public final class PlayerUtils {
             "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.NC"
     );
 
+    private static final List<String> LEAGUE_SERIES = List.of(
+            "A1", "A2", "B1", "B2", "C", "D1", "D2", "D3", "D4"
+    );
+
+    private static final List<String> LEAGUE_CATEGORIES = List.of(
+            "Open", "U10", "U12", "U14", "U16", "U18", "O45", "O50", "O55", "O60"
+    );
+
+    private static final List<String> MATCH_TYPES = List.of(
+            "Singolare", "Doppio"
+    );
+
+    private PlayerUtils() {
+        
+    }
+
     public static List<String> getAllRankings() {
         return RANKINGS;
+    }
+
+    public static List<String> getLeagueSeries() {
+        return LEAGUE_SERIES;
+    }
+
+    public static List<String> getLeagueCategories() {
+        return LEAGUE_CATEGORIES;
+    }
+
+    public static List<String> getMatchTypes() {
+        return MATCH_TYPES;
     }
 
     public static String calculateCategory(final String birthDate) {
