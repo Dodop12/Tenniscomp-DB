@@ -4,8 +4,10 @@ import java.util.List;
 
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
+import tenniscomp.data.League;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
+import tenniscomp.data.Tournament;
 
 public interface Model {
 
@@ -49,6 +51,10 @@ public interface Model {
     boolean addTournament(String name, String startDate, String endDate, String registrationDeadline, 
             String type, String rankingLimit, double prizeMoney, int refereeId, int clubId);
 
+    List<Tournament> getTournamentsByReferee(int refereeId);
+
     boolean addLeague(String series, String category, String gender, int year, int refereeId);
+
+    List<League> getLeaguesByReferee(int refereeId);
 
 }

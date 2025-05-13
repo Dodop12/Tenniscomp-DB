@@ -1,6 +1,8 @@
 package tenniscomp.data;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class League {
     private final int competitionId;
@@ -53,6 +55,28 @@ public class League {
                         gender, year, refereeId)
             ) {
                 return statement.executeUpdate() > 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static List<League> getLeaguesByReferee(final Connection connection, final int refereeId) {           
+            try (
+                var statement = connection.prepareStatement(Queries.GET_LEAGUES_BY_REFEREE);
+                var resultSet = statement.executeQuery();
+                ) {
+                    final var leagues = new ArrayList<League>();
+                    while(resultSet.next()) {
+                        leagues.add(new League(
+                            resultSet.getInt("id_campionato"),
+                            resultSet.getString("serie"),
+                            resultSet.getString("categoria"),
+                            resultSet.getString("sesso"),
+                            resultSet.getInt("anno"),
+                            resultSet.getInt("id_ga")
+                        ));
+                    }
+                    return leagues;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

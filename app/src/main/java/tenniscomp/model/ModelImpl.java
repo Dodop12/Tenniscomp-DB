@@ -119,9 +119,19 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<Tournament> getTournamentsByReferee(final int refereeId) {
+        return Tournament.DAO.getTournamentsByReferee(this.connection, refereeId);
+    }
+
+    @Override
     public boolean addLeague(final String series, final String category, final String gender, 
             final int year, final int refereeId) {
         return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);
+    }
+
+    @Override
+    public List<League> getLeaguesByReferee(final int refereeId) {
+        return League.DAO.getLeaguesByReferee(this.connection, refereeId);
     }
     
 }

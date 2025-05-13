@@ -136,9 +136,25 @@ public final class Queries {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
+    public static final String GET_TOURNAMENTS_BY_REFEREE =
+        """
+        SELECT *
+        FROM torneo
+        WHERE id_ga = ?
+        ORDER BY data_inizio DESC
+        """;
+
     public static final String ADD_LEAGUE =
         """
         INSERT INTO campionato (serie, categoria, sesso, anno, id_ga)
         VALUES (?, ?, ?, ?, ?)
+        """;
+
+    public static final String GET_LEAGUES_BY_REFEREE =
+        """
+        SELECT *
+        FROM campionato
+        WHERE id_ga = ?
+        ORDER BY anno DESC, serie
         """;
 }
