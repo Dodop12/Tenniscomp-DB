@@ -62,7 +62,7 @@ public class League {
 
         public static List<League> getLeaguesByReferee(final Connection connection, final int refereeId) {           
             try (
-                var statement = connection.prepareStatement(Queries.GET_LEAGUES_BY_REFEREE);
+                var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUES_BY_REFEREE, refereeId);
                 var resultSet = statement.executeQuery();
                 ) {
                     final var leagues = new ArrayList<League>();

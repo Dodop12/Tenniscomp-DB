@@ -88,22 +88,22 @@ public class Tournament {
 
         public static List<Tournament> getTournamentsByReferee(final Connection connection, final int refereeId) {           
             try (
-                var statement = connection.prepareStatement(Queries.GET_TOURNAMENTS_BY_REFEREE);
+                var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENTS_BY_REFEREE, refereeId);
                 var resultSet = statement.executeQuery();
                 ) {
                     final var tournaments = new ArrayList<Tournament>();
                     while(resultSet.next()) {
                         tournaments.add(new Tournament(
-                                resultSet.getInt("tournament_id"),
-                                resultSet.getString("name"),
-                                resultSet.getString("start_date"),
-                                resultSet.getString("end_date"),
-                                resultSet.getString("registration_deadline"),
-                                resultSet.getString("type"),
-                                resultSet.getString("ranking_limit"),
-                                resultSet.getDouble("prize_money"),
-                                resultSet.getInt("referee_id"),
-                                resultSet.getInt("club_id")
+                                resultSet.getInt("id_torneo"),
+                                resultSet.getString("nome"),
+                                resultSet.getString("data_inizio"),
+                                resultSet.getString("data_fine"),
+                                resultSet.getString("scadenza_iscrizioni"),
+                                resultSet.getString("tipo"),
+                                resultSet.getString("limite_classifica"),
+                                resultSet.getDouble("montepremi"),
+                                resultSet.getInt("id_ga"),
+                                resultSet.getInt("id_circolo")
                         ));
                     }
                     return tournaments;

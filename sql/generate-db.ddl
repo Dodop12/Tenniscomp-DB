@@ -32,13 +32,8 @@ CREATE TABLE circolo (
     citta VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE competizione (
-    id_competizione INT PRIMARY KEY AUTO_INCREMENT,
-    tipo VARCHAR(20) NOT NULL CHECK (tipo IN ('torneo', 'campionato'))
-);
-
 CREATE TABLE torneo (
-    id_competizione INT PRIMARY KEY,
+    id_torneo INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     data_inizio DATE NOT NULL,
     data_fine DATE NOT NULL,
@@ -48,19 +43,17 @@ CREATE TABLE torneo (
     montepremi DECIMAL(10,2) NOT NULL,
     id_ga INT NOT NULL,
     id_circolo INT NOT NULL,
-    FOREIGN KEY (id_competizione) REFERENCES competizione(id_competizione) ON DELETE CASCADE,
     FOREIGN KEY (id_ga) REFERENCES giudice_arbitro(id_ga),
-    FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo)
+    FOREIGN KEY (id_circolo) REFERENCES circolo(id_circolo) ON DELETE CASCADE
 );
 
 CREATE TABLE campionato (
-    id_competizione INT PRIMARY KEY,
+    id_campionato INT PRIMARY KEY AUTO_INCREMENT,
     serie VARCHAR(20) NOT NULL,
     categoria VARCHAR(20) NOT NULL,
     sesso CHAR(1) NOT NULL,
     anno INT NOT NULL,
     id_ga INT NOT NULL,
-    FOREIGN KEY (id_competizione) REFERENCES competizione(id_competizione) ON DELETE CASCADE,
     FOREIGN KEY (id_ga) REFERENCES giudice_arbitro(id_ga)
 );
 
@@ -69,7 +62,7 @@ CREATE TABLE premio (
     posizione INT NOT NULL,
     valore DECIMAL(10,2) NOT NULL,
     id_torneo INT NOT NULL,
-    FOREIGN KEY (id_torneo) REFERENCES torneo(id_competizione) ON DELETE CASCADE
+    FOREIGN KEY (id_torneo) REFERENCES torneo(id_torneo) ON DELETE CASCADE
 );
 
 CREATE TABLE campo (
@@ -112,15 +105,28 @@ CREATE TABLE giocatore (
     FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra) ON DELETE SET NULL
 );
 
-CREATE TABLE partita (
+CREATE TABLE partita_torneo (
     id_partita INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(20) NOT NULL, -- "singolare" o "doppio"
     vincitore VARCHAR(100) NOT NULL,
     risultato VARCHAR(20) NOT NULL,
-    id_competizione INT NOT NULL,
+    id_torneo INT NOT NULL,
     id_campo INT NOT NULL,
     id_arbitro INT NULL,
-    FOREIGN KEY (id_competizione) REFERENCES competizione(id_competizione) ON DELETE CASCADE,
+    FOREIGN KEY (id_torneo) REFERENCES torneo(id_torneo) ON DELETE CASCADE,
+    FOREIGN KEY (id_campo) REFERENCES campo(id_campo),
+    FOREIGN KEY (id_arbitro) REFERENCES arbitro(id_arbitro)
+);
+
+CREATE TABLE partita_campionato (
+    id_partita INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(20) NOT NULL,
+    vincitore VARCHAR(100) NOT NULL,
+    risultato VARCHAR(20) NOT NULL,
+    id_campionato INT NOT NULL,
+    id_campo INT NOT NULL,
+    id_arbitro INT NULL,
+    FOREIGN KEY (id_campionato) REFERENCES campionato(id_campionato) ON DELETE CASCADE,
     FOREIGN KEY (id_campo) REFERENCES campo(id_campo),
     FOREIGN KEY (id_arbitro) REFERENCES arbitro(id_arbitro)
 );
@@ -128,8 +134,8 @@ CREATE TABLE partita (
 CREATE TABLE incontro_campionato (
     id_incontro INT PRIMARY KEY AUTO_INCREMENT,
     data DATE NOT NULL,
-    id_competizione INT NOT NULL,
-    FOREIGN KEY (id_competizione) REFERENCES campionato(id_competizione) ON DELETE CASCADE
+    id_campionato INT NOT NULL,
+    FOREIGN KEY (id_campionato) REFERENCES campionato(id_campionato) ON DELETE CASCADE
 );
 
 CREATE TABLE iscrizione (
@@ -138,5 +144,5 @@ CREATE TABLE iscrizione (
     id_giocatore INT NOT NULL,
     id_torneo INT NOT NULL,
     FOREIGN KEY (id_giocatore) REFERENCES giocatore(id_giocatore) ON DELETE CASCADE,
-    FOREIGN KEY (id_torneo) REFERENCES torneo(id_competizione) ON DELETE CASCADE
+    FOREIGN KEY (id_torneo) REFERENCES torneo(id_torneo) ON DELETE CASCADE
 );
