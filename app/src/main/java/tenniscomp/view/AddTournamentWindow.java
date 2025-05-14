@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,15 +16,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+
 import tenniscomp.data.Club;
 import tenniscomp.utils.PlayerUtils;
 
 public class AddTournamentWindow extends JDialog {
 
     private final JTextField nameField;
-    private final JTextField startDateField;
-    private final JTextField endDateField;
-    private final JTextField registrationDeadlineField;
+    private final DatePicker startDatePicker;
+    private final DatePicker endDatePicker;
+    private final DatePicker registrationDeadlinePicker;
     private final JComboBox<String> typeComboBox;
     private final JComboBox<String> rankingLimitComboBox;
     private final JTextField prizeMoneyField;
@@ -46,16 +50,16 @@ public class AddTournamentWindow extends JDialog {
         formPanel.add(this.nameField);
 
         formPanel.add(new JLabel("Data inizio:"));
-        this.startDateField = new JTextField();
-        formPanel.add(this.startDateField);
+        this.startDatePicker = new DatePicker(getDatePickerSettings());
+        formPanel.add(this.startDatePicker);
 
         formPanel.add(new JLabel("Data fine:"));
-        this.endDateField = new JTextField();
-        formPanel.add(this.endDateField);
+        this.endDatePicker = new DatePicker(getDatePickerSettings());
+        formPanel.add(this.endDatePicker);
 
         formPanel.add(new JLabel("Scadenza iscrizioni:"));
-        this.registrationDeadlineField = new JTextField();
-        formPanel.add(this.registrationDeadlineField);
+        this.registrationDeadlinePicker = new DatePicker(getDatePickerSettings());
+        formPanel.add(this.registrationDeadlinePicker);
 
         // Singles or doubles
         formPanel.add(new JLabel("Tipo:"));
@@ -91,16 +95,28 @@ public class AddTournamentWindow extends JDialog {
         return this.nameField.getText().trim();
     }
 
-    public String getStartDate() {
-        return this.startDateField.getText().trim();
+   public String getStartDate() {
+        final LocalDate selectedDate = this.startDatePicker.getDate();
+        if (selectedDate != null) {
+            return selectedDate.format(PlayerUtils.getYmdDateFormatter());
+        }
+        return "";
     }
 
     public String getEndDate() {
-        return this.endDateField.getText().trim();
+        final LocalDate selectedDate = this.endDatePicker.getDate();
+        if (selectedDate != null) {
+            return selectedDate.format(PlayerUtils.getYmdDateFormatter());
+        }
+        return "";
     }
 
     public String getRegistrationDeadline() {
-        return this.registrationDeadlineField.getText().trim();
+        final LocalDate selectedDate = this.registrationDeadlinePicker.getDate();
+        if (selectedDate != null) {
+            return selectedDate.format(PlayerUtils.getYmdDateFormatter());
+        }
+        return "";
     }
 
     public String getTournamentType() {
@@ -125,5 +141,12 @@ public class AddTournamentWindow extends JDialog {
 
     public void setCancelButtonListener(final ActionListener listener) {
         this.cancelButton.addActionListener(listener);
+    }
+
+    private DatePickerSettings getDatePickerSettings() {
+        final var settings = new DatePickerSettings();
+        settings.setFormatForDatesCommonEra("dd/MM/yyyy");
+        settings.setAllowEmptyDates(true);
+        return settings;
     }
 }

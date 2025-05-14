@@ -35,6 +35,14 @@ public final class PlayerUtils {
         
     }
 
+    public static DateTimeFormatter getYmdDateFormatter() {
+        return YMD_DATE_FORMATTER;
+    }
+
+    public static DateTimeFormatter getDmyDateFormatter() {
+        return DMY_DATE_FORMATTER;
+    }
+
     public static List<String> getAllRankings() {
         return RANKINGS;
     }
