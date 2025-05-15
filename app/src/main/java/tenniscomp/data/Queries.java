@@ -136,6 +136,27 @@ public final class Queries {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
+    public static final String GET_TOURNAMENT_BY_ID =
+        """
+        SELECT *
+        FROM torneo
+        WHERE id_torneo = ?
+        """;
+
+    public static final String GET_TOURNAMENT_REGISTRATIONS =
+        """
+        SELECT *
+        FROM iscrizione
+        WHERE id_torneo = ?
+        """;
+
+    public static final String GET_TOURNAMENT_MATCHES =
+        """
+        SELECT *
+        FROM partita_torneo
+        WHERE id_torneo = ?
+        """;
+
     public static final String GET_TOURNAMENTS_BY_REFEREE =
         """
         SELECT *
@@ -148,6 +169,20 @@ public final class Queries {
         """
         INSERT INTO campionato (serie, categoria, sesso, anno, id_ga)
         VALUES (?, ?, ?, ?, ?)
+        """;
+
+    public static final String GET_LEAGUE_BY_ID =
+        """
+        SELECT *
+        FROM campionato
+        WHERE id_campionato = ?
+        """;
+
+    public static final String GET_LEAGUE_MATCHES =
+        """
+        SELECT *
+        FROM partita_campionato
+        WHERE id_campionato = ?
         """;
 
     public static final String GET_LEAGUES_BY_REFEREE =

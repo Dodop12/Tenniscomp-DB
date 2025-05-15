@@ -6,9 +6,13 @@ import java.util.List;
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.League;
+import tenniscomp.data.LeagueMatch;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
+import tenniscomp.data.Team;
 import tenniscomp.data.Tournament;
+import tenniscomp.data.TournamentMatch;
+import tenniscomp.data.TournamentRegistration;
 
 public class ModelImpl implements Model {
 
@@ -119,6 +123,21 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public Tournament getTournamentById(final int tournamentId) {
+        return Tournament.DAO.getTournamentById(this.connection, tournamentId);
+    }
+
+    @Override
+    public List<TournamentRegistration> getTournamentRegistrations(final int tournamentId) {
+        return TournamentRegistration.DAO.getRegistrationsByTournament(this.connection, tournamentId);
+    }
+    
+    @Override
+    public List<TournamentMatch> getTournamentMatches(final int tournamentId) {
+        return TournamentMatch.DAO.getMatchesByTournament(this.connection, tournamentId);
+    }
+
+    @Override
     public List<Tournament> getTournamentsByReferee(final int refereeId) {
         return Tournament.DAO.getTournamentsByReferee(this.connection, refereeId);
     }
@@ -127,6 +146,21 @@ public class ModelImpl implements Model {
     public boolean addLeague(final String series, final String category, final String gender, 
             final int year, final int refereeId) {
         return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);
+    }
+
+    @Override
+    public League getLeagueById(final int leagueId) {
+        return League.DAO.getLeagueById(this.connection, leagueId);
+    }
+
+    @Override
+    public List<Team> getLeagueTeams(final int leagueId) {
+        return null; // TODO
+    }
+
+    @Override
+    public List<LeagueMatch> getLeagueMatches(final int leagueId) {
+        return LeagueMatch.DAO.getMatchesByLeague(this.connection, leagueId);
     }
 
     @Override

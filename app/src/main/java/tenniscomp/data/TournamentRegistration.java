@@ -1,5 +1,9 @@
 package tenniscomp.data;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TournamentRegistration {
     private final int registrationId;
     private final String date;
@@ -32,5 +36,25 @@ public class TournamentRegistration {
 
     public final class DAO {
 
+        public static List<TournamentRegistration> getRegistrationsByTournament(final Connection connection,
+                final int tournamentId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENT_REGISTRATIONS, tournamentId);
+                var resultSet = statement.executeQuery();
+            ) {
+                final var registrations = new ArrayList<TournamentRegistration>();
+                while (resultSet.next()) {
+                    registrations.add(new TournamentRegistration(
+                            resultSet.getInt("registrationId"),
+                            resultSet.getString("date"),
+                            resultSet.getInt("playerId"),
+                            resultSet.getInt("tournamentId")
+                    ));
+                }
+                return registrations;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }

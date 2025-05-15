@@ -86,13 +86,38 @@ public class Tournament {
             }
         }
 
+        public static Tournament getTournamentById(final Connection connection, final int tournamentId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENT_BY_ID, tournamentId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new Tournament(
+                            resultSet.getInt("id_torneo"),
+                            resultSet.getString("nome"),
+                            resultSet.getString("data_inizio"),
+                            resultSet.getString("data_fine"),
+                            resultSet.getString("scadenza_iscrizioni"),
+                            resultSet.getString("tipo"),
+                            resultSet.getString("limite_classifica"),
+                            resultSet.getDouble("montepremi"),
+                            resultSet.getInt("id_ga"),
+                            resultSet.getInt("id_circolo")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static List<Tournament> getTournamentsByReferee(final Connection connection, final int refereeId) {           
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENTS_BY_REFEREE, refereeId);
                 var resultSet = statement.executeQuery();
                 ) {
                     final var tournaments = new ArrayList<Tournament>();
-                    while(resultSet.next()) {
+                    while (resultSet.next()) {
                         tournaments.add(new Tournament(
                                 resultSet.getInt("id_torneo"),
                                 resultSet.getString("nome"),

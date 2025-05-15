@@ -60,13 +60,34 @@ public class League {
             }
         }
 
+        public static League getLeagueById(final Connection connection, final int leagueId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUE_BY_ID, leagueId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new League(
+                        resultSet.getInt("id_campionato"),
+                        resultSet.getString("serie"),
+                        resultSet.getString("categoria"),
+                        resultSet.getString("sesso"),
+                        resultSet.getInt("anno"),
+                        resultSet.getInt("id_ga")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static List<League> getLeaguesByReferee(final Connection connection, final int refereeId) {           
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUES_BY_REFEREE, refereeId);
                 var resultSet = statement.executeQuery();
                 ) {
                     final var leagues = new ArrayList<League>();
-                    while(resultSet.next()) {
+                    while (resultSet.next()) {
                         leagues.add(new League(
                             resultSet.getInt("id_campionato"),
                             resultSet.getString("serie"),
