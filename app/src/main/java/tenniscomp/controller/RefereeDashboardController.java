@@ -1,6 +1,9 @@
 package tenniscomp.controller;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.MouseInputAdapter;
+import java.awt.event.MouseEvent;
 
 import tenniscomp.data.Referee;
 import tenniscomp.model.Model;
@@ -10,8 +13,10 @@ import tenniscomp.view.AddClubWindow;
 import tenniscomp.view.AddLeagueWindow;
 import tenniscomp.view.AddTournamentWindow;
 import tenniscomp.view.ClubManager;
+import tenniscomp.view.LeagueDetailsWindow;
 import tenniscomp.view.PlayerManager;
 import tenniscomp.view.RefereeDashboard;
+import tenniscomp.view.TournamentDetailsWindow;
 
 public class RefereeDashboardController {
     
@@ -43,6 +48,26 @@ public class RefereeDashboardController {
         view.setManageClubsListener(e -> openClubManager());
         view.setAddTournamentListener(e -> openAddTournamentWindow());
         view.setAddTeamCompetitionListener(e -> openAddLeagueWindow());
+
+        // Double-click listener for tournament details
+        view.getTournamentsTable().addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    openTournamentDetails();
+                }
+            }
+        });
+        
+        // Double-click listener for league details
+        view.getLeaguesTable().addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    openLeagueDetails();
+                }
+            }
+        });
     }
 
     private void loadTournaments() {
@@ -59,6 +84,7 @@ public class RefereeDashboardController {
                 tournament.getEndDate(),
                 tournament.getRegistrationDeadline(),
                 tournament.getType(),
+                tournament.getGender().equals("M") ? "Maschile" : "Femminile",
                 tournament.getRankingLimit()
             };
             tableModel.addRow(rowData);
@@ -85,6 +111,40 @@ public class RefereeDashboardController {
         }
 
         TableUtils.adjustColumnWidths(table);
+    }
+
+    private void openTournamentDetails() {
+        final JTable table = view.getTournamentsTable();
+        final int selectedRow = table.getSelectedRow();
+        
+        if (selectedRow >= 0) {
+            final int tournamentId = (int) table.getValueAt(selectedRow, 0);
+            final var tournament = model.getTournamentById(tournamentId);
+            
+            if (tournament != null) {
+                final var detailsWindow = new TournamentDetailsWindow(view);
+                new TournamentDetailsController(detailsWindow, model, tournament);
+                detailsWindow.setCloseButtonListener(e -> detailsWindow.dispose());
+                detailsWindow.display();
+            }
+        }
+    }
+
+    private void openLeagueDetails() {
+        final JTable table = view.getLeaguesTable();
+        final int selectedRow = table.getSelectedRow();
+        
+        if (selectedRow >= 0) {
+            final int leagueId = (int) table.getValueAt(selectedRow, 0);
+            final var league = model.getLeagueById(leagueId);
+            
+            if (league != null) {
+                final var detailsWindow = new LeagueDetailsWindow(view);
+                new LeagueDetailsController(detailsWindow, model, league);
+                detailsWindow.setCloseButtonListener(e -> detailsWindow.dispose());
+                detailsWindow.display();
+            }
+        }
     }
 
     private void openPlayerManager() {
@@ -134,6 +194,7 @@ public class RefereeDashboardController {
             final String endDate = addTournamentWindow.getEndDate();
             final String registrationDeadline = addTournamentWindow.getRegistrationDeadline();
             final String tournamentType = addTournamentWindow.getTournamentType();
+            final String gender = addTournamentWindow.getGender();
             final String rankingLimit = addTournamentWindow.getRankingLimit();
             final String prizeMoney = addTournamentWindow.getPrizeMoney();
             final var selectedClub = addTournamentWindow.getSelectedClub();
@@ -143,8 +204,8 @@ public class RefereeDashboardController {
                 try {
                     final double prizeMoneyValue = Double.parseDouble(prizeMoney);
                     if (model.addTournament(name, startDate, endDate, registrationDeadline, 
-                            tournamentType, rankingLimit, prizeMoneyValue, referee.getRefereeId(), 
-                            selectedClub.getClubId())) {
+                            tournamentType, gender, rankingLimit, prizeMoneyValue, 
+                            referee.getRefereeId(), selectedClub.getClubId())) {
                         loadTournaments();
                         addTournamentWindow.dispose();
                     }
