@@ -6,7 +6,7 @@ import java.util.List;
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.League;
-import tenniscomp.data.LeagueMatch;
+import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
 import tenniscomp.data.Team;
@@ -155,17 +155,22 @@ public class ModelImpl implements Model {
 
     @Override
     public List<Team> getLeagueTeams(final int leagueId) {
-        return null; // TODO
+        return Team.DAO.getTeamsByLeague(this.connection, leagueId);
     }
 
     @Override
-    public List<LeagueMatch> getLeagueMatches(final int leagueId) {
-        return LeagueMatch.DAO.getMatchesByLeague(this.connection, leagueId);
+    public List<LeagueTie> getLeagueTies(final int leagueId) {
+        return LeagueTie.DAO.getTiesByLeague(this.connection, leagueId);
     }
 
     @Override
     public List<League> getLeaguesByReferee(final int refereeId) {
         return League.DAO.getLeaguesByReferee(this.connection, refereeId);
+    }
+
+    @Override
+    public Club getClubByTeamId(int teamId) {
+        return Club.DAO.getClubByTeamId(this.connection, teamId);
     }
     
 }

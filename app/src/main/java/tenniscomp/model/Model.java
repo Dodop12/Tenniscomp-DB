@@ -5,7 +5,7 @@ import java.util.List;
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.League;
-import tenniscomp.data.LeagueMatch;
+import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
 import tenniscomp.data.Team;
@@ -69,8 +69,10 @@ public interface Model {
     
     List<Team> getLeagueTeams(int leagueId);
     
-    List<LeagueMatch> getLeagueMatches(int leagueId);
+    List<LeagueTie> getLeagueTies(int leagueId);
 
     List<League> getLeaguesByReferee(int refereeId);
+
+    Club getClubByTeamId(int teamId);
 
 }

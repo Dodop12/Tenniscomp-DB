@@ -69,10 +69,29 @@ public class Club {
                 throw new DAOException(e);
             }
         }
+
+        public static Club getClubByTeamId(final Connection connection, final int teamId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_CLUB_BY_TEAM_ID, teamId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new Club(
+                        resultSet.getInt("id_circolo"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("indirizzo"),
+                        resultSet.getString("citta")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
         
         public static List<Club> getAllClubs(final Connection connection) {
             try (
-                var statement = connection.prepareStatement(Queries.GET_ALL_CLUBS);
+                var statement = DAOUtils.prepare(connection, Queries.GET_ALL_CLUBS);
                 var resultSet = statement.executeQuery();
             ) {
                 final var clubs = new ArrayList<Club>();

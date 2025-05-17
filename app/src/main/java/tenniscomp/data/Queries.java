@@ -178,10 +178,18 @@ public final class Queries {
         WHERE id_campionato = ?
         """;
 
-    public static final String GET_LEAGUE_MATCHES =
+    public static final String GET_LEAGUE_TEAMS =
+        """
+        SELECT s.*
+        FROM squadra s
+        JOIN iscrizione_squadra_campionato i ON s.id_squadra = i.id_squadra
+        WHERE i.id_campionato = ?
+        """;
+
+    public static final String GET_LEAGUE_TIES =
         """
         SELECT *
-        FROM partita_campionato
+        FROM incontro_campionato
         WHERE id_campionato = ?
         """;
 
@@ -191,5 +199,13 @@ public final class Queries {
         FROM campionato
         WHERE id_ga = ?
         ORDER BY anno DESC, serie
+        """;
+
+    public static final String GET_CLUB_BY_TEAM_ID =
+        """
+        SELECT c.*
+        FROM circolo c
+        JOIN squadra s ON c.id_circolo = s.id_circolo
+        WHERE s.id_squadra = ?
         """;
 }

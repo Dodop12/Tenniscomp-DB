@@ -178,7 +178,7 @@ public class Player {
 
         public static List<Player> getAllPlayers(final Connection connection) {
             try (
-                var statement = connection.prepareStatement(Queries.GET_ALL_PLAYERS);
+                var statement = DAOUtils.prepare(connection, Queries.GET_ALL_PLAYERS);
                 var resultSet = statement.executeQuery();
             ) {
                 final var players = new ArrayList<Player>();
