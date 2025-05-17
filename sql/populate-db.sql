@@ -11,7 +11,7 @@ VALUES ('Circolo Tennis Roma', 'Via Bologna 1', 'Roma'),
 
 INSERT INTO torneo (nome, data_inizio, data_fine, scadenza_iscrizioni, tipo,
         sesso, limite_classifica, montepremi, id_ga, id_circolo)
-VALUES ('Torneo Open Milano', '2025-07-01', '2023-07-20', '2025-06-28',
+VALUES ('Torneo Open Milano', '2025-07-01', '2025-07-20', '2025-06-28',
         'Singolare', 'M', '4.1', 1000.00, 1, 2);
 
 INSERT INTO campionato (serie, categoria, sesso, anno, id_ga)
