@@ -8,12 +8,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.github.lgooddatepicker.components.DatePicker;
@@ -29,6 +31,8 @@ public class AddTournamentWindow extends JDialog {
     private final DatePicker endDatePicker;
     private final DatePicker registrationDeadlinePicker;
     private final JComboBox<String> typeComboBox;
+    private final JRadioButton maleRadio;
+    private final JRadioButton femaleRadio;
     private final JComboBox<String> rankingLimitComboBox;
     private final JTextField prizeMoneyField;
     private final ClubSelector clubSelector;
@@ -38,11 +42,11 @@ public class AddTournamentWindow extends JDialog {
 
     public AddTournamentWindow(final JFrame parent, final List<Club> clubs) {
         super(parent, "Aggiungi Torneo", true);
-        setSize(800, 500);
+        setSize(800, 600);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
 
-        final var formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        final var formPanel = new JPanel(new GridLayout(9, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         formPanel.add(new JLabel("Nome:"));
@@ -66,6 +70,20 @@ public class AddTournamentWindow extends JDialog {
         final var types = PlayerUtils.getMatchTypes();
         this.typeComboBox = new JComboBox<>(types.toArray(new String[0]));
         formPanel.add(this.typeComboBox);
+
+        formPanel.add(new JLabel("Sesso:"));
+        final var genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        this.maleRadio = new JRadioButton("M");
+        this.femaleRadio = new JRadioButton("F");
+
+        final var genderGroup = new ButtonGroup();
+        genderGroup.add(this.maleRadio);
+        genderGroup.add(this.femaleRadio);
+        this.maleRadio.setSelected(true);
+
+        genderPanel.add(this.maleRadio);
+        genderPanel.add(this.femaleRadio);
+        formPanel.add(genderPanel);
 
         formPanel.add(new JLabel("Limite classifica:"));
         this.rankingLimitComboBox = new JComboBox<>(PlayerUtils.getAllRankings().toArray(new String[0]));
@@ -121,6 +139,10 @@ public class AddTournamentWindow extends JDialog {
 
     public String getTournamentType() {
         return (String) this.typeComboBox.getSelectedItem();
+    }
+
+    public String getGender() {
+        return this.maleRadio.isSelected() ? "M" : "F";
     }
 
     public String getRankingLimit() {

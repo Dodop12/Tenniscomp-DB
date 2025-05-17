@@ -131,9 +131,9 @@ public final class Queries {
 
     public static final String ADD_TOURNAMENT =
         """
-        INSERT INTO torneo (nome, data_inizio, data_fine, scadenza_iscrizioni,
-                tipo, limite_classifica, montepremi, id_ga, id_circolo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO torneo (nome, data_inizio, data_fine, scadenza_iscrizioni, tipo,
+                sesso, limite_classifica, montepremi, id_ga, id_circolo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
     public static final String GET_TOURNAMENT_BY_ID =

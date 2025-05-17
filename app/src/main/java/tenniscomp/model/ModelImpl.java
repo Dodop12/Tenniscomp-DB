@@ -116,10 +116,10 @@ public class ModelImpl implements Model {
 
     @Override
     public boolean addTournament(final String name, final String startDate, final String endDate, 
-            final String registrationDeadline, final String type, final String rankingLimit, 
+            final String registrationDeadline, final String type, final String gender, final String rankingLimit, 
             final double prizeMoney, final int refereeId, final int clubId) {
         return Tournament.DAO.insertTournament(this.connection, name, startDate, endDate, 
-            registrationDeadline, type, rankingLimit, prizeMoney, refereeId, clubId);
+            registrationDeadline, type, gender, rankingLimit, prizeMoney, refereeId, clubId);
     }
 
     @Override

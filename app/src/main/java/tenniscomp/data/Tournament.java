@@ -11,13 +11,14 @@ public class Tournament {
     private final String endDate;
     private final String registrationDeadline;
     private final String type;
+    private final String gender;
     private final String rankingLimit;
     private final double prizeMoney;
     private final int refereeId;
     private final int clubId;
 
     public Tournament(final int competitionId, final String name, final String startDate, final String endDate,
-            final String registrationDeadline, final String type, final String rankingLimit,
+            final String registrationDeadline, final String type, final String gender, final String rankingLimit,
             final double prizeMoney, final int refereeId, final int clubId) {
         this.tournamentId = competitionId;
         this.name = name;
@@ -25,6 +26,7 @@ public class Tournament {
         this.endDate = endDate;
         this.registrationDeadline = registrationDeadline;
         this.type = type;
+        this.gender = gender;
         this.rankingLimit = rankingLimit;
         this.prizeMoney = prizeMoney;
         this.refereeId = refereeId;
@@ -55,6 +57,10 @@ public class Tournament {
         return type;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
     public String getRankingLimit() {
         return rankingLimit;
     }
@@ -74,11 +80,11 @@ public class Tournament {
     public final class DAO {
 
         public static boolean insertTournament(final Connection connection, final String name, final String startDate, 
-                final String endDate, final String registrationDeadline, final String type, final String rankingLimit, 
-                final double prizeMoney, final int refereeId, final int clubId) {
+                final String endDate, final String registrationDeadline, final String type, final String gender,
+                final String rankingLimit, final double prizeMoney, final int refereeId, final int clubId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.ADD_TOURNAMENT, name, startDate, endDate, 
-                        registrationDeadline, type, rankingLimit, prizeMoney, refereeId, clubId)
+                        registrationDeadline, type, gender, rankingLimit, prizeMoney, refereeId, clubId)
             ) {
                 return statement.executeUpdate() > 0;
             } catch (final Exception e) {
@@ -99,6 +105,7 @@ public class Tournament {
                             resultSet.getString("data_fine"),
                             resultSet.getString("scadenza_iscrizioni"),
                             resultSet.getString("tipo"),
+                            resultSet.getString("sesso"),
                             resultSet.getString("limite_classifica"),
                             resultSet.getDouble("montepremi"),
                             resultSet.getInt("id_ga"),
@@ -125,6 +132,7 @@ public class Tournament {
                                 resultSet.getString("data_fine"),
                                 resultSet.getString("scadenza_iscrizioni"),
                                 resultSet.getString("tipo"),
+                                resultSet.getString("sesso"),
                                 resultSet.getString("limite_classifica"),
                                 resultSet.getDouble("montepremi"),
                                 resultSet.getInt("id_ga"),

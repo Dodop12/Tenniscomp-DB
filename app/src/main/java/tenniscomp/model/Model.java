@@ -53,7 +53,7 @@ public interface Model {
     boolean updateCardExpiryDate(int cardId, String newExpiryDate);
 
     boolean addTournament(String name, String startDate, String endDate, String registrationDeadline, 
-            String type, String rankingLimit, double prizeMoney, int refereeId, int clubId);
+            String type, String gender, String rankingLimit, double prizeMoney, int refereeId, int clubId);
 
     Tournament getTournamentById(int tournamentId);
 

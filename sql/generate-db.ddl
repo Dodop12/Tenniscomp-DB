@@ -39,6 +39,7 @@ CREATE TABLE torneo (
     data_fine DATE NOT NULL,
     scadenza_iscrizioni DATE NOT NULL,
     tipo VARCHAR(50) NOT NULL,
+    sesso CHAR(1) NOT NULL,
     limite_classifica VARCHAR(20) NOT NULL,
     montepremi DECIMAL(10,2) NOT NULL,
     id_ga INT NOT NULL,
