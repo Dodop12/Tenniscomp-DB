@@ -65,7 +65,8 @@ public class RefereeDashboard extends JFrame {
         
         // Tournaments panel
         final var tournamentsPanel = new JPanel(new BorderLayout());
-        final String[] tournamentColumns = {"ID", "Nome", "Data inizio", "Data fine", "Scadenza iscrizioni", "Tipo", "Limite Classifica"};
+        final String[] tournamentColumns = {"ID", "Nome", "Data inizio", "Data fine",
+                "Scadenza iscrizioni", "Tipo", "Sesso", "Limite Classifica"};
         final var tournamentsModel = new ImmutableTableModel(tournamentColumns, 0);
         this.tournamentsTable = new JTable(tournamentsModel);
         

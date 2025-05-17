@@ -146,7 +146,7 @@ public final class Queries {
     public static final String GET_TOURNAMENT_REGISTRATIONS =
         """
         SELECT *
-        FROM iscrizione
+        FROM iscrizione_torneo
         WHERE id_torneo = ?
         """;
 
