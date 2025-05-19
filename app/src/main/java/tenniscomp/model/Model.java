@@ -63,6 +63,8 @@ public interface Model {
 
     List<Tournament> getTournamentsByReferee(int refereeId);
 
+    List<Tournament> getEligibleTournaments(String playerRanking, String playerGender);
+
     boolean addLeague(String series, String category, String gender, int year, int refereeId);
 
     League getLeagueById(int leagueId);

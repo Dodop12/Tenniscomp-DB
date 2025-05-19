@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.PlayerUtils;
+
 public class Tournament {
     private final int tournamentId;
     private final String name;
@@ -121,6 +123,36 @@ public class Tournament {
         public static List<Tournament> getTournamentsByReferee(final Connection connection, final int refereeId) {           
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENTS_BY_REFEREE, refereeId);
+                var resultSet = statement.executeQuery();
+                ) {
+                    final var tournaments = new ArrayList<Tournament>();
+                    while (resultSet.next()) {
+                        tournaments.add(new Tournament(
+                                resultSet.getInt("id_torneo"),
+                                resultSet.getString("nome"),
+                                resultSet.getString("data_inizio"),
+                                resultSet.getString("data_fine"),
+                                resultSet.getString("scadenza_iscrizioni"),
+                                resultSet.getString("tipo"),
+                                resultSet.getString("sesso"),
+                                resultSet.getString("limite_classifica"),
+                                resultSet.getDouble("montepremi"),
+                                resultSet.getInt("id_ga"),
+                                resultSet.getInt("id_circolo")
+                        ));
+                    }
+                    return tournaments;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static List<Tournament> getEligibleTournaments(final Connection connection,
+                final String playerRanking, final String playerGender) {
+            final int playerRankingInt = PlayerUtils.getRankingAsInt(playerRanking);
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_ELIGIBLE_TOURNAMENTS,
+                        playerGender, playerRankingInt);
                 var resultSet = statement.executeQuery();
                 ) {
                     final var tournaments = new ArrayList<Tournament>();

@@ -18,6 +18,7 @@ public final class PlayerUtils {
             "3.1", "3.2", "3.3", "3.4", "3.5",
             "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.NC"
     );
+    private static final int LOWEST_RANKING_INT = 47;
 
     private static final List<String> LEAGUE_SERIES = List.of(
             "A1", "A2", "B1", "B2", "C", "D1", "D2", "D3", "D4"
@@ -122,6 +123,13 @@ public final class PlayerUtils {
                 e
             );
         }
+    }
+    
+    public static int getRankingAsInt(final String ranking) {
+        if (ranking.equals("4.NC")) {
+            return LOWEST_RANKING_INT;
+        }
+        return Integer.parseInt(ranking.replace(".", ""));
     }
 
     private static int calculateAgeAtYearEnd(final String birthDate) {

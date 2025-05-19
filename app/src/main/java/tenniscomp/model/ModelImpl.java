@@ -143,6 +143,11 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<Tournament> getEligibleTournaments(final String playerRanking, final String playerGender) {
+        return Tournament.DAO.getEligibleTournaments(this.connection, playerRanking, playerGender);
+    }
+
+    @Override
     public boolean addLeague(final String series, final String category, final String gender, 
             final int year, final int refereeId) {
         return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);

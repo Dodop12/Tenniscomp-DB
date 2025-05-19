@@ -165,6 +165,15 @@ public final class Queries {
         ORDER BY data_inizio DESC
         """;
 
+    public static final String GET_ELIGIBLE_TOURNAMENTS =
+        """
+        SELECT *
+        FROM torneo
+        WHERE sesso = ?
+        AND CAST(REPLACE(limite_classifica, '.', '') AS UNSIGNED) <= ?
+        ORDER BY data_inizio ASC
+        """;
+
     public static final String ADD_LEAGUE =
         """
         INSERT INTO campionato (serie, categoria, sesso, anno, id_ga)
