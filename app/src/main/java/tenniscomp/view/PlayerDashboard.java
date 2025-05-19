@@ -73,8 +73,8 @@ public class PlayerDashboard extends JFrame {
         cardPanel.setBorder(BorderFactory.createTitledBorder(CARD_TITLE));
         cardPanel.setPreferredSize(new Dimension(300, 100));
         
-        this.cardNumberLabel = new JLabel(CARD_NUMBER_TEXT);
-        this.cardExpiryDateLabel = new JLabel(EXP_DATE_TEXT);
+        this.cardNumberLabel = new JLabel(CARD_NUMBER_TEXT + ":");
+        this.cardExpiryDateLabel = new JLabel(EXP_DATE_TEXT + ":");
         
         cardPanel.add(this.cardNumberLabel);
         cardPanel.add(this.cardExpiryDateLabel);
@@ -85,7 +85,8 @@ public class PlayerDashboard extends JFrame {
         topPanel.add(cardPanel, BorderLayout.EAST);
         
         // Tournaments panel
-        final String[] tournamentColumns = {"ID", "Nome", "Data inizio", "Data fine", "Stato", "Categoria"};
+        final String[] tournamentColumns = {"ID", "Nome", "Data inizio", "Data fine",
+                "Scadenza iscrizioni", "Tipo", "Sesso", "Limite Classifica"};
         this.tournamentsModel = new ImmutableTableModel(tournamentColumns, 0);
         this.tournamentsTable = new JTable(tournamentsModel);
         final var tournamentsScrollPane = new JScrollPane(tournamentsTable);
