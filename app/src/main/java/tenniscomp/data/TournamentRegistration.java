@@ -45,10 +45,10 @@ public class TournamentRegistration {
                 final var registrations = new ArrayList<TournamentRegistration>();
                 while (resultSet.next()) {
                     registrations.add(new TournamentRegistration(
-                            resultSet.getInt("registrationId"),
-                            resultSet.getString("date"),
-                            resultSet.getInt("playerId"),
-                            resultSet.getInt("tournamentId")
+                            resultSet.getInt("id_iscrizione"),
+                            resultSet.getString("data"),
+                            resultSet.getInt("id_giocatore"),
+                            resultSet.getInt("id_torneo")
                     ));
                 }
                 return registrations;
