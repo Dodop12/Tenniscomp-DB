@@ -5,6 +5,7 @@ import java.util.List;
 
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
+import tenniscomp.data.Court;
 import tenniscomp.data.League;
 import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
@@ -87,6 +88,11 @@ public class ModelImpl implements Model {
     @Override
     public List<Club> getAllClubs() {
         return Club.DAO.getAllClubs(this.connection);
+    }
+
+    @Override
+    public boolean addCourt(final int number, final String surface, final boolean indoor, final int clubId) {
+        return Court.DAO.insertCourt(this.connection, number, surface, indoor, clubId);
     }
 
     @Override

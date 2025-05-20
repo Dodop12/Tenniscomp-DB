@@ -31,6 +31,7 @@ public interface Model {
     boolean addClub(String name, String address, String city);
     Club getClubById(int clubId);
     List<Club> getAllClubs();
+    boolean addCourt(int number, String surface, boolean indoor, int clubId);
 
     boolean addCard(String cardNumber, String expiryDate);
     Card getCardById(int cardId);

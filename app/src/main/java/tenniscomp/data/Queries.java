@@ -71,6 +71,12 @@ public final class Queries {
         FROM circolo
         ORDER BY citta, nome
         """;
+    
+    public static final String ADD_COURT =
+        """
+        INSERT INTO campo (numero, superficie, indoor, id_circolo)
+        VALUES (?, ?, ?, ?)
+        """;
 
     public static final String ADD_CARD =
         """
