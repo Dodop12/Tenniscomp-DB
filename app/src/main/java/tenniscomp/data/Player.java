@@ -102,7 +102,7 @@ public class Player {
                 var statement = DAOUtils.prepare(connection, Queries.ADD_PLAYER, surname, name, email,
                     convertedDate, gender, phone, username, password);
             ) {
-                return statement.executeUpdate() == 1;
+                return statement.executeUpdate() > 0;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }
