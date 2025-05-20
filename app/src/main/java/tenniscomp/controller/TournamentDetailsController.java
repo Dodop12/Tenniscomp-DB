@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 
 import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
+import tenniscomp.utils.PlayerUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.TournamentDetailsWindow;
 
@@ -50,7 +51,7 @@ public class TournamentDetailsController {
                     registration.getRegistrationId(),
                     player.getName() + " " + player.getSurname(),
                     player.getRanking(),
-                    registration.getDate()
+                    PlayerUtils.convertDateFormat(registration.getDate())
                 };
                 tableModel.addRow(rowData);
             }

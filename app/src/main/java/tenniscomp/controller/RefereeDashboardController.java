@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import tenniscomp.data.Referee;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
+import tenniscomp.utils.PlayerUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AddClubWindow;
 import tenniscomp.view.AddLeagueWindow;
@@ -80,9 +81,9 @@ public class RefereeDashboardController {
             final Object[] rowData = {
                 tournament.getTournamentId(),
                 tournament.getName(),
-                tournament.getStartDate(),
-                tournament.getEndDate(),
-                tournament.getRegistrationDeadline(),
+                PlayerUtils.convertDateFormat(tournament.getStartDate()),
+                PlayerUtils.convertDateFormat(tournament.getEndDate()),
+                PlayerUtils.convertDateFormat(tournament.getRegistrationDeadline()),
                 tournament.getType(),
                 tournament.getGender().equals("M") ? "Maschile" : "Femminile",
                 tournament.getRankingLimit()
