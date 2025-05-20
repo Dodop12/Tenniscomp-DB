@@ -51,7 +51,11 @@ public final class TableUtils {
                 var component = super.getTableCellRendererComponent(
                         table, value, isSelected, hasFocus, row, column);
                 
-                if (row == targetRow && !isSelected) {
+                if (isSelected) {
+                    return component;
+                }
+                
+                if (row == targetRow) {
                     component.setBackground(new Color(230, 255, 230)); // Light green
                 } else {
                     component.setBackground(table.getBackground());
