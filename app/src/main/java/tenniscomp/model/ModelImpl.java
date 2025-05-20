@@ -35,11 +35,6 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean loginReferee(final String username, final String password) {
-        return Referee.DAO.checkLogin(this.connection, username, password);
-    }
-
-    @Override
     public Player getPlayerById(final int playerId) {
         return Player.DAO.getPlayerById(this.connection, playerId);
     }
@@ -52,6 +47,26 @@ public class ModelImpl implements Model {
     @Override
     public List<Player> getAllPlayers() {
         return Player.DAO.getAllPlayers(this.connection);
+    }
+
+     @Override
+    public boolean updatePlayerRanking(final int playerId, final String newRanking) {
+        return Player.DAO.updatePlayerRanking(this.connection, playerId, newRanking);
+    }
+
+    @Override
+    public boolean updatePlayerCard(final int playerId, final int cardId) {
+        return Player.DAO.updatePlayerCard(this.connection, playerId, cardId);
+    }
+
+    @Override
+    public boolean updatePlayerClub(final int playerId, final Integer clubId) {
+        return Player.DAO.updatePlayerClub(this.connection, playerId, clubId);
+    }
+
+    @Override
+    public boolean loginReferee(final String username, final String password) {
+        return Referee.DAO.checkLogin(this.connection, username, password);
     }
 
     @Override
@@ -87,21 +102,6 @@ public class ModelImpl implements Model {
     @Override
     public Card getCardByNumber(final String cardNumber) {
         return Card.DAO.getCardByNumber(this.connection, cardNumber);
-    }
-
-    @Override
-    public boolean updatePlayerRanking(final int playerId, final String newRanking) {
-        return Player.DAO.updatePlayerRanking(this.connection, playerId, newRanking);
-    }
-
-    @Override
-    public boolean updatePlayerCard(final int playerId, final int cardId) {
-        return Player.DAO.updatePlayerCard(this.connection, playerId, cardId);
-    }
-
-    @Override
-    public boolean updatePlayerClub(final int playerId, final Integer clubId) {
-        return Player.DAO.updatePlayerClub(this.connection, playerId, clubId);
     }
 
     @Override
