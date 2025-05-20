@@ -148,6 +148,16 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public boolean registerPlayerForTournament(final int playerId, final int tournamentId) {
+        return Tournament.DAO.registerPlayerForTournament(this.connection, playerId, tournamentId);
+    }
+
+    @Override
+    public boolean isPlayerRegisteredForTournament(final int playerId, final int tournamentId) {
+        return Tournament.DAO.isPlayerRegisteredForTournament(this.connection, playerId, tournamentId);
+    }
+
+    @Override
     public boolean addLeague(final String series, final String category, final String gender, 
             final int year, final int refereeId) {
         return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);
@@ -174,7 +184,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public Club getClubByTeamId(int teamId) {
+    public Club getClubByTeamId(final int teamId) {
         return Club.DAO.getClubByTeamId(this.connection, teamId);
     }
     

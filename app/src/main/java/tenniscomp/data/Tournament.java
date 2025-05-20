@@ -176,6 +176,30 @@ public class Tournament {
                 throw new DAOException(e);
             }
         }
+
+        public static boolean registerPlayerForTournament(final Connection connection, final int playerId, final int tournamentId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.REGISTER_PLAYER_FOR_TOURNAMENT, playerId, tournamentId);
+            ) {
+                return statement.executeUpdate() > 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean isPlayerRegisteredForTournament(final Connection connection, final int playerId, final int tournamentId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.IS_PLAYER_REGISTERED_FOR_TOURNAMENT, playerId, tournamentId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean(1);
+                }
+                return false;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
         
     }
 }

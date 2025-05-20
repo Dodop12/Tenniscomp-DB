@@ -174,6 +174,22 @@ public final class Queries {
         ORDER BY data_inizio ASC
         """;
 
+    public static final String REGISTER_PLAYER_FOR_TOURNAMENT =
+        """
+        INSERT INTO iscrizione_torneo (data, id_giocatore, id_torneo)
+        VALUES (CURDATE(), ?, ?)
+        """;
+
+    public static final String IS_PLAYER_REGISTERED_FOR_TOURNAMENT =
+        """
+        SELECT EXISTS(
+            SELECT 1
+            FROM iscrizione_torneo
+            WHERE id_giocatore = ?
+            AND id_torneo = ?
+        )
+        """;
+
     public static final String ADD_LEAGUE =
         """
         INSERT INTO campionato (serie, categoria, sesso, anno, id_ga)

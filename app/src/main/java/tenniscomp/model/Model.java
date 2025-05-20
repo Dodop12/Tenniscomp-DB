@@ -65,6 +65,10 @@ public interface Model {
 
     List<Tournament> getEligibleTournaments(String playerRanking, String playerGender);
 
+    boolean registerPlayerForTournament(int playerId, int tournamentId);
+
+    boolean isPlayerRegisteredForTournament(int playerId, int tournamentId);
+
     boolean addLeague(String series, String category, String gender, int year, int refereeId);
 
     League getLeagueById(int leagueId);
