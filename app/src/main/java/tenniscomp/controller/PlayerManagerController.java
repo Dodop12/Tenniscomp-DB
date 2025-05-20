@@ -15,7 +15,6 @@ import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
-import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.PlayerUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AssignClubWindow;
@@ -36,7 +35,7 @@ public class PlayerManagerController {
 
     private void loadPlayers() {
         final var tableModel = view.getTableModel();
-        clearTable(tableModel);
+        TableUtils.clearTable(tableModel);
 
         final List<Player> players = model.getAllPlayers();
         for (final Player player : players) {
@@ -63,12 +62,6 @@ public class PlayerManagerController {
         }
 
         TableUtils.adjustColumnWidths(view.getPlayersTable());
-    }
-
-    private void clearTable(final ImmutableTableModel model) {
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
     }
 
     private void setupContextMenu() {
