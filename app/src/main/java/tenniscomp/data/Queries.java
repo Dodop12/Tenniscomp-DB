@@ -78,6 +78,23 @@ public final class Queries {
         VALUES (?, ?, ?, ?)
         """;
 
+    public static final String COUNT_COURTS_BY_CLUB =
+        """
+        SELECT COUNT(*)
+        FROM campo
+        WHERE id_circolo = ?
+        """;
+
+    public static final String CHECK_COURT_NUMBER_EXISTS =
+        """
+        SELECT EXISTS(
+            SELECT 1
+            FROM campo
+            WHERE numero = ?
+            AND id_circolo = ?
+        )
+        """;
+
     public static final String ADD_CARD =
         """
         INSERT INTO tessera (numero, scadenza)

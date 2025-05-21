@@ -50,5 +50,34 @@ public class Court {
                 throw new DAOException(e);
             }
         }
+
+        public static int getCourtCountByClub(final Connection connection, final int clubId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.COUNT_COURTS_BY_CLUB, clubId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+                return 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean courtNumberExists(final Connection connection, final int number, final int clubId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.CHECK_COURT_NUMBER_EXISTS, number, clubId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean(1);
+                }
+                return false;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
+
 }

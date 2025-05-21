@@ -96,6 +96,16 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public int getCourtCountByClub(final int clubId) {
+        return Court.DAO.getCourtCountByClub(this.connection, clubId);
+    }
+
+    @Override
+    public boolean courtNumberExists(final int number, final int clubId) {
+        return Court.DAO.courtNumberExists(this.connection, number, clubId);
+    }
+
+    @Override
     public boolean addCard(final String cardNumber, final String expiryDate) {
         return Card.DAO.insertCard(this.connection, cardNumber, expiryDate);
     }
