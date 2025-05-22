@@ -96,6 +96,11 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public Court getCourtById(final int courtId) {
+        return Court.DAO.getCourtById(this.connection, courtId);
+    }
+
+    @Override
     public int getCourtCountByClub(final int clubId) {
         return Court.DAO.getCourtCountByClub(this.connection, clubId);
     }

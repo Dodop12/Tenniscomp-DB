@@ -4,6 +4,7 @@ import java.util.List;
 
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
+import tenniscomp.data.Court;
 import tenniscomp.data.League;
 import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
@@ -32,6 +33,7 @@ public interface Model {
     Club getClubById(int clubId);
     List<Club> getAllClubs();
     boolean addCourt(int number, String surface, boolean indoor, int clubId);
+    Court getCourtById(int courtId);
     int getCourtCountByClub(int clubId);
     boolean courtNumberExists(int number, int clubId);
 

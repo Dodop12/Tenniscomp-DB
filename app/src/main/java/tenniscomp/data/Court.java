@@ -51,6 +51,26 @@ public class Court {
             }
         }
 
+        public static Court getCourtById(final Connection connection, final int courtId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_COURT_BY_ID, courtId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new Court(
+                        resultSet.getInt("id_campo"),
+                        resultSet.getInt("numero"),
+                        resultSet.getString("superficie"),
+                        resultSet.getBoolean("indoor"),
+                        resultSet.getInt("id_circolo")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static int getCourtCountByClub(final Connection connection, final int clubId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.COUNT_COURTS_BY_CLUB, clubId);

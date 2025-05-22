@@ -78,6 +78,13 @@ public final class Queries {
         VALUES (?, ?, ?, ?)
         """;
 
+    public static final String GET_COURT_BY_ID =
+        """
+        SELECT *
+        FROM campo
+        WHERE id_campo = ?
+        """;
+
     public static final String COUNT_COURTS_BY_CLUB =
         """
         SELECT COUNT(*)
