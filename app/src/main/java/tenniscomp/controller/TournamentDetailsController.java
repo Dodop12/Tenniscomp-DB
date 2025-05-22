@@ -67,13 +67,13 @@ public class TournamentDetailsController {
         
         final var matches = model.getTournamentMatches(tournament.getTournamentId());
         for (final var match : matches) {
+            final var courtNumber = model.getCourtById(match.getCourtId()).getNumber();
             final Object[] rowData = {
                 match.getMatchId(),
-                match.getType(),
-                "Players info", // TODO: replace it with actual player names
-                match.getWinner(),
+                "Winner", // TODO: replace
+                "Opponent", // TODO: replace
                 match.getResult(),
-                match.getCourtId()
+                courtNumber
             };
             tableModel.addRow(rowData);
         }

@@ -5,12 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TournamentMatch extends Match {
+    private final String date;
     private final int tournamentId;
 
-    public TournamentMatch(final int matchId, final String type, final String winner, final String result,
-                           final int courtId, final int refereeId, final int tournamentId) {
-        super(matchId, type, winner, result, courtId, refereeId);
+    public TournamentMatch(final int matchId, final String date, final String result, 
+            final int tournamentId, final int courtId, final Integer refereeId) {
+        super(matchId, result, courtId, refereeId);
+        this.date = date;
         this.tournamentId = tournamentId;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public int getTournamentId() {
@@ -28,12 +34,11 @@ public class TournamentMatch extends Match {
                 while (resultSet.next()) {
                     matches.add(new TournamentMatch(
                         resultSet.getInt("id_partita"),
-                        resultSet.getString("tipo"),
-                        resultSet.getString("vincitore"),
+                        resultSet.getString("data"),
                         resultSet.getString("risultato"),
+                        resultSet.getInt("id_torneo"),
                         resultSet.getInt("id_campo"),
-                        resultSet.getInt("id_arbitro"),
-                        resultSet.getInt("id_torneo")
+                        resultSet.getInt("id_arbitro")
                     ));
                 }
                 return matches;

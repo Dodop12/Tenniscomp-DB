@@ -84,7 +84,7 @@ public class TournamentDetailsWindow extends JFrame {
         registrationsPanel.add(registrationsScrollPane, BorderLayout.CENTER);
         
         final var matchesPanel = new JPanel(new BorderLayout());
-        final String[] matchesColumns = {"ID", "Tipo", "Vincitore", "Avversario", "Risultato", "Campo"};
+        final String[] matchesColumns = {"ID", "Vincitore", "Avversario", "Risultato", "Campo"};
         final var matchesModel = new ImmutableTableModel(matchesColumns, 0);
         this.matchesTable = new JTable(matchesModel);
         
