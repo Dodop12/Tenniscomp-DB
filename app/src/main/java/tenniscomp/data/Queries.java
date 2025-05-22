@@ -92,6 +92,14 @@ public final class Queries {
         WHERE id_circolo = ?
         """;
 
+    public static final String GET_COURTS_BY_CLUB = 
+        """
+        SELECT *
+        FROM campo
+        WHERE id_circolo = ?
+        ORDER BY numero
+        """;
+
     public static final String CHECK_COURT_NUMBER_EXISTS =
         """
         SELECT EXISTS(

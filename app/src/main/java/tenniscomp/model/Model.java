@@ -35,6 +35,7 @@ public interface Model {
     boolean addCourt(int number, String surface, boolean indoor, int clubId);
     Court getCourtById(int courtId);
     int getCourtCountByClub(int clubId);
+    List<Court> getCourtsByClub(int clubId);
     boolean courtNumberExists(int number, int clubId);
 
     boolean addCard(String cardNumber, String expiryDate);

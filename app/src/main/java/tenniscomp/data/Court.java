@@ -1,6 +1,8 @@
 package tenniscomp.data;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Court {
     private final int courtId;
@@ -35,6 +37,10 @@ public class Court {
 
     public int getClubId() {
         return clubId;
+    }
+
+    public String toString() {
+        return "Campo " + number;
     }
 
     public final class DAO {
@@ -84,6 +90,27 @@ public class Court {
                 throw new DAOException(e);
             }
         }
+
+        public static List<Court> getCourtsByClub(final Connection connection, final int clubId) {
+        try (
+            var statement = DAOUtils.prepare(connection, Queries.GET_COURTS_BY_CLUB, clubId);
+            var resultSet = statement.executeQuery();
+        ) {
+            final var courts = new ArrayList<Court>();
+            while (resultSet.next()) {
+                courts.add(new Court(
+                    resultSet.getInt("id_campo"),
+                    resultSet.getInt("numero"),
+                    resultSet.getString("superficie"),
+                    resultSet.getBoolean("indoor"),
+                    resultSet.getInt("id_circolo")
+                ));
+            }
+            return courts;
+        } catch (final Exception e) {
+            throw new DAOException(e);
+        }
+    }
 
         public static boolean courtNumberExists(final Connection connection, final int number, final int clubId) {
             try (
