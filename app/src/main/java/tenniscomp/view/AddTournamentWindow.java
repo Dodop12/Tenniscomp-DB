@@ -114,15 +114,12 @@ public class AddTournamentWindow extends JDialog {
     }
 
    public String getStartDate() {
-        final LocalDate selectedDate = this.startDatePicker.getDate();
-        if (selectedDate != null) {
-            return selectedDate.format(PlayerUtils.getYmdDateFormatter());
-        }
-        return "";
+        final var selectedDate = this.startDatePicker.getDate();
+        return selectedDate != null ? selectedDate.format(PlayerUtils.getYmdDateFormatter()) : "";
     }
 
     public String getEndDate() {
-        final LocalDate selectedDate = this.endDatePicker.getDate();
+        final var selectedDate = this.endDatePicker.getDate();
         if (selectedDate != null) {
             return selectedDate.format(PlayerUtils.getYmdDateFormatter());
         }

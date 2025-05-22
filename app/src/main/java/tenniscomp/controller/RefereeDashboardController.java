@@ -44,33 +44,6 @@ public class RefereeDashboardController {
         TableUtils.adjustColumnWidths(view.getLeaguesTable());
     }
 
-    private void setupListeners() {
-        view.setManagePlayersListener(e -> openPlayerManager());
-        view.setManageClubsListener(e -> openClubManager());
-        view.setAddTournamentListener(e -> openAddTournamentWindow());
-        view.setAddTeamCompetitionListener(e -> openAddLeagueWindow());
-
-        // Double-click listener for tournament details
-        view.getTournamentsTable().addMouseListener(new MouseInputAdapter() {
-            @Override
-            public void mouseClicked(final MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    openTournamentDetails();
-                }
-            }
-        });
-        
-        // Double-click listener for league details
-        view.getLeaguesTable().addMouseListener(new MouseInputAdapter() {
-            @Override
-            public void mouseClicked(final MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    openLeagueDetails();
-                }
-            }
-        });
-    }
-
     private void loadTournaments() {
         final var table = view.getTournamentsTable();
         final var tableModel = (ImmutableTableModel) table.getModel();
@@ -112,6 +85,33 @@ public class RefereeDashboardController {
         }
 
         TableUtils.adjustColumnWidths(table);
+    }
+
+    private void setupListeners() {
+        view.setManagePlayersListener(e -> openPlayerManager());
+        view.setManageClubsListener(e -> openClubManager());
+        view.setAddTournamentListener(e -> openAddTournamentWindow());
+        view.setAddTeamCompetitionListener(e -> openAddLeagueWindow());
+
+        // Double-click listener for tournament details
+        view.getTournamentsTable().addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    openTournamentDetails();
+                }
+            }
+        });
+        
+        // Double-click listener for league details
+        view.getLeaguesTable().addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    openLeagueDetails();
+                }
+            }
+        });
     }
 
     private void openTournamentDetails() {
