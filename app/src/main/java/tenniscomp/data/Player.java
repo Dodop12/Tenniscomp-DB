@@ -209,6 +209,35 @@ public class Player {
             }
         }
 
+        public static List<Player> getPlayersByTournament(final Connection connection, final int tournamentId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENT_PLAYERS, tournamentId);
+                var resultSet = statement.executeQuery();
+            ) {
+                final var players = new ArrayList<Player>();
+                while (resultSet.next()) {
+                    players.add(new Player(
+                        resultSet.getInt("id_giocatore"),
+                        resultSet.getString("cognome"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("email"),
+                        resultSet.getString("data_nascita"),
+                        resultSet.getString("sesso"),
+                        resultSet.getString("telefono"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password_hash"),
+                        resultSet.getString("classifica"),
+                        resultSet.getObject("id_tessera", Integer.class),
+                        resultSet.getObject("id_circolo", Integer.class),
+                        resultSet.getObject("id_squadra", Integer.class)
+                    ));
+                }
+                return players;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static boolean updatePlayerRanking(final Connection connection, final int playerId, final String newRanking) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_RANKING, newRanking, playerId);

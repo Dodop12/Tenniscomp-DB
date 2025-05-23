@@ -157,6 +157,11 @@ public class ModelImpl implements Model {
     public List<TournamentRegistration> getTournamentRegistrations(final int tournamentId) {
         return TournamentRegistration.DAO.getRegistrationsByTournament(this.connection, tournamentId);
     }
+
+    @Override
+    public List<Player> getTournamentPlayers(final int tournamentId) {
+        return Player.DAO.getPlayersByTournament(this.connection, tournamentId);
+    }
     
     @Override
     public List<TournamentMatch> getTournamentMatches(final int tournamentId) {

@@ -48,6 +48,7 @@ public interface Model {
             String type, String gender, String rankingLimit, double prizeMoney, int refereeId, int clubId);
     Tournament getTournamentById(int tournamentId);
     List<TournamentRegistration> getTournamentRegistrations(int tournamentId);
+    List<Player> getTournamentPlayers(int tournamentId);
     List<TournamentMatch> getTournamentMatches(int tournamentId);
     List<Tournament> getTournamentsByReferee(int refereeId);
     List<Tournament> getEligibleTournaments(String playerRanking, String playerGender);

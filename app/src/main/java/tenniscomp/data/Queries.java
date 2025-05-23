@@ -188,6 +188,14 @@ public final class Queries {
         WHERE id_torneo = ?
         """;
 
+    public static final String GET_TOURNAMENT_PLAYERS =
+        """
+        SELECT g.*
+        FROM giocatore g
+        JOIN iscrizione_torneo i ON g.id_giocatore = i.id_giocatore
+        WHERE i.id_torneo = ?
+        """;
+
     public static final String GET_TOURNAMENT_MATCHES =
         """
         SELECT *
