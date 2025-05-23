@@ -34,6 +34,7 @@ public class TournamentDetailsWindow extends JFrame {
     private final JTable registrationsTable;
     private final JTable matchesTable;
     
+    private final JButton addMatchButton;
     private final JButton closeButton;
 
     public TournamentDetailsWindow(final JFrame parent) {
@@ -87,9 +88,15 @@ public class TournamentDetailsWindow extends JFrame {
         final String[] matchesColumns = {"ID", "Vincitore", "Avversario", "Risultato", "Campo"};
         final var matchesModel = new ImmutableTableModel(matchesColumns, 0);
         this.matchesTable = new JTable(matchesModel);
+
+        final var matchesButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        this.addMatchButton = new JButton("Aggiungi Partita");
+        matchesButtonPanel.add(this.addMatchButton);
         
         final var matchesScrollPane = new JScrollPane(matchesTable);
         matchesScrollPane.setBorder(BorderFactory.createTitledBorder(MATCHES_TITLE));
+
+        matchesPanel.add(matchesButtonPanel, BorderLayout.NORTH);
         matchesPanel.add(matchesScrollPane, BorderLayout.CENTER);
         
         tablesPanel.setLeftComponent(registrationsPanel);
@@ -98,9 +105,13 @@ public class TournamentDetailsWindow extends JFrame {
         final var buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.closeButton = new JButton("Chiudi");
         buttonsPanel.add(this.closeButton);
+
+        final var mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(matchesButtonPanel, BorderLayout.NORTH);
+        mainPanel.add(tablesPanel, BorderLayout.CENTER);
         
         add(infoPanel, BorderLayout.NORTH);
-        add(tablesPanel, BorderLayout.CENTER);
+        add(mainPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
     }
     
@@ -135,6 +146,10 @@ public class TournamentDetailsWindow extends JFrame {
     
     public JTable getMatchesTable() {
         return matchesTable;
+    }
+
+    public void setAddMatchListener(final ActionListener listener) {
+        this.addMatchButton.addActionListener(listener);
     }
     
     public void setCloseButtonListener(final ActionListener listener) {
