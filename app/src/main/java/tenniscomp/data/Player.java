@@ -92,6 +92,10 @@ public class Player {
         return teamId;
     }
 
+    public String toString() {
+        return surname + " " + name;
+    }
+
     public final class DAO {
 
         public static boolean insertPlayer(final Connection connection, final String surname, final String name,
