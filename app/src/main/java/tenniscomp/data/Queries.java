@@ -196,13 +196,6 @@ public final class Queries {
         WHERE i.id_torneo = ?
         """;
 
-    public static final String GET_TOURNAMENT_MATCHES =
-        """
-        SELECT *
-        FROM partita_torneo
-        WHERE id_torneo = ?
-        """;
-
     public static final String GET_TOURNAMENTS_BY_REFEREE =
         """
         SELECT *
@@ -234,6 +227,41 @@ public final class Queries {
             WHERE id_giocatore = ?
             AND id_torneo = ?
         )
+        """;
+
+    public static final String ADD_TOURNAMENT_MATCH_PLAYER =
+        """
+        INSERT INTO giocatore_partita_torneo (id_giocatore, id_partita_torneo, vincitore)
+        VALUES (?, ?, ?)
+        """;
+
+    public static final String ADD_TOURNAMENT_MATCH =
+        """
+        INSERT INTO partita_torneo (data, risultato, id_torneo, id_campo, id_arbitro)
+        VALUES (?, ?, ?, ?, ?)
+        """;
+
+    public static final String GET_TOURNAMENT_MATCHES =
+        """
+        SELECT *
+        FROM partita_torneo
+        WHERE id_torneo = ?
+        """;
+
+    public static final String GET_PLAYERS_BY_TOURNAMENT_MATCH =
+        """
+        SELECT g.*
+        FROM giocatore g
+        JOIN giocatore_partita_torneo gpt ON g.id_giocatore = gpt.id_giocatore
+        WHERE gpt.id_partita_torneo = ?;
+        """;
+
+    public static final String CHECK_PLAYER_WON_TOURNAMENT_MATCH =
+        """
+        SELECT vincitore
+        FROM giocatore_partita_torneo
+        WHERE id_giocatore = ?
+        AND id_partita_torneo = ?
         """;
 
     public static final String ADD_LEAGUE =

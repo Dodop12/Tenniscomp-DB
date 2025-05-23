@@ -49,11 +49,17 @@ public interface Model {
     Tournament getTournamentById(int tournamentId);
     List<TournamentRegistration> getTournamentRegistrations(int tournamentId);
     List<Player> getTournamentPlayers(int tournamentId);
-    List<TournamentMatch> getTournamentMatches(int tournamentId);
     List<Tournament> getTournamentsByReferee(int refereeId);
     List<Tournament> getEligibleTournaments(String playerRanking, String playerGender);
     boolean registerPlayerForTournament(int playerId, int tournamentId);
     boolean isPlayerRegisteredForTournament(int playerId, int tournamentId);
+    boolean addTournamentMatch(String date, String result, int tournamentId, int courtId, 
+            Integer refereeId, int winnerId, int opponentId); // For singles
+    boolean addTournamentMatch(String date, String result, int tournamentId, int courtId, 
+            Integer refereeId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
+    List<TournamentMatch> getTournamentMatches(int tournamentId);
+    List<Player> getPlayersByTournamentMatch(int matchId);
+    boolean isPlayerWinner(int playerId, int matchId);
 
     boolean addLeague(String series, String category, String gender, int year, int refereeId);
     League getLeagueById(int leagueId);
