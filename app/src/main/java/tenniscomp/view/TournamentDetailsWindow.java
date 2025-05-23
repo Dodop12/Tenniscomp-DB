@@ -102,9 +102,9 @@ public class TournamentDetailsWindow extends JFrame {
         tablesPanel.setLeftComponent(registrationsPanel);
         tablesPanel.setRightComponent(matchesPanel);
         
-        final var buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        final var lowerButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.closeButton = new JButton("Chiudi");
-        buttonsPanel.add(this.closeButton);
+        lowerButtonPanel.add(this.closeButton);
 
         final var mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(matchesButtonPanel, BorderLayout.NORTH);
@@ -112,7 +112,7 @@ public class TournamentDetailsWindow extends JFrame {
         
         add(infoPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
-        add(buttonsPanel, BorderLayout.SOUTH);
+        add(lowerButtonPanel, BorderLayout.SOUTH);
     }
     
     public void setTournamentName(final String name) {
