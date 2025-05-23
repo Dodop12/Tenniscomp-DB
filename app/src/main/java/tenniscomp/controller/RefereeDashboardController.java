@@ -75,7 +75,7 @@ public class RefereeDashboardController {
         final var leagues = model.getLeaguesByReferee(this.referee.getRefereeId());
          for (final var league : leagues) {
             final Object[] rowData = {
-                league.getCompetitionId(),
+                league.getLeagueId(),
                 league.getSeries(),
                 league.getCategory(),
                 league.getGender(),

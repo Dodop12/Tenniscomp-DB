@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class League {
-    private final int competitionId;
+    private final int leagueId;
     private final String series;
     private final String category;
     private final String gender;
@@ -14,7 +14,7 @@ public class League {
 
     public League(final int competitionId, final String series, final String category, 
             final String gender, final int year, final int refereeId) {
-        this.competitionId = competitionId;
+        this.leagueId = competitionId;
         this.series = series;
         this.category = category;
         this.gender = gender;
@@ -22,8 +22,8 @@ public class League {
         this.refereeId = refereeId;
     }
 
-    public int getCompetitionId() {
-        return competitionId;
+    public int getLeagueId() {
+        return leagueId;
     }
 
     public String getSeries() {
