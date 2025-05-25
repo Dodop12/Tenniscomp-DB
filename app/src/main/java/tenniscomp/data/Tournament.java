@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.Ranking;
 
 public class Tournament {
     private final int tournamentId;
@@ -149,7 +149,7 @@ public class Tournament {
 
         public static List<Tournament> getEligibleTournaments(final Connection connection,
                 final String playerRanking, final String playerGender) {
-            final int playerRankingInt = PlayerUtils.getRankingAsInt(playerRanking);
+            final int playerRankingInt = Ranking.getNumericValueFromLabel(playerRanking);
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_ELIGIBLE_TOURNAMENTS,
                         playerGender, playerRankingInt);

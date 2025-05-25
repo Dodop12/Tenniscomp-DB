@@ -18,7 +18,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.LeagueCategory;
+import tenniscomp.utils.LeagueSeries;
 
 public class AddLeagueWindow extends JDialog {
 
@@ -41,12 +42,12 @@ public class AddLeagueWindow extends JDialog {
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         formPanel.add(new JLabel("Serie:"));
-        final var series = PlayerUtils.getLeagueSeries();
+        final var series = LeagueSeries.getAllLabels();
         this.seriesComboBox = new JComboBox<>(series.toArray(new String[0]));
         formPanel.add(this.seriesComboBox);
 
         formPanel.add(new JLabel("Categoria:"));
-        final var categories = PlayerUtils.getLeagueCategories();
+        final var categories = LeagueCategory.getAllLabels();
         this.categoryComboBox = new JComboBox<>(categories.toArray(new String[0]));
         formPanel.add(this.categoryComboBox);
 

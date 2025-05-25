@@ -18,6 +18,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import tenniscomp.data.Club;
+import tenniscomp.utils.Surface;
 
 public class CourtRegistrationWindow extends JDialog {
     
@@ -47,8 +48,8 @@ public class CourtRegistrationWindow extends JDialog {
         formPanel.add(this.courtNumberSpinner);
         
         formPanel.add(new JLabel("Superficie:"));
-        final String[] surfaces = {"Terra rossa", "Erba", "Cemento", "Sintetico"};
-        this.surfaceComboBox = new JComboBox<>(surfaces);
+        final var surfaces = Surface.getAllLabels();
+        this.surfaceComboBox = new JComboBox<>(surfaces.toArray(new String[0]));
         formPanel.add(this.surfaceComboBox);
         
         formPanel.add(new JLabel("Indoor:"));

@@ -3,7 +3,6 @@ package tenniscomp.utils;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Random;
 
 import tenniscomp.data.Card;
@@ -12,25 +11,6 @@ public final class PlayerUtils {
 
     private static final DateTimeFormatter YMD_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter DMY_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    private static final List<String> RANKINGS = List.of(
-            "1", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8",
-            "3.1", "3.2", "3.3", "3.4", "3.5",
-            "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.NC"
-    );
-    private static final int LOWEST_RANKING_INT = 47;
-
-    private static final List<String> LEAGUE_SERIES = List.of(
-            "A1", "A2", "B1", "B2", "C", "D1", "D2", "D3", "D4"
-    );
-
-    private static final List<String> LEAGUE_CATEGORIES = List.of(
-            "Open", "U10", "U12", "U14", "U16", "U18", "O45", "O50", "O55", "O60"
-    );
-
-    private static final List<String> MATCH_TYPES = List.of(
-            "Singolare", "Doppio"
-    );
 
     private PlayerUtils() {
         
@@ -42,22 +22,6 @@ public final class PlayerUtils {
 
     public static DateTimeFormatter getDmyDateFormatter() {
         return DMY_DATE_FORMATTER;
-    }
-
-    public static List<String> getAllRankings() {
-        return RANKINGS;
-    }
-
-    public static List<String> getLeagueSeries() {
-        return LEAGUE_SERIES;
-    }
-
-    public static List<String> getLeagueCategories() {
-        return LEAGUE_CATEGORIES;
-    }
-
-    public static List<String> getMatchTypes() {
-        return MATCH_TYPES;
     }
 
     public static String calculateCategory(final String birthDate) {
@@ -123,13 +87,6 @@ public final class PlayerUtils {
                 e
             );
         }
-    }
-    
-    public static int getRankingAsInt(final String ranking) {
-        if (ranking.equals("4.NC")) {
-            return LOWEST_RANKING_INT;
-        }
-        return Integer.parseInt(ranking.replace(".", ""));
     }
 
     private static int calculateAgeAtYearEnd(final String birthDate) {

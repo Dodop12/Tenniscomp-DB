@@ -22,7 +22,9 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Club;
+import tenniscomp.utils.MatchType;
 import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.Ranking;
 
 public class AddTournamentWindow extends JDialog {
 
@@ -67,7 +69,7 @@ public class AddTournamentWindow extends JDialog {
 
         // Singles or doubles
         formPanel.add(new JLabel("Tipo:"));
-        final var types = PlayerUtils.getMatchTypes();
+        final var types = MatchType.getAllLabels();
         this.typeComboBox = new JComboBox<>(types.toArray(new String[0]));
         formPanel.add(this.typeComboBox);
 
@@ -86,7 +88,8 @@ public class AddTournamentWindow extends JDialog {
         formPanel.add(genderPanel);
 
         formPanel.add(new JLabel("Limite classifica:"));
-        this.rankingLimitComboBox = new JComboBox<>(PlayerUtils.getAllRankings().toArray(new String[0]));
+        final var rankings = Ranking.getAllLabels();
+        this.rankingLimitComboBox = new JComboBox<>(rankings.toArray(new String[0]));
         formPanel.add(this.rankingLimitComboBox);
 
         formPanel.add(new JLabel("Montepremi (€):"));

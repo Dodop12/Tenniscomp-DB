@@ -21,6 +21,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Court;
 import tenniscomp.data.Player;
+import tenniscomp.utils.MatchType;
 import tenniscomp.utils.PlayerUtils;
 
 public class AddMatchWindow extends JDialog {
@@ -53,7 +54,8 @@ public class AddMatchWindow extends JDialog {
 
         // Match type selector
         mainPanel.add(new JLabel("Tipo:"));
-        this.typeComboBox = new JComboBox<>(PlayerUtils.getMatchTypes().toArray(new String[0]));
+        final var types = MatchType.getAllLabels();
+        this.typeComboBox = new JComboBox<>(types.toArray(new String[0]));
         mainPanel.add(this.typeComboBox);
 
         // Winner selector

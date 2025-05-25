@@ -16,6 +16,7 @@ import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.Ranking;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AssignClubWindow;
 import tenniscomp.view.PlayerManager;
@@ -204,7 +205,7 @@ public class PlayerManagerController {
             return;
         }
 
-        final var allRankings = PlayerUtils.getAllRankings().stream()
+        final var allRankings = Ranking.getAllLabels().stream()
                 .filter(e -> !e.equals(player.getRanking())) // Exclude current ranking
                 .toArray(String[]::new);
         final var newRanking = JOptionPane.showInputDialog(
