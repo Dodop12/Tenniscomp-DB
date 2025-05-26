@@ -33,7 +33,7 @@ public class PlayerDashboardController {
 
     private void loadPlayerData() {
         this.view.setPlayerName(player.getSurname() + " " + player.getName());
-        this.view.setPlayerRanking(player.getRanking());
+        this.view.setPlayerRanking(player.getRanking().getLabel());
 
         final String category = PlayerUtils.calculateCategory(player.getBirthDate());
         this.view.setPlayerCategory(category);
@@ -61,7 +61,7 @@ public class PlayerDashboardController {
                 tournament.getEndDate(),
                 tournament.getRegistrationDeadline(),
                 tournament.getType(),
-                tournament.getGender().equals("M") ? "Maschile" : "Femminile",
+                tournament.getGender().getLabel(),
                 tournament.getRankingLimit()
             };
             tableModel.addRow(rowData);

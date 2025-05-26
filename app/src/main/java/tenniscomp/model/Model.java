@@ -13,16 +13,22 @@ import tenniscomp.data.Team;
 import tenniscomp.data.Tournament;
 import tenniscomp.data.TournamentMatch;
 import tenniscomp.data.TournamentRegistration;
+import tenniscomp.utils.Gender;
+import tenniscomp.utils.LeagueCategory;
+import tenniscomp.utils.LeagueSeries;
+import tenniscomp.utils.MatchType;
+import tenniscomp.utils.Ranking;
+import tenniscomp.utils.Surface;
 
 public interface Model {
 
     boolean registerPlayer(String surname, String name, String email, String birthDate,
-            String gender, String phone, String username, String password);
+            Gender gender, String phone, String username, String password);
     boolean loginPlayer(String username, String password);
     Player getPlayerById(int playerId);
     Player getPlayerByUsername(String username);
     List<Player> getAllPlayers();
-    boolean updatePlayerRanking(int playerId, String newRanking);
+    boolean updatePlayerRanking(int playerId, Ranking newRanking);
     boolean updatePlayerCard(int playerId, int cardId);
     boolean updatePlayerClub(final int playerId, final Integer clubId);
 
@@ -32,7 +38,7 @@ public interface Model {
     boolean addClub(String name, String address, String city);
     Club getClubById(int clubId);
     List<Club> getAllClubs();
-    boolean addCourt(int number, String surface, boolean indoor, int clubId);
+    boolean addCourt(int number, Surface surface, boolean indoor, int clubId);
     Court getCourtById(int courtId);
     int getCourtCountByClub(int clubId);
     List<Court> getCourtsByClub(int clubId);
@@ -45,12 +51,12 @@ public interface Model {
     boolean updateCardExpiryDate(int cardId, String newExpiryDate);
 
     boolean addTournament(String name, String startDate, String endDate, String registrationDeadline, 
-            String type, String gender, String rankingLimit, double prizeMoney, int refereeId, int clubId);
+            MatchType type, Gender gender, Ranking rankingLimit, double prizeMoney, int refereeId, int clubId);
     Tournament getTournamentById(int tournamentId);
     List<TournamentRegistration> getTournamentRegistrations(int tournamentId);
     List<Player> getTournamentPlayers(int tournamentId);
     List<Tournament> getTournamentsByReferee(int refereeId);
-    List<Tournament> getEligibleTournaments(String playerRanking, String playerGender);
+    List<Tournament> getEligibleTournaments(Ranking playerRanking, Gender playerGender);
     boolean registerPlayerForTournament(int playerId, int tournamentId);
     boolean isPlayerRegisteredForTournament(int playerId, int tournamentId);
     boolean addTournamentMatch(String date, String result, int tournamentId, int courtId, 
@@ -61,7 +67,7 @@ public interface Model {
     List<Player> getPlayersByTournamentMatch(int matchId);
     boolean isPlayerWinner(int playerId, int matchId);
 
-    boolean addLeague(String series, String category, String gender, int year, int refereeId);
+    boolean addLeague(LeagueSeries series, LeagueCategory category, String gender, int year, int refereeId);
     League getLeagueById(int leagueId);
     List<Team> getLeagueTeams(int leagueId);
     List<LeagueTie> getLeagueTies(int leagueId);

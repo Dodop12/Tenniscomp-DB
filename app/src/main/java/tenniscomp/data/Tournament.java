@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.Gender;
+import tenniscomp.utils.MatchType;
 import tenniscomp.utils.Ranking;
 
 public class Tournament {
@@ -12,15 +14,15 @@ public class Tournament {
     private final String startDate;
     private final String endDate;
     private final String registrationDeadline;
-    private final String type;
-    private final String gender;
-    private final String rankingLimit;
+    private final MatchType type;
+    private final Gender gender;
+    private final Ranking rankingLimit;
     private final double prizeMoney;
     private final int refereeId;
     private final int clubId;
 
     public Tournament(final int competitionId, final String name, final String startDate, final String endDate,
-            final String registrationDeadline, final String type, final String gender, final String rankingLimit,
+            final String registrationDeadline, final MatchType type, final Gender gender, final Ranking rankingLimit,
             final double prizeMoney, final int refereeId, final int clubId) {
         this.tournamentId = competitionId;
         this.name = name;
@@ -55,15 +57,15 @@ public class Tournament {
         return registrationDeadline;
     }
 
-    public String getType() {
+    public MatchType getType() {
         return type;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public String getRankingLimit() {
+    public Ranking getRankingLimit() {
         return rankingLimit;
     }
 
@@ -82,11 +84,12 @@ public class Tournament {
     public final class DAO {
 
         public static boolean insertTournament(final Connection connection, final String name, final String startDate, 
-                final String endDate, final String registrationDeadline, final String type, final String gender,
-                final String rankingLimit, final double prizeMoney, final int refereeId, final int clubId) {
+                final String endDate, final String registrationDeadline, final MatchType type, final Gender gender,
+                final Ranking rankingLimit, final double prizeMoney, final int refereeId, final int clubId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.ADD_TOURNAMENT, name, startDate, endDate, 
-                        registrationDeadline, type, gender, rankingLimit, prizeMoney, refereeId, clubId)
+                        registrationDeadline, type.getLabel(), gender.getCode(), rankingLimit.getLabel(),
+                        prizeMoney, refereeId, clubId)
             ) {
                 return statement.executeUpdate() > 0;
             } catch (final Exception e) {
@@ -106,9 +109,9 @@ public class Tournament {
                             resultSet.getString("data_inizio"),
                             resultSet.getString("data_fine"),
                             resultSet.getString("scadenza_iscrizioni"),
-                            resultSet.getString("tipo"),
-                            resultSet.getString("sesso"),
-                            resultSet.getString("limite_classifica"),
+                            MatchType.fromLabel(resultSet.getString("tipo")),
+                            Gender.fromCode(resultSet.getString("sesso")),
+                            Ranking.fromLabel(resultSet.getString("limite_classifica")),
                             resultSet.getDouble("montepremi"),
                             resultSet.getInt("id_ga"),
                             resultSet.getInt("id_circolo")
@@ -133,9 +136,9 @@ public class Tournament {
                                 resultSet.getString("data_inizio"),
                                 resultSet.getString("data_fine"),
                                 resultSet.getString("scadenza_iscrizioni"),
-                                resultSet.getString("tipo"),
-                                resultSet.getString("sesso"),
-                                resultSet.getString("limite_classifica"),
+                                MatchType.fromLabel(resultSet.getString("tipo")),
+                                Gender.fromCode(resultSet.getString("sesso")),
+                                Ranking.fromLabel(resultSet.getString("limite_classifica")),
                                 resultSet.getDouble("montepremi"),
                                 resultSet.getInt("id_ga"),
                                 resultSet.getInt("id_circolo")
@@ -148,11 +151,10 @@ public class Tournament {
         }
 
         public static List<Tournament> getEligibleTournaments(final Connection connection,
-                final String playerRanking, final String playerGender) {
-            final int playerRankingInt = Ranking.getNumericValueFromLabel(playerRanking);
+                final Ranking playerRanking, final Gender playerGender) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_ELIGIBLE_TOURNAMENTS,
-                        playerGender, playerRankingInt);
+                        playerGender, playerRanking.getNumericValue());
                 var resultSet = statement.executeQuery();
                 ) {
                     final var tournaments = new ArrayList<Tournament>();
@@ -163,9 +165,9 @@ public class Tournament {
                                 resultSet.getString("data_inizio"),
                                 resultSet.getString("data_fine"),
                                 resultSet.getString("scadenza_iscrizioni"),
-                                resultSet.getString("tipo"),
-                                resultSet.getString("sesso"),
-                                resultSet.getString("limite_classifica"),
+                                MatchType.fromLabel(resultSet.getString("tipo")),
+                                Gender.fromLabel(resultSet.getString("sesso")),
+                                Ranking.fromLabel(resultSet.getString("limite_classifica")),
                                 resultSet.getDouble("montepremi"),
                                 resultSet.getInt("id_ga"),
                                 resultSet.getInt("id_circolo")

@@ -34,7 +34,7 @@ public class TournamentDetailsController {
     private void loadTournamentData() {
         view.setTournamentName(tournament.getName());
         view.setDates(tournament.getStartDate(), tournament.getEndDate(), tournament.getRegistrationDeadline());
-        view.setRankingLimit(tournament.getRankingLimit());
+        view.setRankingLimit(tournament.getRankingLimit().getLabel());
         
         final var club = model.getClubById(tournament.getClubId());
         if (club != null) {
@@ -103,6 +103,7 @@ public class TournamentDetailsController {
 
     private void setupListeners() {
         view.setAddMatchListener(e -> openAddMatchWindow());
+        view.setCloseButtonListener(e -> view.dispose());
     }
 
     private void openAddMatchWindow() {
@@ -120,7 +121,7 @@ public class TournamentDetailsController {
         }
         
         final var addMatchWindow = new AddMatchWindow(view, registeredPlayers, courts);
-        addMatchWindow.setMatchType(this.tournament.getType());
+        addMatchWindow.setMatchType(this.tournament.getType().getLabel());
         addMatchWindow.setMatchTypeEditable(false);
         
         addMatchWindow.setSaveButtonListener(e -> {

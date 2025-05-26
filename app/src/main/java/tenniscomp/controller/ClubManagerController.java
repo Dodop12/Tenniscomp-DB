@@ -10,6 +10,7 @@ import javax.swing.JPopupMenu;
 import tenniscomp.data.Club;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
+import tenniscomp.utils.Surface;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.ClubManager;
 import tenniscomp.view.CourtRegistrationWindow;
@@ -113,7 +114,7 @@ public class ClubManagerController {
                 return;
             }
             
-            final boolean success = model.addCourt(courtNumber, surface, indoor, club.getClubId());
+            final boolean success = model.addCourt(courtNumber, Surface.fromLabel(surface), indoor, club.getClubId());
             
             if (success) {
                 loadClubs();

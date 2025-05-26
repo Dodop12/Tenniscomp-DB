@@ -27,4 +27,11 @@ public enum MatchType {
                 .map(MatchType::getLabel)
                 .toList();
     }
+
+    public static MatchType fromLabel(final String label) {
+        return Arrays.stream(values())
+                .filter(type -> type.label.equals(label))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No match type found for label: " + label));
+    }
 }

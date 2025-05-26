@@ -6,24 +6,27 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.Gender;
+import tenniscomp.utils.Ranking;
+
 public class Player {
     private final int playerId;
     private final String surname;
     private final String name;
     private final String email;
     private final String birthDate;
-    private final String gender;
+    private final Gender gender;
     private final String phone;
     private final String username;
     private final String password;
-    private final String ranking;
+    private final Ranking ranking;
     private final Integer cardId;
     private final Integer clubId;
     private final Integer teamId;
 
     public Player(final int playerId, final String surname, final String name, final String email,
-            final String birthDate, final String gender, final String phone, final String username,
-            final String password, final String ranking, final Integer cardId, final Integer clubId,
+            final String birthDate, final Gender gender, final String phone, final String username,
+            final String password, final Ranking ranking, final Integer cardId, final Integer clubId,
             final Integer teamId) {
         this.playerId = playerId;
         this.surname = surname;
@@ -60,7 +63,7 @@ public class Player {
         return birthDate;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
@@ -76,7 +79,7 @@ public class Player {
         return password;
     }
 
-    public String getRanking() {
+    public Ranking getRanking() {
         return ranking;
     }
 
@@ -99,12 +102,12 @@ public class Player {
     public final class DAO {
 
         public static boolean insertPlayer(final Connection connection, final String surname, final String name,
-                final String email, final String birthDate, final String gender,
+                final String email, final String birthDate, final Gender gender,
                 final String phone, final String username, final String password) {
             final var convertedDate = getConvertedDateFormat(birthDate);
             try ( 
                 var statement = DAOUtils.prepare(connection, Queries.ADD_PLAYER, surname, name, email,
-                    convertedDate, gender, phone, username, password);
+                    convertedDate, gender.getCode(), phone, username, password);
             ) {
                 return statement.executeUpdate() > 0;
             } catch (final Exception e) {
@@ -136,11 +139,11 @@ public class Player {
                         resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
-                        resultSet.getString("sesso"),
+                        Gender.fromCode(resultSet.getString("sesso")),
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica"),
+                        Ranking.fromLabel(resultSet.getString("classifica")),
                         resultSet.getObject("id_tessera", Integer.class),
                         resultSet.getObject("id_circolo", Integer.class),
                         resultSet.getObject("id_squadra", Integer.class)
@@ -164,11 +167,11 @@ public class Player {
                         resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
-                        resultSet.getString("sesso"),
+                        Gender.fromCode(resultSet.getString("sesso")),
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica"),
+                        Ranking.fromLabel(resultSet.getString("classifica")),
                         resultSet.getObject("id_tessera", Integer.class),
                         resultSet.getObject("id_circolo", Integer.class),
                         resultSet.getObject("id_squadra", Integer.class)
@@ -193,11 +196,11 @@ public class Player {
                         resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
-                        resultSet.getString("sesso"),
+                        Gender.fromCode(resultSet.getString("sesso")),
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica"),
+                        Ranking.fromLabel(resultSet.getString("classifica")),
                         resultSet.getObject("id_tessera", Integer.class),
                         resultSet.getObject("id_circolo", Integer.class),
                         resultSet.getObject("id_squadra", Integer.class)
@@ -222,11 +225,11 @@ public class Player {
                         resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
-                        resultSet.getString("sesso"),
+                        Gender.fromCode(resultSet.getString("sesso")),
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica"),
+                        Ranking.fromLabel(resultSet.getString("classifica")),
                         resultSet.getObject("id_tessera", Integer.class),
                         resultSet.getObject("id_circolo", Integer.class),
                         resultSet.getObject("id_squadra", Integer.class)
@@ -251,11 +254,11 @@ public class Player {
                         resultSet.getString("nome"),
                         resultSet.getString("email"),
                         resultSet.getString("data_nascita"),
-                        resultSet.getString("sesso"),
+                        Gender.fromCode(resultSet.getString("sesso")),
                         resultSet.getString("telefono"),
                         resultSet.getString("username"),
                         resultSet.getString("password_hash"),
-                        resultSet.getString("classifica"),
+                        Ranking.fromLabel(resultSet.getString("classifica")),
                         resultSet.getObject("id_tessera", Integer.class),
                         resultSet.getObject("id_circolo", Integer.class),
                         resultSet.getObject("id_squadra", Integer.class)
@@ -267,9 +270,9 @@ public class Player {
             }
         }
 
-        public static boolean updatePlayerRanking(final Connection connection, final int playerId, final String newRanking) {
+        public static boolean updatePlayerRanking(final Connection connection, final int playerId, final Ranking newRanking) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_RANKING, newRanking, playerId);
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_RANKING, newRanking.getLabel(), playerId);
             ) {
                 return statement.executeUpdate() == 1;
             } catch (final Exception e) {
@@ -292,6 +295,16 @@ public class Player {
                 var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_CLUB, clubId, playerId);
             ) {
                 return statement.executeUpdate() == 1;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean updatePlayerTeam(final Connection connection, final int playerId, final int teamId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_PLAYER_TEAM, teamId, playerId);
+            ) {
+                return statement.executeUpdate() > 0;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

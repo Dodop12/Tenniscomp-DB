@@ -29,4 +29,11 @@ public enum Surface {
                 .map(Surface::getLabel)
                 .toList();
     }
+
+    public static Surface fromLabel(String label) {
+        return Arrays.stream(values())
+                .filter(surface -> surface.label.equals(label))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No surface found for label: " + label));
+    }
 }

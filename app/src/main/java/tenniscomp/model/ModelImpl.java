@@ -14,6 +14,12 @@ import tenniscomp.data.Team;
 import tenniscomp.data.Tournament;
 import tenniscomp.data.TournamentMatch;
 import tenniscomp.data.TournamentRegistration;
+import tenniscomp.utils.Gender;
+import tenniscomp.utils.LeagueCategory;
+import tenniscomp.utils.LeagueSeries;
+import tenniscomp.utils.MatchType;
+import tenniscomp.utils.Ranking;
+import tenniscomp.utils.Surface;
 
 public class ModelImpl implements Model {
 
@@ -25,7 +31,7 @@ public class ModelImpl implements Model {
 
     @Override
     public boolean registerPlayer(final String surname, final String name, final String email, final String birthDate,
-            final String gender, final String phone, final String username, final String password) {
+            final Gender gender, final String phone, final String username, final String password) {
         return Player.DAO.insertPlayer(this.connection, surname, name, email,
             birthDate, gender, phone, username, password);
     }
@@ -51,7 +57,7 @@ public class ModelImpl implements Model {
     }
 
      @Override
-    public boolean updatePlayerRanking(final int playerId, final String newRanking) {
+    public boolean updatePlayerRanking(final int playerId, final Ranking newRanking) {
         return Player.DAO.updatePlayerRanking(this.connection, playerId, newRanking);
     }
 
@@ -91,7 +97,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean addCourt(final int number, final String surface, final boolean indoor, final int clubId) {
+    public boolean addCourt(final int number, final Surface surface, final boolean indoor, final int clubId) {
         return Court.DAO.insertCourt(this.connection, number, surface, indoor, clubId);
     }
 
@@ -142,7 +148,7 @@ public class ModelImpl implements Model {
 
     @Override
     public boolean addTournament(final String name, final String startDate, final String endDate, 
-            final String registrationDeadline, final String type, final String gender, final String rankingLimit, 
+            final String registrationDeadline, final MatchType type, final Gender gender, final Ranking rankingLimit, 
             final double prizeMoney, final int refereeId, final int clubId) {
         return Tournament.DAO.insertTournament(this.connection, name, startDate, endDate, 
             registrationDeadline, type, gender, rankingLimit, prizeMoney, refereeId, clubId);
@@ -169,7 +175,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public List<Tournament> getEligibleTournaments(final String playerRanking, final String playerGender) {
+    public List<Tournament> getEligibleTournaments(final Ranking playerRanking, final Gender playerGender) {
         return Tournament.DAO.getEligibleTournaments(this.connection, playerRanking, playerGender);
     }
 
@@ -215,7 +221,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean addLeague(final String series, final String category, final String gender, 
+    public boolean addLeague(final LeagueSeries series, final LeagueCategory category, final String gender, 
             final int year, final int refereeId) {
         return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);
     }

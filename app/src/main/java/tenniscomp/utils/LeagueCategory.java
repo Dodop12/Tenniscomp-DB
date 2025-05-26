@@ -5,12 +5,42 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum LeagueCategory {
-    OPEN, U10, U12, U14, U16, O45, O50, O55, O60;
+    OPEN("Open"),
+    U10("U10"),
+    U12("U12"),
+    U14("U14"),
+    U16("U16"),
+    O45("O45"),
+    O50("O50"),
+    O55("O55"),
+    O60("O60");
+
+    private final String label;
+
+    LeagueCategory(final String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    @Override
+    public String toString() {
+        return label;
+    }
 
     public static List<String> getAllLabels() {
         return Arrays.stream(values())
                 .map(LeagueCategory::toString)
                 .toList();
+    }
+
+    public static LeagueCategory fromLabel(final String label) {
+        return Arrays.stream(values())
+                .filter(category -> category.label.equals(label))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No league category found for label: " + label));
     }
 
     public Pair<LocalDate, LocalDate> getBirthDateRange() {

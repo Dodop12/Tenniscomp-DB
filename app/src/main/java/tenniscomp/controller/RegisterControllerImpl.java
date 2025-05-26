@@ -3,6 +3,7 @@ package tenniscomp.controller;
 import javax.swing.JOptionPane;
 
 import tenniscomp.model.Model;
+import tenniscomp.utils.Gender;
 import tenniscomp.view.LoginWindow;
 import tenniscomp.view.RegisterWindow;
 
@@ -36,7 +37,8 @@ public class RegisterControllerImpl implements RegisterController {
             return;
         }
 
-        final boolean success = model.registerPlayer(surname, name, email, birthDate, gender, phone, username, password);
+        final boolean success = model.registerPlayer(surname, name, email, birthDate,
+                Gender.fromCode(gender), phone, username, password);
 
         if (success) {
             view.showMessage("Registrazione completata con successo!", JOptionPane.INFORMATION_MESSAGE);

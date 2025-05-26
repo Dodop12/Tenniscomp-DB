@@ -4,14 +4,16 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.Surface;
+
 public class Court {
     private final int courtId;
     private final int number;
-    private final String surface; // TODO: enum?
+    private final Surface surface;
     private final boolean indoor;
     private final int clubId;
 
-    public Court(final int courtId, final int number, final String surface, final boolean indoor, final int clubId) {
+    public Court(final int courtId, final int number, final Surface surface, final boolean indoor, final int clubId) {
         this.courtId = courtId;
         this.number = number;
         this.surface = surface;
@@ -27,7 +29,7 @@ public class Court {
         return number;
     }
 
-    public String getSurface() {
+    public Surface getSurface() {
         return surface;
     }
 
@@ -46,10 +48,10 @@ public class Court {
     public final class DAO {
         
         public static boolean insertCourt(final Connection connection, final int number, 
-                final String surface, final boolean indoor, final int clubId) {
+                final Surface surface, final boolean indoor, final int clubId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.ADD_COURT,
-                    number, surface, indoor, clubId);
+                    number, surface.getLabel(), indoor, clubId);
             ) {
                 return statement.executeUpdate() > 0;
             } catch (final Exception e) {
@@ -66,7 +68,7 @@ public class Court {
                     return new Court(
                         resultSet.getInt("id_campo"),
                         resultSet.getInt("numero"),
-                        resultSet.getString("superficie"),
+                        Surface.fromLabel(resultSet.getString("superficie")),
                         resultSet.getBoolean("indoor"),
                         resultSet.getInt("id_circolo")
                     );
@@ -101,7 +103,7 @@ public class Court {
                 courts.add(new Court(
                     resultSet.getInt("id_campo"),
                     resultSet.getInt("numero"),
-                    resultSet.getString("superficie"),
+                    Surface.fromLabel(resultSet.getString("superficie")),
                     resultSet.getBoolean("indoor"),
                     resultSet.getInt("id_circolo")
                 ));

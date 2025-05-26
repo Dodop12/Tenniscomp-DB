@@ -206,12 +206,12 @@ public class PlayerManagerController {
         }
 
         final var allRankings = Ranking.getAllLabels().stream()
-                .filter(e -> !e.equals(player.getRanking())) // Exclude current ranking
+                .filter(e -> !e.equals(player.getRanking().getLabel())) // Exclude current ranking
                 .toArray(String[]::new);
         final var newRanking = JOptionPane.showInputDialog(
             null,
             "Inserisci la classifica aggiornata per " + player.getSurname() + " " + player.getName()
-            + "\nClassifica attuale: " + player.getRanking(),
+            + "\nClassifica attuale: " + player.getRanking().getLabel(),
             "Modifica Classifica",
             JOptionPane.PLAIN_MESSAGE,
             null,
@@ -221,7 +221,7 @@ public class PlayerManagerController {
 
         // If ranking editing has been confirmed, update it in the database
         if (newRanking != null) {
-            model.updatePlayerRanking(player.getPlayerId(), newRanking.toString());
+            model.updatePlayerRanking(player.getPlayerId(), Ranking.fromLabel(newRanking.toString()));
             loadPlayers();
         }
     }

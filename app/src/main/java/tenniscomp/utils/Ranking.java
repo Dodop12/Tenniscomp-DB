@@ -47,17 +47,11 @@ public enum Ranking {
         return label;
     }
 
-    public static Ranking fromLabel(String label) {
-        for (Ranking ranking : values()) {
-            if (ranking.label.equals(label)) {
-                return ranking;
-            }
-        }
-        throw new IllegalArgumentException("Invalid ranking: " + label);
-    }
-
-    public static int getNumericValueFromLabel(String label) {
-        return fromLabel(label).getNumericValue();
+    public static Ranking fromLabel(final String label) {
+        return Arrays.stream(values())
+                .filter(ranking -> ranking.label.equals(label))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No ranking found for label: " + label));
     }
 
     public static List<String> getAllLabels() {

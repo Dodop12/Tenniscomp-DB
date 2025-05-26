@@ -4,15 +4,18 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.LeagueCategory;
+import tenniscomp.utils.LeagueSeries;
+
 public class League {
     private final int leagueId;
-    private final String series;
-    private final String category;
+    private final LeagueSeries series;
+    private final LeagueCategory category;
     private final String gender;
     private final int year;
     private final int refereeId;
 
-    public League(final int competitionId, final String series, final String category, 
+    public League(final int competitionId, final LeagueSeries series, final LeagueCategory category, 
             final String gender, final int year, final int refereeId) {
         this.leagueId = competitionId;
         this.series = series;
@@ -26,11 +29,11 @@ public class League {
         return leagueId;
     }
 
-    public String getSeries() {
+    public LeagueSeries getSeries() {
         return series;
     }
 
-    public String getCategory() {
+    public LeagueCategory getCategory() {
         return category;
     }
 
@@ -48,10 +51,10 @@ public class League {
 
     public final class DAO {
 
-        public static boolean insertLeague(final Connection connection, final String series, 
-                final String category, final String gender, final int year, final int refereeId) {
+        public static boolean insertLeague(final Connection connection, final LeagueSeries series, 
+                final LeagueCategory category, final String gender, final int year, final int refereeId) {
             try (
-                final var statement = DAOUtils.prepare(connection, Queries.ADD_LEAGUE, series, category,
+                final var statement = DAOUtils.prepare(connection, Queries.ADD_LEAGUE, series.name(), category.getLabel(),
                         gender, year, refereeId)
             ) {
                 return statement.executeUpdate() > 0;
@@ -68,8 +71,8 @@ public class League {
                 if (resultSet.next()) {
                     return new League(
                         resultSet.getInt("id_campionato"),
-                        resultSet.getString("serie"),
-                        resultSet.getString("categoria"),
+                        LeagueSeries.valueOf(resultSet.getString("serie")),
+                        LeagueCategory.fromLabel(resultSet.getString("categoria")),
                         resultSet.getString("sesso"),
                         resultSet.getInt("anno"),
                         resultSet.getInt("id_ga")
@@ -90,8 +93,8 @@ public class League {
                     while (resultSet.next()) {
                         leagues.add(new League(
                             resultSet.getInt("id_campionato"),
-                            resultSet.getString("serie"),
-                            resultSet.getString("categoria"),
+                            LeagueSeries.valueOf(resultSet.getString("serie")),
+                            LeagueCategory.fromLabel(resultSet.getString("categoria")),
                             resultSet.getString("sesso"),
                             resultSet.getInt("anno"),
                             resultSet.getInt("id_ga")
