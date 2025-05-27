@@ -2,6 +2,7 @@ package tenniscomp.utils;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Set;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -56,6 +57,28 @@ public final class TableUtils {
                 }
                 
                 if (row == targetRow) {
+                    component.setBackground(new Color(230, 255, 230)); // Light green
+                } else {
+                    component.setBackground(table.getBackground());
+                }
+                return component;
+            }
+        });
+    }
+
+    public static void highlightRows(final JTable table, final Set<Integer> targetRows) {
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                var component = super.getTableCellRendererComponent(
+                        table, value, isSelected, hasFocus, row, column);
+                
+                if (isSelected) {
+                    return component;
+                }
+                
+                if (targetRows.contains(row)) {
                     component.setBackground(new Color(230, 255, 230)); // Light green
                 } else {
                     component.setBackground(table.getBackground());
