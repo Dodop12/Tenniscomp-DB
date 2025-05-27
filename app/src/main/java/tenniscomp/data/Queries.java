@@ -24,13 +24,6 @@ public final class Queries {
         AND password_hash = ?
         """;
 
-    public static final String GET_ALL_PLAYERS =
-        """
-        SELECT *
-        FROM giocatore
-        ORDER BY cognome, nome
-        """;
-
     public static final String GET_PLAYER_BY_ID =
         """
         SELECT *
@@ -45,11 +38,27 @@ public final class Queries {
         WHERE username = ?
         """;
 
+    public static final String GET_PLAYERS_BY_GENDER_AND_BIRTH =
+        """
+        SELECT *
+        FROM giocatore
+        WHERE data_nascita BETWEEN ? AND ?
+        AND sesso = ?
+        ORDER BY cognome, nome
+        """;
+
     public static final String GET_REFEREE_BY_USERNAME =
         """
         SELECT *
         FROM giudice_arbitro
         WHERE username = ?
+        """;
+
+    public static final String GET_ALL_PLAYERS =
+        """
+        SELECT *
+        FROM giocatore
+        ORDER BY cognome, nome
         """;
 
     public static final String ADD_CLUB =
@@ -277,12 +286,48 @@ public final class Queries {
         WHERE id_campionato = ?
         """;
 
+    public static final String ADD_TEAM = 
+        """
+        INSERT INTO squadra (id_circolo)
+        VALUES (?)
+        """;
+
+    public static final String CHECK_PLAYER_IN_LEAGUE =
+        """
+        SELECT EXISTS(
+            SELECT 1
+            FROM giocatore g
+            JOIN iscrizione_squadra_campionato isc ON g.id_squadra = isc.id_squadra
+            WHERE g.id_giocatore = ? 
+            AND isc.id_campionato = ?
+        )
+        """;
+
+    public static final String UPDATE_PLAYER_TEAM =
+        """
+        UPDATE giocatore
+        SET id_squadra = ?
+        WHERE id_giocatore = ?
+        """;
+
+    public static final String REGISTER_TEAM_FOR_LEAGUE =
+        """
+        INSERT INTO iscrizione_squadra_campionato (id_squadra, id_campionato)
+        VALUES (?, ?)
+        """;
+
     public static final String GET_LEAGUE_TEAMS =
         """
         SELECT s.*
         FROM squadra s
         JOIN iscrizione_squadra_campionato i ON s.id_squadra = i.id_squadra
         WHERE i.id_campionato = ?
+        """;
+
+    public static final String ADD_LEAGUE_TIE = 
+        """
+        INSERT INTO incontro_campionato (data, id_campionato, id_squadra_casa, id_squadra_ospite)
+        VALUES (?, ?, ?, ?)
         """;
 
     public static final String GET_LEAGUE_TIES =

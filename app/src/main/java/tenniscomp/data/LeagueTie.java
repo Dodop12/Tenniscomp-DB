@@ -48,6 +48,18 @@ public class LeagueTie {
 
     public final class DAO {
 
+        public static boolean insertLeagueTie(final Connection connection, final String date,
+                final int leagueId, final int homeTeamId, final int awayTeamId) {
+            try (
+                final var statement = DAOUtils.prepare(connection, Queries.ADD_LEAGUE_TIE, 
+                        date, leagueId, homeTeamId, awayTeamId)
+            ) {
+                return statement.executeUpdate() > 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static List<LeagueTie> getTiesByLeague(final Connection connection, final int leagueId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUE_TIES, leagueId);

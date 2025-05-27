@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tenniscomp.utils.Gender;
+import tenniscomp.utils.LeagueCategory;
 import tenniscomp.utils.Ranking;
 
 public class Player {
@@ -183,6 +184,38 @@ public class Player {
             }
         }
 
+        public static List<Player> getPlayersByCategoryAndGender(final Connection connection, final LeagueCategory category,
+                final Gender gender) {
+            final var dateRange = category.getBirthDateRange();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_PLAYERS_BY_GENDER_AND_BIRTH,
+                        dateRange.x(), dateRange.y(), gender.getCode());
+                var resultSet = statement.executeQuery();
+            ) {
+                final var players = new ArrayList<Player>();
+                while (resultSet.next()) {
+                    players.add(new Player(
+                        resultSet.getInt("id_giocatore"),
+                        resultSet.getString("cognome"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("email"),
+                        resultSet.getString("data_nascita"),
+                        Gender.fromCode(resultSet.getString("sesso")),
+                        resultSet.getString("telefono"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password_hash"),
+                        Ranking.fromLabel(resultSet.getString("classifica")),
+                        resultSet.getObject("id_tessera", Integer.class),
+                        resultSet.getObject("id_circolo", Integer.class),
+                        resultSet.getObject("id_squadra", Integer.class)
+                    ));
+                }
+                return players;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static List<Player> getAllPlayers(final Connection connection) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_ALL_PLAYERS);
@@ -265,6 +298,17 @@ public class Player {
                     ));
                 }
                 return players;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean isPlayerInLeague(final Connection connection, final int playerId, final int leagueId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.CHECK_PLAYER_IN_LEAGUE, playerId, leagueId);
+                var resultSet = statement.executeQuery();
+            ) {
+                return resultSet.next() && resultSet.getInt(1) > 0;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

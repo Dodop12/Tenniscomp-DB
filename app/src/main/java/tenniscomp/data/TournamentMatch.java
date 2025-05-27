@@ -113,6 +113,7 @@ public class TournamentMatch extends Match {
                         }
                     }
                 }
+                
                 connection.commit();
                 return true;
             } catch (final Exception e) {

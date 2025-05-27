@@ -27,6 +27,7 @@ public interface Model {
     boolean loginPlayer(String username, String password);
     Player getPlayerById(int playerId);
     Player getPlayerByUsername(String username);
+    List<Player> getPlayersByCategoryAndGender(LeagueCategory category, Gender gender);
     List<Player> getAllPlayers();
     boolean updatePlayerRanking(int playerId, Ranking newRanking);
     boolean updatePlayerCard(int playerId, int cardId);
@@ -67,9 +68,13 @@ public interface Model {
     List<Player> getPlayersByTournamentMatch(int matchId);
     boolean isPlayerWinner(int playerId, int matchId);
 
-    boolean addLeague(LeagueSeries series, LeagueCategory category, String gender, int year, int refereeId);
+    boolean addLeague(LeagueSeries series, LeagueCategory category, Gender gender, int year, int refereeId);
     League getLeagueById(int leagueId);
+    boolean registerTeamForLeague(int clubId, int leagueId, List<Integer> playerIds);
+    boolean isPlayerInLeague(int playerId, int leagueId);
+    boolean updatePlayerTeam(int playerId, int teamId);
     List<Team> getLeagueTeams(int leagueId);
+    boolean addLeagueTie(String date, int leagueId, int homeTeamId, int awayTeamId);
     List<LeagueTie> getLeagueTies(int leagueId);
     List<League> getLeaguesByReferee(int refereeId);
     Club getClubByTeamId(int teamId);

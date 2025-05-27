@@ -52,6 +52,11 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<Player> getPlayersByCategoryAndGender(final LeagueCategory category, final Gender gender) {
+        return Player.DAO.getPlayersByCategoryAndGender(this.connection, category, gender);
+    }
+
+    @Override
     public List<Player> getAllPlayers() {
         return Player.DAO.getAllPlayers(this.connection);
     }
@@ -221,7 +226,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean addLeague(final LeagueSeries series, final LeagueCategory category, final String gender, 
+    public boolean addLeague(final LeagueSeries series, final LeagueCategory category, final Gender gender, 
             final int year, final int refereeId) {
         return League.DAO.insertLeague(this.connection, series, category, gender, year, refereeId);
     }
@@ -232,8 +237,28 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public boolean registerTeamForLeague(final int clubId, final int leagueId, List<Integer> playerIds) {
+        return Team.DAO.registerTeamForLeague(this.connection, clubId, leagueId, playerIds);
+    }
+
+    @Override
+    public boolean isPlayerInLeague(final int playerId, final int leagueId) {
+        return Player.DAO.isPlayerInLeague(this.connection, playerId, leagueId);
+    }
+
+    @Override
+    public boolean updatePlayerTeam(final int playerId, final int teamId) {
+        return Player.DAO.updatePlayerTeam(this.connection, playerId, teamId);
+    }
+
+    @Override
     public List<Team> getLeagueTeams(final int leagueId) {
         return Team.DAO.getTeamsByLeague(this.connection, leagueId);
+    }
+
+    @Override
+    public boolean addLeagueTie(String date, int leagueId, int homeTeamId, int awayTeamId) {
+        return LeagueTie.DAO.insertLeagueTie(this.connection, date, leagueId, homeTeamId, awayTeamId);
     }
 
     @Override
