@@ -7,12 +7,12 @@ import java.util.Random;
 
 import tenniscomp.data.Card;
 
-public final class PlayerUtils {
+public final class CommonUtils {
 
     private static final DateTimeFormatter YMD_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter DMY_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private PlayerUtils() {
+    private CommonUtils() {
         
     }
 

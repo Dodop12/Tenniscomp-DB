@@ -23,7 +23,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Club;
 import tenniscomp.utils.MatchType;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.Ranking;
 
 public class AddTournamentWindow extends JDialog {
@@ -118,13 +118,13 @@ public class AddTournamentWindow extends JDialog {
 
    public String getStartDate() {
         final var selectedDate = this.startDatePicker.getDate();
-        return selectedDate != null ? selectedDate.format(PlayerUtils.getYmdDateFormatter()) : "";
+        return selectedDate != null ? selectedDate.format(CommonUtils.getYmdDateFormatter()) : "";
     }
 
     public String getEndDate() {
         final var selectedDate = this.endDatePicker.getDate();
         if (selectedDate != null) {
-            return selectedDate.format(PlayerUtils.getYmdDateFormatter());
+            return selectedDate.format(CommonUtils.getYmdDateFormatter());
         }
         return "";
     }
@@ -132,7 +132,7 @@ public class AddTournamentWindow extends JDialog {
     public String getRegistrationDeadline() {
         final LocalDate selectedDate = this.registrationDeadlinePicker.getDate();
         if (selectedDate != null) {
-            return selectedDate.format(PlayerUtils.getYmdDateFormatter());
+            return selectedDate.format(CommonUtils.getYmdDateFormatter());
         }
         return "";
     }

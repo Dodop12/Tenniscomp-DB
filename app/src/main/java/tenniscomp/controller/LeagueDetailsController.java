@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import tenniscomp.data.League;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AddTieWindow;
 import tenniscomp.view.LeagueDetailsWindow;
@@ -73,7 +73,7 @@ public class LeagueDetailsController {
         for (final var tie : ties) {
             final Object[] rowData = {
                 tie.getTieId(),
-                PlayerUtils.convertDateFormat(tie.getDate()),
+                CommonUtils.convertDateFormat(tie.getDate()),
                 model.getClubByTeamId(tie.getHomeTeamId()).getName(),
                 model.getClubByTeamId(tie.getAwayTeamId()).getName(),
                 tie.getResult()
@@ -157,7 +157,7 @@ public class LeagueDetailsController {
                 .filter(player -> player.getCardId() != null)
                 .filter(player -> {
                     final var card = model.getCardById(player.getCardId());
-                    return card != null && !PlayerUtils.isCardExpired(card);
+                    return card != null && !CommonUtils.isCardExpired(card);
                 })
                 .filter(player -> player.getClubId() != null)
                 .filter(player -> !model.isPlayerInLeague(player.getPlayerId(), this.league.getLeagueId()))

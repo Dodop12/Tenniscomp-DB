@@ -22,7 +22,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import tenniscomp.data.Court;
 import tenniscomp.data.Player;
 import tenniscomp.utils.MatchType;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 
 public class AddMatchWindow extends JDialog {
 
@@ -100,7 +100,7 @@ public class AddMatchWindow extends JDialog {
 
     public String getMatchDate() {
         final var selectedDate = this.datePicker.getDate();
-        return selectedDate != null ? selectedDate.format(PlayerUtils.getYmdDateFormatter()) : "";
+        return selectedDate != null ? selectedDate.format(CommonUtils.getYmdDateFormatter()) : "";
     }
 
     public Player getWinner() {

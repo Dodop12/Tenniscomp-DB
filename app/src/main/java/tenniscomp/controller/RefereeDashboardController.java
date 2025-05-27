@@ -12,7 +12,7 @@ import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.LeagueCategory;
 import tenniscomp.utils.LeagueSeries;
 import tenniscomp.utils.MatchType;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.Ranking;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AddClubWindow;
@@ -59,9 +59,9 @@ public class RefereeDashboardController {
             final Object[] rowData = {
                 tournament.getTournamentId(),
                 tournament.getName(),
-                PlayerUtils.convertDateFormat(tournament.getStartDate()),
-                PlayerUtils.convertDateFormat(tournament.getEndDate()),
-                PlayerUtils.convertDateFormat(tournament.getRegistrationDeadline()),
+                CommonUtils.convertDateFormat(tournament.getStartDate()),
+                CommonUtils.convertDateFormat(tournament.getEndDate()),
+                CommonUtils.convertDateFormat(tournament.getRegistrationDeadline()),
                 tournament.getType(),
                 tournament.getGender().getCode(),
                 tournament.getRankingLimit()

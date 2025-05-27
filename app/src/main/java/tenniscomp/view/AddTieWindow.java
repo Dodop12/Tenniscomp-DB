@@ -22,7 +22,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Team;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 
 public class AddTieWindow extends JDialog {
     
@@ -71,7 +71,7 @@ public class AddTieWindow extends JDialog {
 
     public String getTieDate() {
         final var selectedDate = this.datePicker.getDate();
-        return selectedDate != null ? selectedDate.format(PlayerUtils.getYmdDateFormatter()) : "";
+        return selectedDate != null ? selectedDate.format(CommonUtils.getYmdDateFormatter()) : "";
     }
 
     public Team getHomeTeam() {

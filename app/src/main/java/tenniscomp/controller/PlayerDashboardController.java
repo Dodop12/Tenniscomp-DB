@@ -11,7 +11,7 @@ import tenniscomp.data.Player;
 import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.PlayerDashboard;
 
@@ -35,13 +35,13 @@ public class PlayerDashboardController {
         this.view.setPlayerName(player.getSurname() + " " + player.getName());
         this.view.setPlayerRanking(player.getRanking().getLabel());
 
-        final String category = PlayerUtils.calculateCategory(player.getBirthDate());
+        final String category = CommonUtils.calculateCategory(player.getBirthDate());
         this.view.setPlayerCategory(category);
 
         Optional.ofNullable(player.getCardId())
             .map(model::getCardById)
             .ifPresent(card -> view.setCardInfo(card.getCardNumber(),
-                    PlayerUtils.convertDateFormat(card.getExpiryDate())));
+                    CommonUtils.convertDateFormat(card.getExpiryDate())));
 
         TableUtils.adjustColumnWidths(view.getTournamentsTable());
         TableUtils.adjustColumnWidths(view.getMatchesTable());
@@ -100,7 +100,7 @@ public class PlayerDashboardController {
                 this.player.getPlayerId(), tournamentId);
             if (!isRegistered) {
                 final var cardId = player.getCardId();
-                if (cardId == null || PlayerUtils.isCardExpired(model.getCardById(cardId))) {
+                if (cardId == null || CommonUtils.isCardExpired(model.getCardById(cardId))) {
                     showError("Impossibile iscriversi al torneo \"" + tournament.getName() +
                         "\":\n tessera scaduta o non valida.");
                     return;

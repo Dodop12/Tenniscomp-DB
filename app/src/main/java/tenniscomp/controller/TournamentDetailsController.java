@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import tenniscomp.data.Player;
 import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AddMatchWindow;
 import tenniscomp.view.TournamentDetailsWindow;
@@ -57,7 +57,7 @@ public class TournamentDetailsController {
                     registration.getRegistrationId(),
                     player.getName() + " " + player.getSurname(),
                     player.getRanking(),
-                    PlayerUtils.convertDateFormat(registration.getDate())
+                    CommonUtils.convertDateFormat(registration.getDate())
                 };
                 tableModel.addRow(rowData);
             }
@@ -92,7 +92,7 @@ public class TournamentDetailsController {
                 getMatchPlayersString(winners),
                 getMatchPlayersString(opponents),
                 match.getResult(),
-                PlayerUtils.convertDateFormat(match.getDate()),
+                CommonUtils.convertDateFormat(match.getDate()),
                 courtNumber
             };
             tableModel.addRow(rowData);

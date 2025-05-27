@@ -17,7 +17,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
 import tenniscomp.utils.ImmutableTableModel;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 
 public class TournamentDetailsWindow extends JFrame {
 
@@ -120,9 +120,9 @@ public class TournamentDetailsWindow extends JFrame {
     }
     
     public void setDates(final String startDate, final String endDate, final String registrationDeadline) {
-        final var formattedStartDate = PlayerUtils.convertDateFormat(startDate);
-        final var formattedEndDate = PlayerUtils.convertDateFormat(endDate);
-        final var formattedDeadline = PlayerUtils.convertDateFormat(registrationDeadline);
+        final var formattedStartDate = CommonUtils.convertDateFormat(startDate);
+        final var formattedEndDate = CommonUtils.convertDateFormat(endDate);
+        final var formattedDeadline = CommonUtils.convertDateFormat(registrationDeadline);
         
         this.datesLabel.setText("dal " + formattedStartDate + " al " + formattedEndDate + 
                 " (Scadenza iscrizioni: " + formattedDeadline + ")");

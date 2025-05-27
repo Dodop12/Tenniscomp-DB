@@ -18,7 +18,7 @@ import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
-import tenniscomp.utils.PlayerUtils;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.Ranking;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AssignClubWindow;
@@ -54,13 +54,13 @@ public class PlayerManagerController {
                     player.getPlayerId(),
                     player.getSurname(),
                     player.getName(),
-                    PlayerUtils.convertDateFormat(player.getBirthDate()),
+                    CommonUtils.convertDateFormat(player.getBirthDate()),
                     player.getGender().getCode(),
                     player.getEmail(),
                     player.getPhone(),
                     player.getRanking(),
                     card != null ? card.getCardNumber() : "",
-                    card != null ? PlayerUtils.convertDateFormat(card.getExpiryDate()) : "",
+                    card != null ? CommonUtils.convertDateFormat(card.getExpiryDate()) : "",
                     club != null ? club.getName() : ""
             };
             tableModel.addRow(rowData);
@@ -141,7 +141,7 @@ public class PlayerManagerController {
                     addCardItem.setEnabled(cardId == null);
                     // Can renew the card only if the player has one
                     renewCardItem.setEnabled(cardId != null
-                        && PlayerUtils.isCardExpired(model.getCardById(cardId)));
+                        && CommonUtils.isCardExpired(model.getCardById(cardId)));
                 }
 
                 contextMenu.show(e.getComponent(), e.getX(), e.getY());
@@ -172,16 +172,16 @@ public class PlayerManagerController {
 
         String cardNumber;
         do {
-            cardNumber = PlayerUtils.generateCardNumber();
+            cardNumber = CommonUtils.generateCardNumber();
         } while (model.checkCardNumberExists(cardNumber));
 
-        final String expiryDate = PlayerUtils.generateCardExpiryDate();
+        final String expiryDate = CommonUtils.generateCardExpiryDate();
 
         final int result = JOptionPane.showConfirmDialog(
             view,
             "Conferma tesseramento giocatore " + player.getSurname() + " " + player.getName()
                 + "\n\nNumero tessera: " + cardNumber
-                + "\nData di scadenza: " + PlayerUtils.convertDateFormat(expiryDate),
+                + "\nData di scadenza: " + CommonUtils.convertDateFormat(expiryDate),
             "Tesseramento - " + player.getSurname() + " " + player.getName(),
             JOptionPane.OK_CANCEL_OPTION
         );
@@ -212,13 +212,13 @@ public class PlayerManagerController {
             return;
         }
 
-        final String newExpiryDate = PlayerUtils.generateCardExpiryDate();
+        final String newExpiryDate = CommonUtils.generateCardExpiryDate();
         final int result = JOptionPane.showConfirmDialog(
             view,
             "Conferma rinnovo tessera per " + player.getSurname() + " " + player.getName()
                 + "\nNumero tessera: " + card.getCardNumber()
-                + "\n\nVecchia scadenza: " + PlayerUtils.convertDateFormat(card.getExpiryDate())
-                + "\nNuova scadenza: " + PlayerUtils.convertDateFormat(newExpiryDate),
+                + "\n\nVecchia scadenza: " + CommonUtils.convertDateFormat(card.getExpiryDate())
+                + "\nNuova scadenza: " + CommonUtils.convertDateFormat(newExpiryDate),
             "Rinnovo tessera - " + player.getSurname() + " " + player.getName(),
             JOptionPane.OK_CANCEL_OPTION
         );
@@ -233,7 +233,7 @@ public class PlayerManagerController {
         if (player == null) {
             throw new IllegalArgumentException("Player not found");
         }
-        if (PlayerUtils.isCardExpired(model.getCardById(player.getCardId()))) {
+        if (CommonUtils.isCardExpired(model.getCardById(player.getCardId()))) {
             showError(
                 "La tessera del giocatore è scaduta. È necessario rinnovarla prima di aggiornare la classifica."
             );
