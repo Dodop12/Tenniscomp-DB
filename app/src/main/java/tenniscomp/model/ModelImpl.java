@@ -237,13 +237,18 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean registerTeamForLeague(final int clubId, final int leagueId, List<Integer> playerIds) {
+    public boolean registerTeamForLeague(final int clubId, final int leagueId, final List<Integer> playerIds) {
         return Team.DAO.registerTeamForLeague(this.connection, clubId, leagueId, playerIds);
     }
 
     @Override
     public boolean isPlayerInLeague(final int playerId, final int leagueId) {
         return Player.DAO.isPlayerInLeague(this.connection, playerId, leagueId);
+    }
+
+    @Override
+    public int getTeamPlayerCount(final int teamId) {
+        return Team.DAO.getTeamPlayerCount(this.connection, teamId);
     }
 
     @Override
@@ -257,7 +262,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean addLeagueTie(String date, int leagueId, int homeTeamId, int awayTeamId) {
+    public boolean addLeagueTie(final String date, final int leagueId, final int homeTeamId, final int awayTeamId) {
         return LeagueTie.DAO.insertLeagueTie(this.connection, date, leagueId, homeTeamId, awayTeamId);
     }
 

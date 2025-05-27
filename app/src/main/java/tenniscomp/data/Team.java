@@ -105,5 +105,20 @@ public class Team {
                 }
             }
         }
+
+        public static int getTeamPlayerCount(final Connection connection, final int teamId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_TEAM_PLAYER_COUNT, teamId);
+                var resultSet = statement.executeQuery()
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else {
+                    return 0;
+                }
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }

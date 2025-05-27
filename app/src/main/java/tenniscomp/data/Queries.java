@@ -303,6 +303,13 @@ public final class Queries {
         )
         """;
 
+    public static final String GET_TEAM_PLAYER_COUNT =
+        """
+        SELECT COUNT(*)
+        FROM giocatore
+        WHERE id_squadra = ?
+        """;
+
     public static final String UPDATE_PLAYER_TEAM =
         """
         UPDATE giocatore
