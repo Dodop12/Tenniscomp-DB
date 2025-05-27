@@ -63,7 +63,7 @@ public class RefereeDashboardController {
                 PlayerUtils.convertDateFormat(tournament.getEndDate()),
                 PlayerUtils.convertDateFormat(tournament.getRegistrationDeadline()),
                 tournament.getType(),
-                tournament.getGender().getLabel(),
+                tournament.getGender().getCode(),
                 tournament.getRankingLimit()
             };
             tableModel.addRow(rowData);
@@ -83,7 +83,7 @@ public class RefereeDashboardController {
                 league.getLeagueId(),
                 league.getSeries(),
                 league.getCategory(),
-                league.getGender(),
+                league.getGender().getCode(),
                 league.getYear()
             };
             tableModel.addRow(rowData);
@@ -235,7 +235,7 @@ public class RefereeDashboardController {
             final int year = addLeagueWindow.getYear();
             
             if (model.addLeague(LeagueSeries.valueOf(series), LeagueCategory.fromLabel(category),
-                    gender, year, referee.getRefereeId())) {
+                    Gender.fromLabel(gender), year, referee.getRefereeId())) {
                 loadLeagues();
                 addLeagueWindow.dispose();
             }

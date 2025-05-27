@@ -51,7 +51,7 @@ public class PlayerManagerController {
                     player.getSurname(),
                     player.getName(),
                     PlayerUtils.convertDateFormat(player.getBirthDate()),
-                    player.getGender(),
+                    player.getGender().getCode(),
                     player.getEmail(),
                     player.getPhone(),
                     player.getRanking(),

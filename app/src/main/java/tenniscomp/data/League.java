@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.Gender;
 import tenniscomp.utils.LeagueCategory;
 import tenniscomp.utils.LeagueSeries;
 
@@ -11,12 +12,12 @@ public class League {
     private final int leagueId;
     private final LeagueSeries series;
     private final LeagueCategory category;
-    private final String gender;
+    private final Gender gender;
     private final int year;
     private final int refereeId;
 
     public League(final int competitionId, final LeagueSeries series, final LeagueCategory category, 
-            final String gender, final int year, final int refereeId) {
+            final Gender gender, final int year, final int refereeId) {
         this.leagueId = competitionId;
         this.series = series;
         this.category = category;
@@ -37,7 +38,7 @@ public class League {
         return category;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
@@ -52,10 +53,10 @@ public class League {
     public final class DAO {
 
         public static boolean insertLeague(final Connection connection, final LeagueSeries series, 
-                final LeagueCategory category, final String gender, final int year, final int refereeId) {
+                final LeagueCategory category, final Gender gender, final int year, final int refereeId) {
             try (
                 final var statement = DAOUtils.prepare(connection, Queries.ADD_LEAGUE, series.name(), category.getLabel(),
-                        gender, year, refereeId)
+                        gender.getCode(), year, refereeId)
             ) {
                 return statement.executeUpdate() > 0;
             } catch (final Exception e) {
@@ -73,7 +74,7 @@ public class League {
                         resultSet.getInt("id_campionato"),
                         LeagueSeries.valueOf(resultSet.getString("serie")),
                         LeagueCategory.fromLabel(resultSet.getString("categoria")),
-                        resultSet.getString("sesso"),
+                        Gender.fromCode(resultSet.getString("sesso")),
                         resultSet.getInt("anno"),
                         resultSet.getInt("id_ga")
                     );
@@ -95,7 +96,7 @@ public class League {
                             resultSet.getInt("id_campionato"),
                             LeagueSeries.valueOf(resultSet.getString("serie")),
                             LeagueCategory.fromLabel(resultSet.getString("categoria")),
-                            resultSet.getString("sesso"),
+                            Gender.fromCode(resultSet.getString("sesso")),
                             resultSet.getInt("anno"),
                             resultSet.getInt("id_ga")
                         ));
