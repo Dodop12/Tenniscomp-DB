@@ -19,7 +19,11 @@ java {
 }
 
 application {
-    mainClass = "provadbproj.App"
+    mainClass = "tenniscomp.App"
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
 }
 
 tasks.named<Test>("test") {
