@@ -33,6 +33,8 @@ public class LeagueDetailsWindow extends JFrame {
     private final JTable teamsTable;
     private final JTable tiesTable;
     
+    private final JButton registerTeamButton;
+    private final JButton addTieButton;
     private final JButton closeButton;
 
     public LeagueDetailsWindow(final JFrame parent) {
@@ -74,33 +76,48 @@ public class LeagueDetailsWindow extends JFrame {
         tablesPanel.setDividerLocation(450);
         
         final var teamsPanel = new JPanel(new BorderLayout());
-        final String[] teamsColumns = {"ID", "Circolo", "Città"};
+        final String[] teamsColumns = {"ID", "Circolo", "Città", "Num. Giocatori"};
         final var teamsModel = new ImmutableTableModel(teamsColumns, 0);
         this.teamsTable = new JTable(teamsModel);
+
+        final var teamsButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        this.registerTeamButton = new JButton("Registra Squadra");
+        teamsButtonPanel.add(this.registerTeamButton);
         
         final var teamsScrollPane = new JScrollPane(teamsTable);
         teamsScrollPane.setBorder(BorderFactory.createTitledBorder(TEAMS_TITLE));
+
+        teamsPanel.add(teamsButtonPanel, BorderLayout.NORTH);
         teamsPanel.add(teamsScrollPane, BorderLayout.CENTER);
         
         final var tiesPanel = new JPanel(new BorderLayout());
         final String[] tiesColumns = {"ID", "Data", "Squadra casa", "Squadra trasferta", "Risultato"};
         final var tiesModel = new ImmutableTableModel(tiesColumns, 0);
         this.tiesTable = new JTable(tiesModel);
-        
+
+        final var tiesButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        this.addTieButton = new JButton("Aggiungi Incontro");
+        tiesButtonPanel.add(this.addTieButton);
+
         final var tiesScrollPane = new JScrollPane(tiesTable);
         tiesScrollPane.setBorder(BorderFactory.createTitledBorder(TIES_TITLE));
+
+        tiesPanel.add(tiesButtonPanel, BorderLayout.NORTH);
         tiesPanel.add(tiesScrollPane, BorderLayout.CENTER);
         
         tablesPanel.setLeftComponent(teamsPanel);
         tablesPanel.setRightComponent(tiesPanel);
         
-        final var buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        final var lowerButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.closeButton = new JButton("Chiudi");
-        buttonsPanel.add(this.closeButton);
+        lowerButtonPanel.add(this.closeButton);
+
+        final var mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(tablesPanel, BorderLayout.CENTER);
         
         add(infoPanel, BorderLayout.NORTH);
-        add(tablesPanel, BorderLayout.CENTER);
-        add(buttonsPanel, BorderLayout.SOUTH);
+        add(mainPanel, BorderLayout.CENTER);
+        add(lowerButtonPanel, BorderLayout.SOUTH);
     }
     
     public void setLeagueName(final String series, final String category, final String gender, final int year) {
@@ -132,6 +149,14 @@ public class LeagueDetailsWindow extends JFrame {
     
     public JTable getTiesTable() {
         return tiesTable;
+    }
+
+    public void setRegisterTeamListener(final ActionListener listener) {
+        this.registerTeamButton.addActionListener(listener);
+    }
+
+    public void setAddTieListener(final ActionListener listener) {
+        this.addTieButton.addActionListener(listener);
     }
     
     public void setCloseButtonListener(final ActionListener listener) {
