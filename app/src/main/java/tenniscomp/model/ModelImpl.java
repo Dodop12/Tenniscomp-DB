@@ -247,12 +247,17 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<Player> getPlayersByTeam(final int teamId) {
+        return Player.DAO.getPlayersByTeam(this.connection, teamId);
+    }
+
+    @Override
     public int getTeamPlayerCount(final int teamId) {
         return Team.DAO.getTeamPlayerCount(this.connection, teamId);
     }
 
     @Override
-    public boolean updatePlayerTeam(final int playerId, final int teamId) {
+    public boolean updatePlayerTeam(final int playerId, final Integer teamId) {
         return Player.DAO.updatePlayerTeam(this.connection, playerId, teamId);
     }
 

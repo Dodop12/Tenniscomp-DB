@@ -72,8 +72,9 @@ public interface Model {
     League getLeagueById(int leagueId);
     boolean registerTeamForLeague(int clubId, int leagueId, List<Integer> playerIds);
     boolean isPlayerInLeague(int playerId, int leagueId);
+    List<Player> getPlayersByTeam(int teamId);
     int getTeamPlayerCount(int teamId);
-    boolean updatePlayerTeam(int playerId, int teamId);
+    boolean updatePlayerTeam(int playerId, Integer teamId);
     List<Team> getLeagueTeams(int leagueId);
     boolean addLeagueTie(String date, int leagueId, int homeTeamId, int awayTeamId);
     List<LeagueTie> getLeagueTies(int leagueId);
