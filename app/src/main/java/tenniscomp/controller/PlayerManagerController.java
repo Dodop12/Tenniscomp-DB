@@ -10,6 +10,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import tenniscomp.data.Card;
 import tenniscomp.data.Club;
@@ -31,6 +34,7 @@ public class PlayerManagerController {
         this.model = model;
 
         loadPlayers();
+        setupSearchFunctionality();
         setupContextMenu();
     }
 
@@ -63,6 +67,37 @@ public class PlayerManagerController {
         }
 
         TableUtils.adjustColumnWidths(view.getPlayersTable());
+    }
+
+    private void setupSearchFunctionality() {
+        view.setSearchFieldListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent e) {
+                applySearchFilter();
+            }
+
+            @Override
+            public void removeUpdate(final DocumentEvent e) {
+                applySearchFilter();
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent e) {
+                applySearchFilter();
+            }
+        });
+    }
+
+    private void applySearchFilter() {
+        final String searchText = view.getSearchField().getText();
+        final var sorter = view.getTableSorter();
+        
+        if (searchText.trim().length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            // Filter on the surname column (index 1)
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText, 1));
+        }
     }
 
     private void setupContextMenu() {
