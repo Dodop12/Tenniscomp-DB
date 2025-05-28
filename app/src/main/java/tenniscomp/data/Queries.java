@@ -303,6 +303,14 @@ public final class Queries {
         )
         """;
 
+    public static final String GET_LEAGUES_BY_REFEREE =
+        """
+        SELECT *
+        FROM campionato
+        WHERE id_ga = ?
+        ORDER BY anno DESC, serie
+        """;
+
     public static final String GET_PLAYERS_BY_TEAM =
         """
         SELECT *
@@ -345,6 +353,13 @@ public final class Queries {
         VALUES (?, ?, ?, ?)
         """;
 
+    public static final String GET_LEAGUE_TIE_BY_ID =
+        """
+        SELECT *
+        FROM incontro_campionato
+        WHERE id_incontro = ?
+        """;
+
     public static final String GET_LEAGUE_TIES =
         """
         SELECT *
@@ -352,12 +367,30 @@ public final class Queries {
         WHERE id_campionato = ?
         """;
 
-    public static final String GET_LEAGUES_BY_REFEREE =
+    public static final String UPDATE_LEAGUE_TIE_RESULT =
+        """
+        UPDATE incontro_campionato
+        SET risultato = ?
+        WHERE id_incontro = ?
+        """;
+
+    public static final String ADD_LEAGUE_MATCH_PLAYER =
+        """
+        INSERT INTO giocatore_partita_campionato (id_giocatore, id_partita_campionato, vincitore)
+        VALUES (?, ?, ?)
+        """;
+
+    public static final String ADD_LEAGUE_MATCH =
+        """
+        INSERT INTO partita_campionato (tipo, risultato, id_incontro, id_campo, id_arbitro)
+        VALUES (?, ?, ?, ?, ?)
+        """;
+
+    public static final String GET_MATCHES_BY_TIE_ID =
         """
         SELECT *
-        FROM campionato
-        WHERE id_ga = ?
-        ORDER BY anno DESC, serie
+        FROM partita_campionato
+        WHERE id_incontro = ?
         """;
 
     public static final String GET_CLUB_BY_TEAM_ID =
@@ -366,5 +399,35 @@ public final class Queries {
         FROM circolo c
         JOIN squadra s ON c.id_circolo = s.id_circolo
         WHERE s.id_squadra = ?
+        """;
+
+    public static final String GET_PLAYERS_BY_LEAGUE_MATCH =
+        """
+        SELECT g.*
+        FROM giocatore g
+        JOIN giocatore_partita_campionato gpc ON g.id_giocatore = gpc.id_giocatore
+        WHERE gpc.id_partita_campionato = ?
+        """;
+
+    public static final String CHECK_PLAYER_WON_LEAGUE_MATCH =
+        """
+        SELECT vincitore
+        FROM giocatore_partita_campionato
+        WHERE id_giocatore = ?
+        AND id_partita_campionato = ?
+        """;
+
+    public static final String GET_TIE_MATCH_WINS_BY_TEAM =
+        """
+        SELECT COUNT(DISTINCT pc.id_partita_campionato)
+        FROM partita_campionato pc
+        JOIN giocatore_partita_campionato gpc ON pc.id_partita_campionato = gpc.id_partita_campionato
+        WHERE gpc.id_giocatore IN (
+            SELECT id_giocatore
+            FROM giocatore
+            WHERE id_squadra = ?
+        )
+        AND pc.id_incontro = ?
+        AND gpc.vincitore = TRUE
         """;
 }

@@ -60,6 +60,28 @@ public class LeagueTie {
             }
         }
 
+        public static LeagueTie getLeagueTieById(final Connection connection, final int tieId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUE_TIE_BY_ID, tieId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new LeagueTie(
+                        resultSet.getInt("id_incontro"),
+                        resultSet.getString("data"),
+                        resultSet.getString("risultato"),
+                        resultSet.getInt("id_campionato"),
+                        resultSet.getInt("id_squadra_casa"),
+                        resultSet.getInt("id_squadra_ospite")
+                    );
+                } else {
+                    return null;
+                }
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static List<LeagueTie> getTiesByLeague(final Connection connection, final int leagueId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUE_TIES, leagueId);
@@ -77,6 +99,16 @@ public class LeagueTie {
                     ));
                 }
                 return ties;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean updateLeagueTieResult(final Connection connection, final int tieId, final String result) {
+            try (
+                final var statement = DAOUtils.prepare(connection, Queries.UPDATE_LEAGUE_TIE_RESULT, result, tieId)
+            ) {
+                return statement.executeUpdate() > 0;
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

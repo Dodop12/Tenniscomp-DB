@@ -7,6 +7,7 @@ import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.Court;
 import tenniscomp.data.League;
+import tenniscomp.data.LeagueMatch;
 import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
@@ -221,7 +222,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean isPlayerWinner(final int playerId, final int matchId) {
+    public boolean isPlayerTournamentMatchWinner(final int playerId, final int matchId) {
         return TournamentMatch.DAO.isPlayerWinner(this.connection, playerId, matchId);
     }
 
@@ -247,6 +248,11 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<League> getLeaguesByReferee(final int refereeId) {
+        return League.DAO.getLeaguesByReferee(this.connection, refereeId);
+    }
+
+    @Override
     public List<Player> getPlayersByTeam(final int teamId) {
         return Player.DAO.getPlayersByTeam(this.connection, teamId);
     }
@@ -267,8 +273,18 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public Club getClubByTeamId(final int teamId) {
+        return Club.DAO.getClubByTeamId(this.connection, teamId);
+    }
+
+    @Override
     public boolean addLeagueTie(final String date, final int leagueId, final int homeTeamId, final int awayTeamId) {
         return LeagueTie.DAO.insertLeagueTie(this.connection, date, leagueId, homeTeamId, awayTeamId);
+    }
+
+    @Override
+    public LeagueTie getLeagueTieById(final int tieId) {
+        return LeagueTie.DAO.getLeagueTieById(this.connection, tieId);
     }
 
     @Override
@@ -277,19 +293,56 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public List<League> getLeaguesByReferee(final int refereeId) {
-        return League.DAO.getLeaguesByReferee(this.connection, refereeId);
+    public boolean updateLeagueTieResult(final int tieId, final String result) {
+        return LeagueTie.DAO.updateLeagueTieResult(this.connection, tieId, result);
     }
 
     @Override
-    public Club getClubByTeamId(final int teamId) {
-        return Club.DAO.getClubByTeamId(this.connection, teamId);
+    public List<LeagueMatch> getLeagueTieMatches(final int tieId) {
+        return LeagueMatch.DAO.getMatchesByLeagueTie(this.connection, tieId);
+    }
+
+    @Override
+    public boolean addLeagueMatch(final String type, final String result, final int tieId, 
+            final int courtId, final Integer refereeId, final int winnerId, final int opponentId) {
+        return addLeagueMatchGeneral(connection, type, result, tieId, courtId, refereeId,
+                List.of(winnerId), List.of(opponentId));
+    }
+
+    @Override
+    public boolean addLeagueMatch(final String type, final String result, final int tieId, 
+            final int courtId, final Integer refereeId, final List<Integer> winnerIds,
+            final List<Integer> opponentIds) {
+        return addLeagueMatchGeneral(connection, type, result, tieId, courtId, refereeId,
+                winnerIds, opponentIds);
+    }
+
+    @Override
+    public List<Player> getPlayersByLeagueMatch(final int matchId) {
+        return Player.DAO.getPlayersByLeagueMatch(this.connection, matchId);
+    }
+
+    @Override
+    public boolean isPlayerLeagueMatchWinner(int playerId, int matchId) {
+        return LeagueMatch.DAO.isPlayerWinner(this.connection, playerId, matchId);
+    }
+
+    @Override
+    public int getTieMatchWinsByTeam(final int teamId, final int tieId) {
+        return LeagueMatch.DAO.getTieMatchWinsByTeam(this.connection, teamId, tieId);
     }
 
     private boolean addTournamentMatchGeneral(final Connection connection, final String date, final String result,
             final int tournamentId, final int courtId, final Integer refereeId, final List<Integer> winnerIds,
             final List<Integer> opponentIds) {
         return TournamentMatch.DAO.insertTournamentMatch(connection, date, result, tournamentId, courtId,
+                refereeId, winnerIds, opponentIds);
+    }
+
+    private boolean addLeagueMatchGeneral(final Connection connection, final String type, final String result,
+        final int tieId, final int courtId, final Integer refereeId, final List<Integer> winnerIds,
+        final List<Integer> opponentIds) {
+        return LeagueMatch.DAO.insertLeagueMatch(connection, type, result, tieId, courtId,
                 refereeId, winnerIds, opponentIds);
     }
     

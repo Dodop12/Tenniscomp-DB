@@ -6,6 +6,7 @@ import tenniscomp.data.Card;
 import tenniscomp.data.Club;
 import tenniscomp.data.Court;
 import tenniscomp.data.League;
+import tenniscomp.data.LeagueMatch;
 import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
 import tenniscomp.data.Referee;
@@ -66,19 +67,29 @@ public interface Model {
             Integer refereeId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
     List<TournamentMatch> getTournamentMatches(int tournamentId);
     List<Player> getPlayersByTournamentMatch(int matchId);
-    boolean isPlayerWinner(int playerId, int matchId);
+    boolean isPlayerTournamentMatchWinner(int playerId, int matchId);
 
     boolean addLeague(LeagueSeries series, LeagueCategory category, Gender gender, int year, int refereeId);
     League getLeagueById(int leagueId);
     boolean registerTeamForLeague(int clubId, int leagueId, List<Integer> playerIds);
     boolean isPlayerInLeague(int playerId, int leagueId);
+    List<League> getLeaguesByReferee(int refereeId);
     List<Player> getPlayersByTeam(int teamId);
     int getTeamPlayerCount(int teamId);
     boolean updatePlayerTeam(int playerId, Integer teamId);
     List<Team> getLeagueTeams(int leagueId);
-    boolean addLeagueTie(String date, int leagueId, int homeTeamId, int awayTeamId);
-    List<LeagueTie> getLeagueTies(int leagueId);
-    List<League> getLeaguesByReferee(int refereeId);
     Club getClubByTeamId(int teamId);
+    boolean addLeagueTie(String date, int leagueId, int homeTeamId, int awayTeamId);
+    LeagueTie getLeagueTieById(int tieId);
+    List<LeagueTie> getLeagueTies(int leagueId);
+    boolean updateLeagueTieResult(int tieId, String result);
+    boolean addLeagueMatch(String type, String result, int tieId, int courtId, 
+            Integer refereeId, int winnerId, int opponentId); // For singles
+    boolean addLeagueMatch(String type, String result, int tieId, int courtId, 
+            Integer refereeId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
+    List<LeagueMatch> getLeagueTieMatches(int tieId);
+    List<Player> getPlayersByLeagueMatch(int matchId);
+    boolean isPlayerLeagueMatchWinner(int playerId, int matchId);
+    int getTieMatchWinsByTeam(int teamId, int tieId);
 
 }
