@@ -24,7 +24,7 @@ import tenniscomp.data.Player;
 import tenniscomp.utils.MatchType;
 import tenniscomp.utils.CommonUtils;
 
-public class AddMatchWindow extends JDialog {
+public class AddTournamentMatchWindow extends JDialog {
 
     private final DatePicker datePicker;
     private final JComboBox<String> typeComboBox;
@@ -35,7 +35,7 @@ public class AddMatchWindow extends JDialog {
     private final JButton saveButton;
     private final JButton cancelButton;
 
-    public AddMatchWindow(final JFrame parent, final List<Player> registeredPlayers, final List<Court> courts) {
+    public AddTournamentMatchWindow(final JFrame parent, final List<Player> registeredPlayers, final List<Court> courts) {
         super(parent, "Aggiungi Partita", true);
         setSize(400, 350);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
