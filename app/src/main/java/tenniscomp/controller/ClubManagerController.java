@@ -121,7 +121,7 @@ public class ClubManagerController {
                 courtRegistrationWindow.dispose();
                 JOptionPane.showMessageDialog(
                     view,
-                    "Campo registrato con successo",
+                    "Campo registrato con successo.",
                     "Campo Aggiunto",
                     JOptionPane.INFORMATION_MESSAGE
                 );
