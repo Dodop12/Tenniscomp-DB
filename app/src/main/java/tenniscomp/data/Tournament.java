@@ -154,7 +154,7 @@ public class Tournament {
                 final Ranking playerRanking, final Gender playerGender) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_ELIGIBLE_TOURNAMENTS,
-                        playerGender, playerRanking.getNumericValue());
+                        playerGender.getCode(), playerRanking.getNumericValue());
                 var resultSet = statement.executeQuery();
                 ) {
                     final var tournaments = new ArrayList<Tournament>();
@@ -166,7 +166,7 @@ public class Tournament {
                                 resultSet.getString("data_fine"),
                                 resultSet.getString("scadenza_iscrizioni"),
                                 MatchType.fromLabel(resultSet.getString("tipo")),
-                                Gender.fromLabel(resultSet.getString("sesso")),
+                                Gender.fromCode(resultSet.getString("sesso")),
                                 Ranking.fromLabel(resultSet.getString("limite_classifica")),
                                 resultSet.getDouble("montepremi"),
                                 resultSet.getInt("id_ga"),
