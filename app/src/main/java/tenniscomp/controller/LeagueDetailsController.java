@@ -1,5 +1,7 @@
 package tenniscomp.controller;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -13,6 +15,8 @@ import tenniscomp.utils.TableUtils;
 import tenniscomp.view.AddTieWindow;
 import tenniscomp.view.LeagueDetailsWindow;
 import tenniscomp.view.RegisterTeamWindow;
+import tenniscomp.view.TeamDetailsWindow;
+import tenniscomp.view.TieDetailsWindow;
 
 public class LeagueDetailsController {
 
@@ -88,6 +92,8 @@ public class LeagueDetailsController {
         view.setRegisterTeamListener(e -> openRegisterTeamWindow());
         view.setAddTieListener(e -> openAddTieWindow());
         view.setCloseButtonListener(e -> view.dispose());
+        setupTeamDetailsListener();
+        setupTieDetailsListener();
     }
 
     private void openRegisterTeamWindow() {
@@ -147,6 +153,69 @@ public class LeagueDetailsController {
         
         addTieWindow.setCancelButtonListener(e -> addTieWindow.dispose());
         addTieWindow.setVisible(true);
+    }
+
+    private void setupTeamDetailsListener() {
+        final var teamsTable = view.getTeamsTable();
+        teamsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    final int selectedRow = teamsTable.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        final int teamId = (int) teamsTable.getValueAt(selectedRow, 0);
+                        final String teamName = (String) teamsTable.getValueAt(selectedRow, 1);
+                        openTeamDetailsWindow(teamId, teamName);
+                    }
+                }
+            }
+        });
+    }
+
+    private void setupTieDetailsListener() {
+        final var tiesTable = view.getTiesTable();
+        tiesTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    final int selectedRow = tiesTable.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        final int tieId = (int) tiesTable.getValueAt(selectedRow, 0);
+                        openTieDetailsWindow(tieId);
+                    }
+                }
+            }
+        });
+    }
+
+    private void openTeamDetailsWindow(final int teamId, final String teamName) {
+        final var teamDetailsWindow = new TeamDetailsWindow(view);
+        final var teamDetailsController = new TeamDetailsController(teamDetailsWindow,
+                model, teamId);
+        
+        // Set up callback to refresh teams table when a player is removed
+        teamDetailsController.setOnPlayerRemovedCallback(() -> {
+            loadTeams();
+        });
+        teamDetailsWindow.display();
+    }
+
+    private void openTieDetailsWindow(final int tieId) {
+        final var tie = model.getLeagueTieById(tieId);
+        if (tie == null) {
+            showError("Incontro non trovato.");
+            return;
+        }
+
+        final var tieDetailsWindow = new TieDetailsWindow(view);
+        final var tieDetailsController = new TieDetailsController(tieDetailsWindow, model, tie);
+        
+        // Set up callback to refresh ties table when tie is updated
+        tieDetailsController.setOnTieUpdatedCallback(() -> {
+            loadTies();
+        });
+        
+        tieDetailsWindow.display();
     }
 
     private List<Player> getEligiblePlayers() {
