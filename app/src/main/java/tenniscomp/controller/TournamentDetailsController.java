@@ -11,7 +11,7 @@ import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
 import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.TableUtils;
-import tenniscomp.view.AddMatchWindow;
+import tenniscomp.view.AddTournamentMatchWindow;
 import tenniscomp.view.TournamentDetailsWindow;
 
 public class TournamentDetailsController {
@@ -78,7 +78,7 @@ public class TournamentDetailsController {
             final var opponents = new ArrayList<Player>();
             for (final var player : players) {
                 if (player != null) {
-                    if (model.isPlayerWinner(player.getPlayerId(), match.getMatchId())) {
+                    if (model.isPlayerTournamentMatchWinner(player.getPlayerId(), match.getMatchId())) {
                         winners.add(player);
                     } else {
                         opponents.add(player);
@@ -89,8 +89,8 @@ public class TournamentDetailsController {
             final var courtNumber = model.getCourtById(match.getCourtId()).getNumber();
             final Object[] rowData = {
                 match.getMatchId(),
-                getMatchPlayersString(winners),
-                getMatchPlayersString(opponents),
+                CommonUtils.getMatchPlayersString(winners),
+                CommonUtils.getMatchPlayersString(opponents),
                 match.getResult(),
                 CommonUtils.convertDateFormat(match.getDate()),
                 courtNumber
@@ -120,7 +120,7 @@ public class TournamentDetailsController {
             return;
         }
         
-        final var addMatchWindow = new AddMatchWindow(view, registeredPlayers, courts);
+        final var addMatchWindow = new AddTournamentMatchWindow(view, registeredPlayers, courts);
         addMatchWindow.setMatchType(this.tournament.getType().getLabel());
         addMatchWindow.setMatchTypeEditable(false);
         
@@ -154,14 +154,6 @@ public class TournamentDetailsController {
         
         addMatchWindow.setCancelButtonListener(e -> addMatchWindow.dispose());
         addMatchWindow.setVisible(true);
-    }
-
-    private String getMatchPlayersString(final List<Player> players) {
-        return switch (players.size()) {
-            case 1 -> players.get(0).toString();
-            case 2 -> players.get(0).getSurname() + "/" + players.get(1).getSurname();
-            default -> throw new IllegalArgumentException("Invalid number of players (must be 1 or 2 per team).");
-        };
     }
 
     private void showError(final String message) {

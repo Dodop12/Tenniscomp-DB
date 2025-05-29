@@ -3,9 +3,11 @@ package tenniscomp.utils;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
 
 import tenniscomp.data.Card;
+import tenniscomp.data.Player;
 
 public final class CommonUtils {
 
@@ -87,6 +89,14 @@ public final class CommonUtils {
                 e
             );
         }
+    }
+
+    public static String getMatchPlayersString(final List<Player> players) {
+        return switch (players.size()) {
+            case 1 -> players.get(0).toString();
+            case 2 -> players.get(0).getSurname() + "/" + players.get(1).getSurname();
+            default -> throw new IllegalArgumentException("Invalid number of players (must be 1 or 2 per team).");
+        };
     }
 
     private static int calculateAgeAtYearEnd(final String birthDate) {
