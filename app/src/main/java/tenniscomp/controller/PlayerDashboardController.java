@@ -11,6 +11,7 @@ import tenniscomp.data.Player;
 import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
 import tenniscomp.utils.ImmutableTableModel;
+import tenniscomp.utils.MatchType;
 import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.PlayerDashboard;
@@ -28,6 +29,7 @@ public class PlayerDashboardController {
         
         loadPlayerData();
         loadTournaments();
+        loadMatches();
         setupListeners();
     }
 
@@ -57,9 +59,9 @@ public class PlayerDashboardController {
             final Object[] rowData = {
                 tournament.getTournamentId(),
                 tournament.getName(),
-                tournament.getStartDate(),
-                tournament.getEndDate(),
-                tournament.getRegistrationDeadline(),
+                CommonUtils.convertDateFormat(tournament.getStartDate()),
+                CommonUtils.convertDateFormat(tournament.getEndDate()),
+                CommonUtils.convertDateFormat(tournament.getRegistrationDeadline()),
                 tournament.getType(),
                 tournament.getGender().getLabel(),
                 tournament.getRankingLimit()
@@ -76,6 +78,17 @@ public class PlayerDashboardController {
         TableUtils.adjustColumnWidths(table);
     }
 
+    private void loadMatches() {
+        final var table = view.getMatchesTable();
+        final var tableModel = (ImmutableTableModel) table.getModel();
+        TableUtils.clearTable(tableModel);
+
+        loadTournamentMatches(tableModel);
+        loadLeagueMatches(tableModel);
+        
+        TableUtils.adjustColumnWidths(table);
+    }
+
     private void setupListeners() {
         // Double-click listener for tournament registration
         view.getTournamentsTable().addMouseListener(new MouseInputAdapter() {
@@ -86,6 +99,68 @@ public class PlayerDashboardController {
                 }
             }
         });
+    }
+
+    private void loadTournamentMatches(final ImmutableTableModel tableModel) {
+        final var tournamentMatches = model.getTournamentMatchesByPlayer(this.player.getPlayerId());
+        for (final var match : tournamentMatches) {
+            final var tournament = model.getTournamentById(match.getTournamentId());
+            // Load only singles matches
+            if (tournament != null && tournament.getType().equals(MatchType.SINGOLARE)) {
+                final var opponent = model.getPlayersByTournamentMatch(match.getMatchId())
+                        .stream()
+                        .filter(p -> p.getPlayerId() != this.player.getPlayerId())
+                        .findFirst()
+                        .orElse(null);
+                final var opponentName = opponent != null ?
+                        opponent.getSurname() + " " + opponent.getName() : "";
+                final String tournamentName = tournament.getName();
+                final String result = model.isPlayerTournamentMatchWinner(this.player.getPlayerId(), match.getMatchId())
+                        ? "W" : "L";
+                
+                final Object[] rowData = {
+                    "TM" + match.getMatchId(),
+                    tournamentName,
+                    CommonUtils.convertDateFormat(match.getDate()),
+                    opponentName,
+                    result,
+                    match.getResult(),
+                };
+                tableModel.addRow(rowData);
+            }
+        }
+    }
+
+    private void loadLeagueMatches(final ImmutableTableModel tableModel) {
+        final var leagueMatches = model.getLeagueMatchesByPlayer(this.player.getPlayerId());
+        for (final var match : leagueMatches) {
+            final var league = model.getLeagueByMatchId(match.getMatchId());
+            final var tie = model.getLeagueTieById(match.getTieId());
+            // Load only singles matches
+            if (league != null && tie != null && match.getType().equals(MatchType.SINGOLARE)) {
+                final var opponent = model.getPlayersByLeagueMatch(match.getMatchId())
+                        .stream()
+                        .filter(p -> p.getPlayerId() != this.player.getPlayerId())
+                        .findFirst()
+                        .orElse(null);
+                final var opponentName = opponent != null ?
+                        opponent.getSurname() + " " + opponent.getName() : "";
+                final String leagueName = "Campionato " + league.getSeries() +
+                        " " + league.getCategory().getLabel();
+                final String result = model.isPlayerLeagueMatchWinner(this.player.getPlayerId(), match.getMatchId())
+                        ? "W" : "L";
+                
+                final Object[] rowData = {
+                    "LM" + match.getMatchId(),
+                    leagueName,
+                    CommonUtils.convertDateFormat(tie.getDate()),
+                    opponentName,
+                    result,
+                    match.getResult(),
+                };
+                tableModel.addRow(rowData);
+            }
+        }
     }
 
     private void handleTournamentRegistration() {

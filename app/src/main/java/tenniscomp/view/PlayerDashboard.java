@@ -24,7 +24,7 @@ public class PlayerDashboard extends JFrame {
     private static final String CARD_NUMBER_TEXT = "Numero tessera";
     private static final String EXP_DATE_TEXT = "Data di scadenza";
     private static final String TOURNAMENTS_TITLE = "Tornei";
-    private static final String MATCHES_TITLE = "Partite";
+    private static final String MATCHES_TITLE = "Partite (singolare)";
     private static final String STATS_TITLE = "Statistiche";
     private static final String MATCHES_PLAYED_STAT = "Partite giocate";
     private static final String MATCHES_WON_STAT = "Partite vinte";
@@ -93,7 +93,7 @@ public class PlayerDashboard extends JFrame {
         tournamentsScrollPane.setBorder(BorderFactory.createTitledBorder(TOURNAMENTS_TITLE));
         
         // Matches panel
-        final String[] matchColumns = {"ID", "Torneo", "Data", "Avversario", "Risultato", "Punteggio"};
+        final String[] matchColumns = {"ID", "Competizione", "Data", "Avversario", "Risultato", "Punteggio"};
         this.matchesModel = new ImmutableTableModel(matchColumns, 0);
         this.matchesTable = new JTable(matchesModel);
         final var matchesScrollPane = new JScrollPane(matchesTable);
