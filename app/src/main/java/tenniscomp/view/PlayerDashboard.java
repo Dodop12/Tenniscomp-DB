@@ -43,6 +43,11 @@ public class PlayerDashboard extends JFrame {
     private final JTable matchesTable;
     private final JPanel statsPanel;
 
+    private final JLabel totalMatchesLabel;
+    private final JLabel matchesWonLabel;
+    private final JLabel winRateLabel;
+    private final JLabel tournamentTitlesLabel;
+
     public PlayerDashboard() {
         setTitle("TennisComp - Giocatore");
         setSize(1000, 700);
@@ -106,12 +111,16 @@ public class PlayerDashboard extends JFrame {
         // Bottom stats panel
         statsPanel = new JPanel(new GridLayout(1, 4, 10, 0));
         statsPanel.setBorder(BorderFactory.createTitledBorder(STATS_TITLE));
+
+        this.totalMatchesLabel = new JLabel("0", SwingConstants.CENTER);
+        this.matchesWonLabel = new JLabel("0", SwingConstants.CENTER);
+        this.winRateLabel = new JLabel("0%", SwingConstants.CENTER);
+        this.tournamentTitlesLabel = new JLabel("0", SwingConstants.CENTER);
         
-        // TODO: calculate data
-        final var matchesPlayedPanel = createStatPanel(MATCHES_PLAYED_STAT, "0");
-        final var matchesWonPanel = createStatPanel(MATCHES_WON_STAT, "0");
-        final var winRatePanel = createStatPanel(WIN_RATE_STAT, "0%");
-        final var tournamentWinsPanel = createStatPanel(TOURNAMENTS_WON_STAT, "0");
+        final var matchesPlayedPanel = createStatPanel(this.totalMatchesLabel, MATCHES_PLAYED_STAT);
+        final var matchesWonPanel = createStatPanel(this.matchesWonLabel, MATCHES_WON_STAT);
+        final var winRatePanel = createStatPanel(this.winRateLabel, WIN_RATE_STAT);
+        final var tournamentWinsPanel = createStatPanel(this.tournamentTitlesLabel, TOURNAMENTS_WON_STAT);
         
         this.statsPanel.add(matchesPlayedPanel);
         this.statsPanel.add(matchesWonPanel);
@@ -126,7 +135,7 @@ public class PlayerDashboard extends JFrame {
         setVisible(true);
     }
 
-     public JTable getTournamentsTable() {
+    public JTable getTournamentsTable() {
         return tournamentsTable;
     }
     
@@ -151,18 +160,25 @@ public class PlayerDashboard extends JFrame {
         cardExpiryDateLabel.setText(EXP_DATE_TEXT + ":  " + expiryDate);
     }
 
-    private JPanel createStatPanel(final String title, final String value) {
+    public void setMatchStats(final int totalMatches, final int matchesWon,
+            final int winRate, final int tournamentTitles) {
+        this.totalMatchesLabel.setText(String.valueOf(totalMatches));
+        this.matchesWonLabel.setText(String.valueOf(matchesWon));
+        this.winRateLabel.setText(String.valueOf(winRate) + "%");
+        this.tournamentTitlesLabel.setText(String.valueOf(tournamentTitles));
+    }
+    
+    private JPanel createStatPanel(JLabel statLabel, final String title) {
         final var panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         
         final var titleLabel = new JLabel(title, SwingConstants.CENTER);
         titleLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
         
-        final var valueLabel = new JLabel(value, SwingConstants.CENTER);
-        valueLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 24));
+        statLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 24));
         
         panel.add(titleLabel, BorderLayout.NORTH);
-        panel.add(valueLabel, BorderLayout.CENTER);
+        panel.add(statLabel, BorderLayout.CENTER);
         
         return panel;
     }

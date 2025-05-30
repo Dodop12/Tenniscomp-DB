@@ -21,6 +21,10 @@ public class PlayerDashboardController {
     private final PlayerDashboard view;
     private final Model model;
     private final Player player;
+
+    private int matchesCount = 0;
+    private int matchesWon = 0;
+    private int tournamentTitles = 0;
     
     public PlayerDashboardController(final PlayerDashboard view, final Model model, final Player player) {
         this.view = view;
@@ -30,6 +34,7 @@ public class PlayerDashboardController {
         loadPlayerData();
         loadTournaments();
         loadMatches();
+        displayStats();
         setupListeners();
     }
 
@@ -87,6 +92,14 @@ public class PlayerDashboardController {
         loadLeagueMatches(tableModel);
         
         TableUtils.adjustColumnWidths(table);
+    }
+
+    private void displayStats() {
+        final double winRate = this.matchesCount > 0 ?
+            (double) this.matchesWon / this.matchesCount * 100 : 0.0;
+        
+        this.view.setMatchStats(this.matchesCount, this.matchesWon,
+                (int) winRate, this.tournamentTitles);
     }
 
     private void setupListeners() {
@@ -149,6 +162,7 @@ public class PlayerDashboardController {
                         " " + league.getCategory().getLabel();
                 final String result = model.isPlayerLeagueMatchWinner(this.player.getPlayerId(), match.getMatchId())
                         ? "W" : "L";
+                updateStats(result);
                 
                 final Object[] rowData = {
                     "LM" + match.getMatchId(),
@@ -161,6 +175,15 @@ public class PlayerDashboardController {
                 tableModel.addRow(rowData);
             }
         }
+    }
+
+    // TODO: tournament wins
+    private void updateStats(final String result) {
+        this.matchesCount++;
+        if ("W".equals(result)) {
+            this.matchesWon++;
+        }
+        displayStats(); // Refresh stats panel
     }
 
     private void handleTournamentRegistration() {
