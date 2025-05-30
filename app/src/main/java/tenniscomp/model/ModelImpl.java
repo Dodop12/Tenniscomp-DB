@@ -217,6 +217,11 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public List<TournamentMatch> getTournamentMatchesByPlayer(final int playerId) {
+        return TournamentMatch.DAO.getMatchesByPlayer(this.connection, playerId);
+    }
+
+    @Override
     public List<Player> getPlayersByTournamentMatch(final int matchId) {
         return Player.DAO.getPlayersByTournamentMatch(this.connection, matchId);
     }
@@ -298,23 +303,28 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public List<LeagueMatch> getLeagueTieMatches(final int tieId) {
-        return LeagueMatch.DAO.getMatchesByLeagueTie(this.connection, tieId);
-    }
-
-    @Override
-    public boolean addLeagueMatch(final String type, final String result, final int tieId, 
+    public boolean addLeagueMatch(final MatchType type, final String result, final int tieId, 
             final int courtId, final Integer refereeId, final int winnerId, final int opponentId) {
         return addLeagueMatchGeneral(connection, type, result, tieId, courtId, refereeId,
                 List.of(winnerId), List.of(opponentId));
     }
 
     @Override
-    public boolean addLeagueMatch(final String type, final String result, final int tieId, 
+    public boolean addLeagueMatch(final MatchType type, final String result, final int tieId, 
             final int courtId, final Integer refereeId, final List<Integer> winnerIds,
             final List<Integer> opponentIds) {
         return addLeagueMatchGeneral(connection, type, result, tieId, courtId, refereeId,
                 winnerIds, opponentIds);
+    }
+
+    @Override
+    public List<LeagueMatch> getLeagueTieMatches(final int tieId) {
+        return LeagueMatch.DAO.getMatchesByLeagueTie(this.connection, tieId);
+    }
+
+    @Override
+    public List<LeagueMatch> getLeagueMatchesByPlayer(final int playerId) {
+        return LeagueMatch.DAO.getMatchesByPlayer(this.connection, playerId);
     }
 
     @Override
@@ -323,7 +333,12 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean isPlayerLeagueMatchWinner(int playerId, int matchId) {
+    public League getLeagueByMatchId(final int matchId) {
+        return League.DAO.getLeagueByMatchId(this.connection, matchId);
+    }
+
+    @Override
+    public boolean isPlayerLeagueMatchWinner(final int playerId, final int matchId) {
         return LeagueMatch.DAO.isPlayerWinner(this.connection, playerId, matchId);
     }
 
@@ -339,7 +354,7 @@ public class ModelImpl implements Model {
                 refereeId, winnerIds, opponentIds);
     }
 
-    private boolean addLeagueMatchGeneral(final Connection connection, final String type, final String result,
+    private boolean addLeagueMatchGeneral(final Connection connection, final MatchType type, final String result,
         final int tieId, final int courtId, final Integer refereeId, final List<Integer> winnerIds,
         final List<Integer> opponentIds) {
         return LeagueMatch.DAO.insertLeagueMatch(connection, type, result, tieId, courtId,

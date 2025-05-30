@@ -257,6 +257,14 @@ public final class Queries {
         WHERE id_torneo = ?
         """;
 
+    public static final String GET_TOURNAMENT_MATCHES_BY_PLAYER =
+        """
+        SELECT pt.*
+        FROM partita_torneo pt
+        JOIN giocatore_partita_torneo gpt ON pt.id_partita_torneo = gpt.id_partita_torneo
+        WHERE gpt.id_giocatore = ?
+        """;
+
     public static final String GET_PLAYERS_BY_TOURNAMENT_MATCH =
         """
         SELECT g.*
@@ -401,12 +409,29 @@ public final class Queries {
         WHERE s.id_squadra = ?
         """;
 
+    public static final String GET_LEAGUE_MATCHES_BY_PLAYER =
+        """
+        SELECT pc.*
+        FROM partita_campionato pc
+        JOIN giocatore_partita_campionato gpc ON pc.id_partita_campionato = gpc.id_partita_campionato
+        WHERE gpc.id_giocatore = ?
+        """;
+
     public static final String GET_PLAYERS_BY_LEAGUE_MATCH =
         """
         SELECT g.*
         FROM giocatore g
         JOIN giocatore_partita_campionato gpc ON g.id_giocatore = gpc.id_giocatore
         WHERE gpc.id_partita_campionato = ?
+        """;
+
+    public static final String GET_LEAGUE_BY_MATCH =
+        """
+        SELECT c.*
+        FROM campionato c
+        JOIN incontro_campionato ic ON c.id_campionato = ic.id_campionato
+        JOIN partita_campionato pc ON ic.id_incontro = pc.id_incontro
+        WHERE pc.id_partita_campionato = ?
         """;
 
     public static final String CHECK_PLAYER_WON_LEAGUE_MATCH =

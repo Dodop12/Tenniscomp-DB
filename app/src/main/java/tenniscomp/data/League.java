@@ -85,6 +85,28 @@ public class League {
             }
         }
 
+        public static League getLeagueByMatchId(final Connection connection, final int matchId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUE_BY_MATCH, matchId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return new League(
+                            resultSet.getInt("id_campionato"),
+                            LeagueSeries.valueOf(resultSet.getString("serie")),
+                            LeagueCategory.fromLabel(resultSet.getString("categoria")),
+                            Gender.fromCode(resultSet.getString("sesso")),
+                            resultSet.getInt("anno"),
+                            resultSet.getInt("id_ga")
+                    );
+                }
+                return null;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+
         public static List<League> getLeaguesByReferee(final Connection connection, final int refereeId) {           
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUES_BY_REFEREE, refereeId);

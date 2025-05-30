@@ -6,18 +6,20 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.utils.MatchType;
+
 public class LeagueMatch extends Match {
-    private final String type;
+    private final MatchType type;
     private final int tieId;
 
-    public LeagueMatch(final int matchId, final String type, final String result,
+    public LeagueMatch(final int matchId, final MatchType type, final String result,
             final int tieId, final int courtId, final int refereeId) {
         super(matchId, result, courtId, refereeId);
         this.type = type;
         this.tieId = tieId;
     }
 
-    public String getType() {
+    public MatchType getType() {
         return type;
     }
 
@@ -27,7 +29,7 @@ public class LeagueMatch extends Match {
 
     public final class DAO {
 
-        public static boolean insertLeagueMatch(final Connection connection, final String type, 
+        public static boolean insertLeagueMatch(final Connection connection, final MatchType type, 
                 final String result, final int tieId, final int courtId, final Integer refereeId,
                 final List<Integer> winnerIds, final List<Integer> opponentIds) {
             try {
@@ -45,7 +47,7 @@ public class LeagueMatch extends Match {
                 try (var matchStatement = connection.prepareStatement(Queries.ADD_LEAGUE_MATCH, 
                         Statement.RETURN_GENERATED_KEYS)) {
                     // Manually set parameters since the utility method cannot be used with generated keys
-                    matchStatement.setString(1, type);
+                    matchStatement.setString(1, type.getLabel());
                     matchStatement.setString(2, result);
                     matchStatement.setInt(3, tieId);
                     matchStatement.setInt(4, courtId);
@@ -119,9 +121,31 @@ public class LeagueMatch extends Match {
                 while (resultSet.next()) {
                     matches.add(new LeagueMatch(
                         resultSet.getInt("id_partita_campionato"),
-                        resultSet.getString("tipo"),
+                        MatchType.fromLabel(resultSet.getString("tipo")),
                         resultSet.getString("risultato"),
                         tieId,
+                        resultSet.getInt("id_campo"),
+                        resultSet.getInt("id_arbitro")
+                    ));
+                }
+                return matches;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static List<LeagueMatch> getMatchesByPlayer(final Connection connection, final int playerId) {
+            try (
+                final var statement = DAOUtils.prepare(connection, Queries.GET_LEAGUE_MATCHES_BY_PLAYER, playerId);
+                final var resultSet = statement.executeQuery()
+            ) {
+                final List<LeagueMatch> matches = new ArrayList<>();
+                while (resultSet.next()) {
+                    matches.add(new LeagueMatch(
+                        resultSet.getInt("id_partita_campionato"),
+                        MatchType.fromLabel(resultSet.getString("tipo")),
+                        resultSet.getString("risultato"),
+                        resultSet.getInt("id_incontro"),
                         resultSet.getInt("id_campo"),
                         resultSet.getInt("id_arbitro")
                     ));

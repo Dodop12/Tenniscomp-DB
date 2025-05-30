@@ -49,6 +49,28 @@ public class TournamentMatch extends Match {
             }
         }
 
+        public static List<TournamentMatch> getMatchesByPlayer(final Connection connection, final int playerId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_TOURNAMENT_MATCHES_BY_PLAYER, playerId);
+                var resultSet = statement.executeQuery();
+            ) {
+                final var matches = new ArrayList<TournamentMatch>();
+                while (resultSet.next()) {
+                    matches.add(new TournamentMatch(
+                        resultSet.getInt("id_partita_torneo"),
+                        resultSet.getString("data"),
+                        resultSet.getString("risultato"),
+                        resultSet.getInt("id_torneo"),
+                        resultSet.getInt("id_campo"),
+                        resultSet.getInt("id_arbitro")
+                    ));
+                }
+                return matches;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static boolean insertTournamentMatch(final Connection connection, final String date, 
             final String result, final int tournamentId, final int courtId, final Integer refereeId,
             final List<Integer> winnerIds, final List<Integer> opponentIds) {

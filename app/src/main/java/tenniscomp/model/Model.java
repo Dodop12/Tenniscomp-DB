@@ -66,6 +66,7 @@ public interface Model {
     boolean addTournamentMatch(String date, String result, int tournamentId, int courtId, 
             Integer refereeId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
     List<TournamentMatch> getTournamentMatches(int tournamentId);
+    List<TournamentMatch> getTournamentMatchesByPlayer(int playerId);
     List<Player> getPlayersByTournamentMatch(int matchId);
     boolean isPlayerTournamentMatchWinner(int playerId, int matchId);
 
@@ -83,12 +84,14 @@ public interface Model {
     LeagueTie getLeagueTieById(int tieId);
     List<LeagueTie> getLeagueTies(int leagueId);
     boolean updateLeagueTieResult(int tieId, String result);
-    boolean addLeagueMatch(String type, String result, int tieId, int courtId, 
+    boolean addLeagueMatch(MatchType type, String result, int tieId, int courtId, 
             Integer refereeId, int winnerId, int opponentId); // For singles
-    boolean addLeagueMatch(String type, String result, int tieId, int courtId, 
+    boolean addLeagueMatch(MatchType type, String result, int tieId, int courtId, 
             Integer refereeId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
     List<LeagueMatch> getLeagueTieMatches(int tieId);
+    List<LeagueMatch> getLeagueMatchesByPlayer(int playerId);
     List<Player> getPlayersByLeagueMatch(int matchId);
+    League getLeagueByMatchId(int matchId);
     boolean isPlayerLeagueMatchWinner(int playerId, int matchId);
     int getTieMatchWinsByTeam(int teamId, int tieId);
 
