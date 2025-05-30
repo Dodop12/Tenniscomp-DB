@@ -126,7 +126,7 @@ public class TieDetailsController {
         preparePlayersByResult(winner, homePlayer1, homePlayer2, awayPlayer1, awayPlayer2,
                 winnerPlayers, loserPlayers);
 
-        final boolean success = model.addLeagueMatch(matchType, result,
+        final boolean success = model.addLeagueMatch(MatchType.fromLabel(matchType), result,
                 tie.getTieId(), court.getCourtId(), null, winnerPlayers, loserPlayers);
         if (success) {
             loadMatches();
