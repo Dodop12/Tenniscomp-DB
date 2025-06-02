@@ -42,14 +42,14 @@ public class PlayerManagerController {
         final var tableModel = view.getTableModel();
         TableUtils.clearTable(tableModel);
 
-        final List<Player> players = model.getAllPlayers();
-        for (final Player player : players) {
+        for (final Player player : model.getAllPlayers()) {
             final Card card = Optional.ofNullable(player.getCardId())
                     .map(model::getCardById)
                     .orElse(null);
             final Club club = Optional.ofNullable(player.getClubId())
                     .map(model::getClubById)
                     .orElse(null);
+
             final Object[] rowData = {
                     player.getPlayerId(),
                     player.getSurname(),
@@ -177,13 +177,11 @@ public class PlayerManagerController {
 
         final String expiryDate = CommonUtils.generateCardExpiryDate();
 
-        final int result = JOptionPane.showConfirmDialog(
-            view,
+        final int result = showConfirm(
             "Conferma tesseramento giocatore " + player.getSurname() + " " + player.getName()
                 + "\n\nNumero tessera: " + cardNumber
                 + "\nData di scadenza: " + CommonUtils.convertDateFormat(expiryDate),
-            "Tesseramento - " + player.getSurname() + " " + player.getName(),
-            JOptionPane.OK_CANCEL_OPTION
+            "Tesseramento - " + player.getSurname() + " " + player.getName()
         );
         if (result == JOptionPane.OK_OPTION) {
             model.addCard(cardNumber, expiryDate);
@@ -213,16 +211,13 @@ public class PlayerManagerController {
         }
 
         final String newExpiryDate = CommonUtils.generateCardExpiryDate();
-        final int result = JOptionPane.showConfirmDialog(
-            view,
+        final int result = showConfirm(
             "Conferma rinnovo tessera per " + player.getSurname() + " " + player.getName()
                 + "\nNumero tessera: " + card.getCardNumber()
                 + "\n\nVecchia scadenza: " + CommonUtils.convertDateFormat(card.getExpiryDate())
                 + "\nNuova scadenza: " + CommonUtils.convertDateFormat(newExpiryDate),
-            "Rinnovo tessera - " + player.getSurname() + " " + player.getName(),
-            JOptionPane.OK_CANCEL_OPTION
+            "Rinnovo tessera - " + player.getSurname() + " " + player.getName()
         );
-        
         if (result == JOptionPane.OK_OPTION) {
             model.updateCardExpiryDate(card.getCardId(), newExpiryDate);
             loadPlayers();
@@ -293,9 +288,18 @@ public class PlayerManagerController {
         assignClubWindow.setVisible(true);
     }
 
+    private int showConfirm(final String title, final String message) {
+        return JOptionPane.showConfirmDialog(
+            this.view,
+            message,
+            title,
+            JOptionPane.OK_CANCEL_OPTION
+        );
+    }
+
     private void showError(final String message) {
         JOptionPane.showMessageDialog(
-            view,
+            this.view,
             message,
             "Errore",
             JOptionPane.ERROR_MESSAGE

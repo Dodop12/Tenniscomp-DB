@@ -51,9 +51,7 @@ public class ClubManagerController {
     private void setupContextMenu() {
         final var table = this.view.getClubsTable();
         final var contextMenu = new JPopupMenu();
-        
         final var addCourtItem = new JMenuItem("Registra campo");
-        
         contextMenu.add(addCourtItem);
         
         table.addMouseListener(new MouseAdapter() {

@@ -224,14 +224,12 @@ public class PlayerDashboardController {
         
         if (response == JOptionPane.YES_OPTION) {
             model.registerPlayerForTournament(this.player.getPlayerId(), tournament.getTournamentId());
-            loadTournaments();
             JOptionPane.showMessageDialog(
                 view,
                 "Iscrizione al torneo \"" + tournament.getName() + "\" avvenuta con successo!",
                 "Iscrizione completata",
                 JOptionPane.INFORMATION_MESSAGE
             );
-
             loadTournaments();
         }
     }
