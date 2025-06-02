@@ -52,8 +52,9 @@ public interface Model {
     boolean checkCardNumberExists(String cardNumber);
     boolean updateCardExpiryDate(int cardId, String newExpiryDate);
 
-    boolean addTournament(String name, String startDate, String endDate, String registrationDeadline, 
-            MatchType type, Gender gender, Ranking rankingLimit, double prizeMoney, int refereeId, int clubId);
+    boolean addTournament(String name, String startDate, String endDate, String registrationDeadline,
+            MatchType type, Gender gender, Ranking rankingLimit, double prizeMoney,
+            List<Double> prizeDistribution, int refereeId, int clubId);
     Tournament getTournamentById(int tournamentId);
     List<TournamentRegistration> getTournamentRegistrations(int tournamentId);
     List<Player> getTournamentPlayers(int tournamentId);

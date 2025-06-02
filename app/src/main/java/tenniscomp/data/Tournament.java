@@ -1,6 +1,7 @@
 package tenniscomp.data;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,15 +86,70 @@ public class Tournament {
 
         public static boolean insertTournament(final Connection connection, final String name, final String startDate, 
                 final String endDate, final String registrationDeadline, final MatchType type, final Gender gender,
-                final Ranking rankingLimit, final double prizeMoney, final int refereeId, final int clubId) {
-            try (
-                var statement = DAOUtils.prepare(connection, Queries.ADD_TOURNAMENT, name, startDate, endDate, 
-                        registrationDeadline, type.getLabel(), gender.getCode(), rankingLimit.getLabel(),
-                        prizeMoney, refereeId, clubId)
-            ) {
-                return statement.executeUpdate() > 0;
+                final Ranking rankingLimit, final double prizeMoney, final List<Double> prizeDistribution, 
+                final int refereeId, final int clubId) {
+            try {
+                connection.setAutoCommit(false);
+                
+                // Insert tournament
+                int tournamentId;
+                try (var statement = connection.prepareStatement(Queries.ADD_TOURNAMENT, 
+                        Statement.RETURN_GENERATED_KEYS)) {
+                    statement.setString(1, name);
+                    statement.setString(2, startDate);
+                    statement.setString(3, endDate);
+                    statement.setString(4, registrationDeadline);
+                    statement.setString(5, type.getLabel());
+                    statement.setString(6, gender.getCode());
+                    statement.setString(7, rankingLimit.getLabel());
+                    statement.setDouble(8, prizeMoney);
+                    statement.setInt(9, refereeId);
+                    statement.setInt(10, clubId);
+                    if (statement.executeUpdate() == 0) {
+                        connection.rollback();
+                        return false;
+                    }
+                    
+                    // Get the generated tournament ID
+                    try (var generatedKeys = statement.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            tournamentId = generatedKeys.getInt(1);
+                        } else {
+                            connection.rollback();
+                            return false;
+                        }
+                    }
+                }
+                
+                // Insert prizes if distribution is provided
+                if (prizeDistribution != null && !prizeDistribution.isEmpty()) {
+                    for (int i = 0; i < prizeDistribution.size(); i++) {
+                        final double prizeValue = prizeDistribution.get(i);
+                        if (prizeValue > 0) { // Only insert non-zero prize values
+                            final int position = i + 1; // Position starts from 1
+                            if (!Prize.DAO.insertPrize(connection, position, prizeValue, tournamentId)) {
+                                connection.rollback();
+                                return false;
+                            }
+                        }
+                    }
+                }
+                
+                connection.commit();
+                return true;   
             } catch (final Exception e) {
+                try {
+                    connection.rollback();
+                } catch (final Exception rollbackEx) {
+                    throw new DAOException(rollbackEx);
+                }
                 throw new DAOException(e);
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (final Exception autoCommitEx) {
+                    throw new DAOException(autoCommitEx);
+                }
             }
         }
 

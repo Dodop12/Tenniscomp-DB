@@ -176,6 +176,12 @@ public final class Queries {
         WHERE id_tessera = ?
         """;
 
+    public static final String ADD_PRIZE = 
+        """
+        INSERT INTO premio (posizione, valore, id_torneo) 
+        VALUES (?, ?, ?)
+        """;
+
     public static final String ADD_TOURNAMENT =
         """
         INSERT INTO torneo (nome, data_inizio, data_fine, scadenza_iscrizioni, tipo,
