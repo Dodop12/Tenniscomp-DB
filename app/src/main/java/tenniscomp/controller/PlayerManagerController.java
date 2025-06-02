@@ -288,7 +288,7 @@ public class PlayerManagerController {
         assignClubWindow.setVisible(true);
     }
 
-    private int showConfirm(final String title, final String message) {
+    private int showConfirm(final String message, final String title) {
         return JOptionPane.showConfirmDialog(
             this.view,
             message,
