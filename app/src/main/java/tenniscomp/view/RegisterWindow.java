@@ -35,7 +35,7 @@ public class RegisterWindow extends JFrame {
 
     public RegisterWindow() {
         setTitle("Registrazione Giocatore");
-        setSize(600, 500);
+        setSize(650, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
