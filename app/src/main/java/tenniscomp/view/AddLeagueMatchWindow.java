@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import tenniscomp.data.Court;
 import tenniscomp.data.Player;
+import tenniscomp.data.Umpire;
 import tenniscomp.utils.MatchType;
 
 public class AddLeagueMatchWindow extends JDialog {
@@ -28,20 +29,21 @@ public class AddLeagueMatchWindow extends JDialog {
     private final JComboBox<Player> awayPlayer1ComboBox;
     private final JComboBox<Player> awayPlayer2ComboBox;
     private final JComboBox<Court> courtComboBox;
+    private final JComboBox<Umpire> umpireComboBox;
     private final JComboBox<String> winnerComboBox;
     private final JTextField resultField;
     private final JButton saveButton;
     private final JButton cancelButton;
 
     public AddLeagueMatchWindow(final JDialog parent, final List<Player> homeTeamPlayers, 
-            final List<Player> awayTeamPlayers, final List<Court> courts) {
+            final List<Player> awayTeamPlayers, final List<Court> courts, final List<Umpire> umpires) {
         super(parent, "Aggiungi Partita Campionato", true);
-        setSize(450, 450);
+        setSize(450, 500);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(parent);
 
-        final var mainPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        final var mainPanel = new JPanel(new GridLayout(9, 2, 10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
 
         // Match type selector
@@ -90,6 +92,15 @@ public class AddLeagueMatchWindow extends JDialog {
             this.courtComboBox.addItem(court);
         }
         mainPanel.add(this.courtComboBox);
+
+        // Umpire selector
+        mainPanel.add(new JLabel("Arbitro:"));
+        this.umpireComboBox = new JComboBox<>();
+        this.umpireComboBox.addItem(null); // null as default option (no umpire selected)
+        for (final var umpire : umpires) {
+            this.umpireComboBox.addItem(umpire);
+        }
+        mainPanel.add(this.umpireComboBox);
 
         // Winner selector
         mainPanel.add(new JLabel("Vincitore:"));
@@ -151,6 +162,10 @@ public class AddLeagueMatchWindow extends JDialog {
 
     public Court getCourt() {
         return (Court) this.courtComboBox.getSelectedItem();
+    }
+
+    public Umpire getUmpire() {
+        return (Umpire) umpireComboBox.getSelectedItem();
     }
 
     public String getResult() {

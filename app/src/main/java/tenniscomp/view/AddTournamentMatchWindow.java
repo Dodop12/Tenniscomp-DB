@@ -21,6 +21,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Court;
 import tenniscomp.data.Player;
+import tenniscomp.data.Umpire;
 import tenniscomp.utils.MatchType;
 import tenniscomp.utils.CommonUtils;
 
@@ -31,18 +32,20 @@ public class AddTournamentMatchWindow extends JDialog {
     private final JComboBox<Player> winnerComboBox;
     private final JComboBox<Player> opponentComboBox;
     private final JComboBox<Court> courtComboBox;
+    private final JComboBox<Umpire> umpireComboBox;
     private final JTextField resultField;
     private final JButton saveButton;
     private final JButton cancelButton;
 
-    public AddTournamentMatchWindow(final JFrame parent, final List<Player> registeredPlayers, final List<Court> courts) {
+    public AddTournamentMatchWindow(final JFrame parent, final List<Player> registeredPlayers,
+            final List<Court> courts, final List<Umpire> umpires) {
         super(parent, "Aggiungi Partita", true);
-        setSize(400, 350);
+        setSize(450, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(parent);
 
-        final var mainPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+        final var mainPanel = new JPanel(new GridLayout(7, 2, 10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
 
         // Date picker
@@ -82,6 +85,15 @@ public class AddTournamentMatchWindow extends JDialog {
         }
         mainPanel.add(this.courtComboBox);
 
+        // Umpire selector
+        mainPanel.add(new JLabel("Arbitro:"));
+        this.umpireComboBox = new JComboBox<>();
+        this.umpireComboBox.addItem(null); // null as default option (no umpire selected)
+        for (final var umpire : umpires) {
+            this.umpireComboBox.addItem(umpire);
+        }
+        mainPanel.add(this.umpireComboBox);
+
         // Result field
         mainPanel.add(new JLabel("Risultato:"));
         this.resultField = new JTextField(15);
@@ -113,6 +125,10 @@ public class AddTournamentMatchWindow extends JDialog {
 
     public Court getCourt() {
         return (Court) this.courtComboBox.getSelectedItem();
+    }
+
+    public Umpire getUmpire() {
+        return (Umpire) umpireComboBox.getSelectedItem();
     }
 
     public String getResult() {

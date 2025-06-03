@@ -30,6 +30,7 @@ public class RefereeDashboard extends JFrame {
     private final JButton addLeagueButton;
     private final JButton managePlayersButton;
     private final JButton manageClubsButton;
+    private final JButton manageUmpiresButton;
 
     private final JTable tournamentsTable;
     private final JTable leaguesTable;
@@ -53,15 +54,17 @@ public class RefereeDashboard extends JFrame {
         refereeInfoPanel.add(this.nameLabel);
         refereeInfoPanel.add(this.titleLabel);
         
-        // Panel with buttons to manage players and clubs
+        // Panel with buttons to manage players, clubs and umpires
         final var managementPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         managementPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         
         this.managePlayersButton = new JButton("Gestione Giocatori");
         this.manageClubsButton = new JButton("Gestione Circoli");
+        this.manageUmpiresButton = new JButton("Gestione Arbitri");
         
         managementPanel.add(this.managePlayersButton);
         managementPanel.add(this.manageClubsButton);
+        managementPanel.add(this.manageUmpiresButton);
         
         // Tournaments panel
         final var tournamentsPanel = new JPanel(new BorderLayout());
@@ -142,5 +145,9 @@ public class RefereeDashboard extends JFrame {
     
     public void setManageClubsListener(final ActionListener listener) {
         this.manageClubsButton.addActionListener(listener);
+    }
+
+    public void setManageUmpiresListener(final ActionListener listener) {
+        this.manageUmpiresButton.addActionListener(listener);
     }
 }
