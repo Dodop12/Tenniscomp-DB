@@ -1,7 +1,9 @@
 package tenniscomp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -48,8 +50,8 @@ public class PrizesController {
         view.setPrizeFieldsDocumentListener(docListener);
     }
     
-    public void updateDisplay() {
-        final List<Double> values = view.parseFieldValues();
+    private void updateDisplay() {
+        final List<Double> values = view.getFieldValues();
         final boolean isValid = isValidDistribution(values);
         
         if (values != null) {
@@ -90,7 +92,7 @@ public class PrizesController {
         
         // Check total is equal to 100% of the prize pool
         final double total = calculateTotal(values);
-        return view.isPercentMode() ? total == 100 : total == totalPrizePool;
+        return view.isPercentMode() ? total == 100 : total == this.totalPrizePool;
     }
     
     private double calculateTotal(final List<Double> values) {
@@ -105,7 +107,7 @@ public class PrizesController {
         for (int i = 0; i < positions.length; i++) {
             double amount = values.get(i);
             if (view.isPercentMode() && amount > 0) {
-                amount = (amount / 100.0) * totalPrizePool;
+                amount = (amount / 100.0) * this.totalPrizePool;
             }
             view.updatePrizeLabel(i, amount);
         }
@@ -115,21 +117,63 @@ public class PrizesController {
         final double totalUsed = calculateTotal(values);
         
         if (view.isPercentMode()) {
-            final double totalAmount = (totalUsed / 100.0) * totalPrizePool;
-            final double remaining = totalPrizePool - totalAmount;
+            final double totalAmount = (totalUsed / 100.0) * this.totalPrizePool;
+            final double remaining = this.totalPrizePool - totalAmount;
             final double remainingPercent = 100 - totalUsed;
             
             view.updateSummary(totalAmount, totalUsed, remaining, remainingPercent);
         } else {
-            final double remaining = totalPrizePool - totalUsed;
-            final double usedPercent = (totalUsed / totalPrizePool) * 100;
-            final double remainingPercent = (remaining / totalPrizePool) * 100;
+            final double remaining = this.totalPrizePool - totalUsed;
+            final double usedPercent = (totalUsed / this.totalPrizePool) * 100;
+            final double remainingPercent = (remaining / this.totalPrizePool) * 100;
             
             view.updateSummary(totalUsed, usedPercent, remaining, remainingPercent);
         }
     }
-    
+
+    private List<Double> calculatePrizeDistribution() {
+        final List<Double> values = view.getFieldValues();
+        if (values == null) {
+            return new ArrayList<>();
+        }
+        
+        final List<Double> distribution = new ArrayList<>();
+        for (int i = 0; i < positions.length; i++) {
+            double amount = values.get(i);
+            if (view.isPercentMode() && amount > 0) {
+                amount = (amount / 100.0) * this.totalPrizePool;
+            }
+            distribution.add(amount);
+        }
+        return distribution;
+    }
+
+    public boolean showSaveConfirmation() {
+        final var currencyFormat = view.getCurrencyFormat();
+        final List<Double> distribution = calculatePrizeDistribution();
+        final var message = new StringBuilder("Confermare la seguente distribuzione premi?\n\n");
+        
+        for (int i = 0; i < positions.length; i++) {
+            final double individualAmount = distribution.get(i);
+            if (individualAmount > 0) {
+                final double totalAmount = individualAmount * positions[i].getMultiplier();
+                message.append(positions[i].getLabel())
+                       .append(": € ").append(currencyFormat.format(totalAmount)).append("\n");
+            }
+        }
+
+        message.append("\nMontepremi totale: € ").append(currencyFormat.format(totalPrizePool));
+        
+        return JOptionPane.showConfirmDialog(
+            view,
+            message.toString(),
+            "Conferma Distribuzione Premi",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        ) == JOptionPane.YES_OPTION;
+    }
+
     public List<Double> getPrizeDistribution() {
-        return view.calculatePrizeDistribution(totalPrizePool);
+        return calculatePrizeDistribution();
     }
 }
