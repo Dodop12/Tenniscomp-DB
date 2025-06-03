@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -17,13 +17,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Club;
-import tenniscomp.utils.MatchType;
 import tenniscomp.utils.CommonUtils;
+import tenniscomp.utils.MatchType;
 import tenniscomp.utils.Ranking;
 
 public class AddTournamentWindow extends JDialog {
@@ -39,8 +41,11 @@ public class AddTournamentWindow extends JDialog {
     private final JTextField prizeMoneyField;
     private final ClubSelector clubSelector;
     
+    private final JButton configurePrizesButton;
     private final JButton saveButton;
     private final JButton cancelButton;
+    
+    private List<Double> prizeDistribution;
 
     public AddTournamentWindow(final JFrame parent, final List<Club> clubs) {
         super(parent, "Aggiungi Torneo", true);
@@ -102,6 +107,15 @@ public class AddTournamentWindow extends JDialog {
 
         add(formPanel, BorderLayout.CENTER);
 
+        // Prize configuration panel
+        final var prizePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        prizePanel.setBorder(BorderFactory.createTitledBorder("Configurazione Premi"));
+        
+        this.configurePrizesButton = new JButton("Configura Distribuzione Premi");
+        this.configurePrizesButton.setEnabled(false); // Initially disabled
+        prizePanel.add(this.configurePrizesButton);
+
+        // Button panel
         final var buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.saveButton = new JButton("Salva");
         this.cancelButton = new JButton("Annulla");
@@ -109,32 +123,77 @@ public class AddTournamentWindow extends JDialog {
         buttonsPanel.add(this.saveButton);
         buttonsPanel.add(this.cancelButton);
         
-        add(buttonsPanel, BorderLayout.SOUTH);
+        // South panel containing prize config and buttons
+        final var southPanel = new JPanel(new BorderLayout());
+        southPanel.add(prizePanel, BorderLayout.CENTER);
+        southPanel.add(buttonsPanel, BorderLayout.SOUTH);
+        
+        add(southPanel, BorderLayout.SOUTH);
+        
+        setupPrizeMoneyListener();
+    }
+    
+    private void setupPrizeMoneyListener() {
+        this.prizeMoneyField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent e) {
+                updateConfigurePrizesButtonState();
+            }
+            
+            @Override
+            public void removeUpdate(final DocumentEvent e) {
+                updateConfigurePrizesButtonState();
+            }
+            
+            @Override
+            public void changedUpdate(final DocumentEvent e) {
+                updateConfigurePrizesButtonState();
+            }
+        });
+    }
+    
+    private void updateConfigurePrizesButtonState() {
+        try {
+            final String prizeMoneyText = this.prizeMoneyField.getText().trim();
+            if (prizeMoneyText.isEmpty()) {
+                this.configurePrizesButton.setEnabled(false);
+                return;
+            }
+            
+            final double prizeMoney = Double.parseDouble(prizeMoneyText);
+            this.configurePrizesButton.setEnabled(prizeMoney > 0);
+            
+        } catch (final NumberFormatException e) {
+            this.configurePrizesButton.setEnabled(false);
+        }
     }
 
     public String getTournamentName() {
         return this.nameField.getText().trim();
     }
 
-   public String getStartDate() {
+    public String getStartDate() {
         final var selectedDate = this.startDatePicker.getDate();
-        return selectedDate != null ? selectedDate.format(CommonUtils.getYmdDateFormatter()) : "";
+        if (selectedDate == null) {
+            throw new IllegalArgumentException("Data di nascita non specificata");
+        }
+        return selectedDate.format(CommonUtils.getYmdDateFormatter());
     }
 
     public String getEndDate() {
         final var selectedDate = this.endDatePicker.getDate();
-        if (selectedDate != null) {
-            return selectedDate.format(CommonUtils.getYmdDateFormatter());
+        if (selectedDate == null) {
+            throw new IllegalArgumentException("Data di nascita non specificata");
         }
-        return "";
+        return selectedDate.format(CommonUtils.getYmdDateFormatter());
     }
 
     public String getRegistrationDeadline() {
-        final LocalDate selectedDate = this.registrationDeadlinePicker.getDate();
-        if (selectedDate != null) {
-            return selectedDate.format(CommonUtils.getYmdDateFormatter());
+        final var selectedDate = this.registrationDeadlinePicker.getDate();
+        if (selectedDate == null) {
+            throw new IllegalArgumentException("Data di nascita non specificata");
         }
-        return "";
+        return selectedDate.format(CommonUtils.getYmdDateFormatter());
     }
 
     public String getTournamentType() {
@@ -155,6 +214,27 @@ public class AddTournamentWindow extends JDialog {
 
     public Club getSelectedClub() {
         return this.clubSelector.getSelectedClub();
+    }
+    
+    public List<Double> getPrizeDistribution() {
+        return new ArrayList<>(this.prizeDistribution);
+    }
+
+    public void setPrizeDistribution(final List<Double> prizeDistribution) {
+        this.prizeDistribution = new ArrayList<>(prizeDistribution);
+        if (!this.prizeDistribution.isEmpty()) {
+            this.configurePrizesButton.setText("Modifica Distribuzione Premi");
+        } else {
+            this.configurePrizesButton.setText("Configura Distribuzione Premi");
+        }
+    }
+    
+    public boolean hasPrizeDistribution() {
+        return !this.prizeDistribution.isEmpty();
+    }
+
+    public void setConfigurePrizesButtonListener(final ActionListener listener) {
+        this.configurePrizesButton.addActionListener(listener);
     }
 
     public void setSaveButtonListener(final ActionListener listener) {
