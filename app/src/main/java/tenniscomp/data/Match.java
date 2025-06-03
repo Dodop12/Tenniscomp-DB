@@ -4,13 +4,13 @@ public abstract class Match {
     protected final int matchId;
     protected final String result;
     protected final int courtId;
-    protected final Integer refereeId;
+    protected final Integer umpireId;
 
-    public Match(final int matchId, final String result, final int courtId, final Integer refereeId) {
+    public Match(final int matchId, final String result, final int courtId, final Integer umpireId) {
         this.matchId = matchId;
         this.result = result;
         this.courtId = courtId;
-        this.refereeId = refereeId;
+        this.umpireId = umpireId;
     }
 
     public int getMatchId() {
@@ -25,8 +25,8 @@ public abstract class Match {
         return courtId;
     }
 
-    public Integer getRefereeId() {
-        return refereeId;
+    public Integer getUmpireId() {
+        return umpireId;
     }
 
 }

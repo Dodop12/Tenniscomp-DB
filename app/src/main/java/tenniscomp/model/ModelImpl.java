@@ -15,6 +15,7 @@ import tenniscomp.data.Team;
 import tenniscomp.data.Tournament;
 import tenniscomp.data.TournamentMatch;
 import tenniscomp.data.TournamentRegistration;
+import tenniscomp.data.Umpire;
 import tenniscomp.utils.Gender;
 import tenniscomp.utils.LeagueCategory;
 import tenniscomp.utils.LeagueSeries;
@@ -85,6 +86,22 @@ public class ModelImpl implements Model {
     @Override
     public Referee getRefereeByUsername(final String username) {
         return Referee.DAO.getRefereeByUsername(this.connection, username);
+    }
+
+    @Override
+    public boolean addUmpire(final String surname, final String name, final String email, final String birthDate,
+            final Gender gender, final String phone, final String title) {
+        return Umpire.DAO.insertUmpire(this.connection, surname, name, email, birthDate, gender, phone, title);
+    }
+
+    @Override
+    public Umpire getUmpireById(final int umpireId) {
+        return Umpire.DAO.getUmpireById(this.connection, umpireId);
+    }
+
+    @Override
+    public List<Umpire> getAllUmpires() {
+        return Umpire.DAO.getAllUmpires(this.connection);
     }
 
     @Override

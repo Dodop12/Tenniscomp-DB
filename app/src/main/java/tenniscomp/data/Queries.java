@@ -54,6 +54,26 @@ public final class Queries {
         WHERE username = ?
         """;
 
+    public static final String ADD_UMPIRE =
+        """
+        INSERT INTO arbitro (cognome, nome, email, data_nascita, sesso, telefono, qualifica)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+
+    public static final String GET_UMPIRE_BY_ID =
+        """
+        SELECT *
+        FROM arbitro
+        WHERE id_arbitro = ?
+        """;
+
+    public static final String GET_ALL_UMPIRES =
+        """
+        SELECT *
+        FROM arbitro
+        ORDER BY cognome, nome
+        """;
+
     public static final String GET_ALL_PLAYERS =
         """
         SELECT *

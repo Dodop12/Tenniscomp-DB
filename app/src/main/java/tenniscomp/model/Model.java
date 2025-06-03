@@ -14,6 +14,7 @@ import tenniscomp.data.Team;
 import tenniscomp.data.Tournament;
 import tenniscomp.data.TournamentMatch;
 import tenniscomp.data.TournamentRegistration;
+import tenniscomp.data.Umpire;
 import tenniscomp.utils.Gender;
 import tenniscomp.utils.LeagueCategory;
 import tenniscomp.utils.LeagueSeries;
@@ -36,6 +37,11 @@ public interface Model {
 
     boolean loginReferee(String username, String password);
     Referee getRefereeByUsername(String username);
+
+    boolean addUmpire(String surname, String name, String email, String birthDate,
+            Gender gender, String phone, String title);
+    Umpire getUmpireById(int umpireId);
+    List<Umpire> getAllUmpires();
 
     boolean addClub(String name, String address, String city);
     Club getClubById(int clubId);
@@ -86,9 +92,9 @@ public interface Model {
     List<LeagueTie> getLeagueTies(int leagueId);
     boolean updateLeagueTieResult(int tieId, String result);
     boolean addLeagueMatch(MatchType type, String result, int tieId, int courtId, 
-            Integer refereeId, int winnerId, int opponentId); // For singles
+            Integer umpireId, int winnerId, int opponentId); // For singles
     boolean addLeagueMatch(MatchType type, String result, int tieId, int courtId, 
-            Integer refereeId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
+            Integer umpireId, List<Integer> winnerIds, List<Integer> opponentIds); // For doubles
     List<LeagueMatch> getLeagueTieMatches(int tieId);
     List<LeagueMatch> getLeagueMatchesByPlayer(int playerId);
     List<Player> getPlayersByLeagueMatch(int matchId);
