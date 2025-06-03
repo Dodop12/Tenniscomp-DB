@@ -37,7 +37,7 @@ public class LeagueDetailsController {
 
     private void loadLeagueData() {
         view.setLeagueName(league.getSeries().name(), league.getCategory().getLabel(),
-                league.getGender().getLabel(), league.getYear());
+                league.getGender().getType(), league.getYear());
         // TODO: decommentare se servono
         /* view.setSeries(league.getSeries());
         view.setCategory(league.getCategory());

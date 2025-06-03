@@ -204,7 +204,7 @@ public class RefereeDashboardController {
             final int year = addLeagueWindow.getYear();
             
             if (model.addLeague(LeagueSeries.valueOf(series), LeagueCategory.fromLabel(category),
-                    Gender.fromLabel(gender), year, referee.getRefereeId())) {
+                    Gender.fromCode(gender), year, referee.getRefereeId())) {
                 loadLeagues();
                 addLeagueWindow.dispose();
             }

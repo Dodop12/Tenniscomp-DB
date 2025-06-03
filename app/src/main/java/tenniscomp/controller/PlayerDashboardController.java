@@ -68,7 +68,7 @@ public class PlayerDashboardController {
                 CommonUtils.convertDateFormat(tournament.getEndDate()),
                 CommonUtils.convertDateFormat(tournament.getRegistrationDeadline()),
                 tournament.getType(),
-                tournament.getGender().getLabel(),
+                tournament.getGender().getType(),
                 tournament.getRankingLimit()
             };
             tableModel.addRow(rowData);

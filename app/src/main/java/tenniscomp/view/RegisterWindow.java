@@ -18,6 +18,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 
+import tenniscomp.utils.Gender;
+
 public class RegisterWindow extends JFrame {
 
     private final JTextField nameField = new JTextField();
@@ -27,7 +29,7 @@ public class RegisterWindow extends JFrame {
     private final JTextField usernameField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
     private final JPasswordField confirmField = new JPasswordField();
-    private final JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Maschio", "Femmina"});
+    private final JComboBox<String> genderComboBox = new JComboBox<>(Gender.getAllLabels().toArray(new String[0]));
 
     private final JButton registerButton = new JButton("Registrati");
 

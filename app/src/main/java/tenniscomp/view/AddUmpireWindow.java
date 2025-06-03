@@ -18,6 +18,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 
 import tenniscomp.utils.CommonUtils;
+import tenniscomp.utils.Gender;
 
 public class AddUmpireWindow extends JDialog {
 
@@ -25,7 +26,7 @@ public class AddUmpireWindow extends JDialog {
     private final JTextField surnameField = new JTextField();
     private final JTextField emailField = new JTextField();
     private final JTextField phoneField = new JTextField();
-    private final JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Maschio", "Femmina"});
+    private final JComboBox<String> genderComboBox = new JComboBox<>(Gender.getAllLabels().toArray(new String[0]));
     private final JComboBox<String> titleComboBox =
             new JComboBox<>(new String[]{"ARBN2", "ARBN1", "ITF1", "ITF2", "ITF3"});
 

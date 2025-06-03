@@ -25,6 +25,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import tenniscomp.data.Club;
 import tenniscomp.utils.CommonUtils;
+import tenniscomp.utils.Gender;
 import tenniscomp.utils.MatchType;
 import tenniscomp.utils.Ranking;
 
@@ -80,8 +81,8 @@ public class AddTournamentWindow extends JDialog {
 
         formPanel.add(new JLabel("Sesso:"));
         final var genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        this.maleRadio = new JRadioButton("M");
-        this.femaleRadio = new JRadioButton("F");
+        this.maleRadio = new JRadioButton(Gender.MALE.getCode());
+        this.femaleRadio = new JRadioButton(Gender.FEMALE.getCode());
 
         final var genderGroup = new ButtonGroup();
         genderGroup.add(this.maleRadio);
