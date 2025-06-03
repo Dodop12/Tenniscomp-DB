@@ -11,7 +11,7 @@ CREATE TABLE giudice_arbitro (
     telefono VARCHAR(15) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    qualifica VARCHAR(10) DEFAULT 'GAQR'
+    qualifica VARCHAR(10) NOT NULL DEFAULT 'GAQR'
 );
 
 CREATE TABLE arbitro (
@@ -22,7 +22,7 @@ CREATE TABLE arbitro (
     data_nascita DATE NOT NULL,
     sesso CHAR(1) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
-    qualifica VARCHAR(10) NOT NULL
+    qualifica VARCHAR(10) NOT NULL DEFAULT 'ARBN2'
 );
 
 CREATE TABLE circolo (
