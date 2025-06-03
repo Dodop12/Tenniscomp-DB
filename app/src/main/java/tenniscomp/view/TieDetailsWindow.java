@@ -48,7 +48,8 @@ public class TieDetailsWindow extends JDialog {
         infoPanel.add(this.tieInfoLabel);
         
         final var matchesPanel = new JPanel(new BorderLayout());
-        final String[] matchesColumns = {"ID", "Tipo", "Vincitore", "Circolo", "Avversario", "Risultato", "Campo"};
+        final String[] matchesColumns = {"ID", "Tipo", "Vincitore", "Circolo",
+            "Avversario", "Risultato", "Campo", "Arbitro"};
         final var matchesModel = new ImmutableTableModel(matchesColumns, 0);
         this.matchesTable = new JTable(matchesModel);
 

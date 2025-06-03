@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import tenniscomp.utils.ImmutableTableModel;
 
@@ -24,6 +25,7 @@ public class LeagueDetailsWindow extends JFrame {
     private static final String TEAMS_TITLE = "Squadre";
     private static final String TIES_TITLE = "Incontri";
 
+    private final JSplitPane tablesPanel;
     private final JLabel leagueNameLabel;
     /* private final JLabel seriesLabel;
     private final JLabel categoryLabel;
@@ -72,9 +74,6 @@ public class LeagueDetailsWindow extends JFrame {
         infoPanel.add(this.categoryLabel);
         infoPanel.add(this.genderLabel); */
         
-        final var tablesPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        tablesPanel.setDividerLocation(450);
-        
         final var teamsPanel = new JPanel(new BorderLayout());
         final String[] teamsColumns = {"ID", "Circolo", "Città", "Num. Giocatori"};
         final var teamsModel = new ImmutableTableModel(teamsColumns, 0);
@@ -105,6 +104,7 @@ public class LeagueDetailsWindow extends JFrame {
         tiesPanel.add(tiesButtonPanel, BorderLayout.NORTH);
         tiesPanel.add(tiesScrollPane, BorderLayout.CENTER);
         
+        this.tablesPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         tablesPanel.setLeftComponent(teamsPanel);
         tablesPanel.setRightComponent(tiesPanel);
         
@@ -163,7 +163,11 @@ public class LeagueDetailsWindow extends JFrame {
         this.closeButton.addActionListener(listener);
     }
     
-    public void display() {
+   public void display() {
         setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            this.tablesPanel.setDividerLocation(0.4);
+            this.tablesPanel.setContinuousLayout(true);
+        });
     }
 }

@@ -69,7 +69,8 @@ public class TieDetailsController {
             final var clubWinner = model.getClubById(winners.get(0).getClubId());
             final var court = model.getCourtById(match.getCourtId());
             final var courtNumber = court != null ? court.getNumber() : 0;
-            
+            final var umpire = model.getUmpireById(match.getUmpireId());
+            final var umpireName = umpire != null ? umpire.toString() : "";
             final Object[] rowData = {
                 match.getMatchId(),
                 match.getType(),
@@ -77,7 +78,8 @@ public class TieDetailsController {
                 clubWinner != null ? clubWinner.getName() : "",
                 CommonUtils.getMatchPlayersString(opponents),
                 match.getResult(),
-                courtNumber
+                courtNumber,
+                umpireName
             };
             tableModel.addRow(rowData);
         }
@@ -95,12 +97,13 @@ public class TieDetailsController {
         final var awayPlayers = model.getPlayersByTeam(tie.getAwayTeamId());
         final var homeClub = model.getClubByTeamId(tie.getHomeTeamId());
         final var courts = new ArrayList<>(model.getCourtsByClub(homeClub.getClubId()));
+        final var umpires = model.getAllUmpires();
 
         if (!checkPlayersAndCourts(homePlayers, awayPlayers, courts)) {
             return;
         }
         
-        final var addMatchWindow = new AddLeagueMatchWindow(view, homePlayers, awayPlayers, courts);
+        final var addMatchWindow = new AddLeagueMatchWindow(view, homePlayers, awayPlayers, courts, umpires);
         
         addMatchWindow.setSaveButtonListener(e -> handleSaveMatch(addMatchWindow));
         addMatchWindow.setCancelButtonListener(e -> addMatchWindow.dispose());
@@ -114,6 +117,7 @@ public class TieDetailsController {
         final var awayPlayer1 = addMatchWindow.getAwayPlayer1();
         final var awayPlayer2 = addMatchWindow.getAwayPlayer2();
         final var court = addMatchWindow.getCourt();
+        final var umpire = addMatchWindow.getUmpire();
         final var winner = addMatchWindow.getWinner();
         final var result = addMatchWindow.getResult();
 
@@ -126,8 +130,10 @@ public class TieDetailsController {
         preparePlayersByResult(winner, homePlayer1, homePlayer2, awayPlayer1, awayPlayer2,
                 winnerPlayers, loserPlayers);
 
+        final Integer umpireId = umpire != null ? umpire.getUmpireId() : null;
+
         final boolean success = model.addLeagueMatch(MatchType.fromLabel(matchType), result,
-                tie.getTieId(), court.getCourtId(), null, winnerPlayers, loserPlayers);
+                tie.getTieId(), court.getCourtId(), umpireId, winnerPlayers, loserPlayers);
         if (success) {
             loadMatches();
             updateTieResult();

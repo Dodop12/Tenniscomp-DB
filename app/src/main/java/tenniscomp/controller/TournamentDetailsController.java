@@ -87,13 +87,16 @@ public class TournamentDetailsController {
             }
         
             final var courtNumber = model.getCourtById(match.getCourtId()).getNumber();
+            final var umpire = model.getUmpireById(match.getUmpireId());
+            final var umpireName = umpire != null ? umpire.toString() : "";
             final Object[] rowData = {
                 match.getMatchId(),
                 CommonUtils.getMatchPlayersString(winners),
                 CommonUtils.getMatchPlayersString(opponents),
                 match.getResult(),
                 CommonUtils.convertDateFormat(match.getDate()),
-                courtNumber
+                courtNumber,
+                umpireName
             };
             tableModel.addRow(rowData);
         }
@@ -119,8 +122,9 @@ public class TournamentDetailsController {
             showError("Nessun campo trovato per il circolo associato al torneo.");
             return;
         }
-        
-        final var addMatchWindow = new AddTournamentMatchWindow(view, registeredPlayers, courts);
+        final var umpires = model.getAllUmpires();
+
+        final var addMatchWindow = new AddTournamentMatchWindow(view, registeredPlayers, courts, umpires);
         addMatchWindow.setMatchType(this.tournament.getType().getLabel());
         addMatchWindow.setMatchTypeEditable(false);
         
@@ -129,6 +133,7 @@ public class TournamentDetailsController {
             final var winner = addMatchWindow.getWinner();
             final var opponent = addMatchWindow.getOpponent();
             final var court = addMatchWindow.getCourt();
+            final var umpire = addMatchWindow.getUmpire();
             final var result = addMatchWindow.getResult();
             
             if (matchDate != null && winner != null && opponent != null && 
@@ -139,9 +144,10 @@ public class TournamentDetailsController {
                     return;
                 }
                 
-                // TODO: doubles + manage referee
-                if (model.addTournamentMatch(matchDate, result, tournament.getTournamentId(), 
-                        court.getCourtId(), null, List.of(winner.getPlayerId()), List.of(opponent.getPlayerId()))) {
+                final Integer umpireId = umpire != null ? umpire.getUmpireId() : null;
+                
+                if (model.addTournamentMatch(matchDate, result, tournament.getTournamentId(), court.getCourtId(), 
+                        umpireId, List.of(winner.getPlayerId()), List.of(opponent.getPlayerId()))) {
                     loadMatches();
                     addMatchWindow.dispose();
                 } else {

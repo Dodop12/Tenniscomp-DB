@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.CommonUtils;
@@ -25,6 +26,7 @@ public class TournamentDetailsWindow extends JFrame {
     private static final String REGISTRATIONS_TITLE = "Iscrizioni";
     private static final String MATCHES_TITLE = "Partite";
 
+    private final JSplitPane tablesPanel;
     private final JLabel tournamentNameLabel;
     private final JLabel datesLabel;
     private final JLabel rankingLimitLabel;
@@ -72,9 +74,6 @@ public class TournamentDetailsWindow extends JFrame {
         infoPanel.add(this.clubLabel);
         infoPanel.add(this.prizeMoneyLabel);
         
-        final var tablesPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        tablesPanel.setDividerLocation(450);
-        
         final var registrationsPanel = new JPanel(new BorderLayout());
         final String[] registrationColumns = {"ID", "Giocatore", "Classifica", "Data iscrizione"};
         final var registrationsModel = new ImmutableTableModel(registrationColumns, 0);
@@ -85,7 +84,7 @@ public class TournamentDetailsWindow extends JFrame {
         registrationsPanel.add(registrationsScrollPane, BorderLayout.CENTER);
         
         final var matchesPanel = new JPanel(new BorderLayout());
-        final String[] matchesColumns = {"ID", "Vincitore", "Avversario", "Risultato", "Data", "Campo"};
+        final String[] matchesColumns = {"ID", "Vincitore", "Avversario", "Risultato", "Data", "Campo", "Arbitro"};
         final var matchesModel = new ImmutableTableModel(matchesColumns, 0);
         this.matchesTable = new JTable(matchesModel);
 
@@ -99,8 +98,9 @@ public class TournamentDetailsWindow extends JFrame {
         matchesPanel.add(matchesButtonPanel, BorderLayout.NORTH);
         matchesPanel.add(matchesScrollPane, BorderLayout.CENTER);
         
-        tablesPanel.setLeftComponent(registrationsPanel);
-        tablesPanel.setRightComponent(matchesPanel);
+        this.tablesPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        this.tablesPanel.setLeftComponent(registrationsPanel);
+        this.tablesPanel.setRightComponent(matchesPanel);
         
         final var lowerButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.closeButton = new JButton("Chiudi");
@@ -158,5 +158,9 @@ public class TournamentDetailsWindow extends JFrame {
     
     public void display() {
         setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            this.tablesPanel.setDividerLocation(0.35);
+            this.tablesPanel.setContinuousLayout(true);
+        });
     }
 }
