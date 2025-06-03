@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
@@ -61,24 +59,6 @@ public class ClubManager extends JFrame {
         this.sorter = new TableRowSorter<>(tableModel);
         clubsTable.setRowSorter(sorter);
         
-        // Search functionality
-        this.searchField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(final DocumentEvent e) {
-                applySearchFilter();
-            }
-
-            @Override
-            public void removeUpdate(final DocumentEvent e) {
-                applySearchFilter();
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent e) {
-                applySearchFilter();
-            }
-        });
-        
         final var tableScrollPane = new JScrollPane(clubsTable);
         tableScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
@@ -92,6 +72,22 @@ public class ClubManager extends JFrame {
     public JTable getClubsTable() {
         return clubsTable;
     }
+
+    public ImmutableTableModel getTableModel() {
+        return tableModel;
+    }
+
+    public TableRowSorter<ImmutableTableModel> getTableSorter() {
+        return sorter;
+    }
+
+    public JTextField getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchFieldListener(final DocumentListener listener) {
+        this.searchField.getDocument().addDocumentListener(listener);
+    }
     
     public void setAddClubButtonListener(final ActionListener listener) {
         this.addClubButton.addActionListener(listener);
@@ -103,15 +99,5 @@ public class ClubManager extends JFrame {
     
     public void display() {
         setVisible(true);
-    }
-
-    private void applySearchFilter() {
-        final String text = this.searchField.getText();
-        if (text.trim().length() == 0) {
-            this.sorter.setRowFilter(null);
-        } else {
-            // Filter on the name column (index 1)
-            this.sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
-        }
     }
 }

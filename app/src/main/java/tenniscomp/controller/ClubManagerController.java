@@ -6,12 +6,15 @@ import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import tenniscomp.data.Club;
 import tenniscomp.model.Model;
-import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.Surface;
 import tenniscomp.utils.TableUtils;
+import tenniscomp.view.AddClubWindow;
 import tenniscomp.view.ClubManager;
 import tenniscomp.view.CourtRegistrationWindow;
 
@@ -25,11 +28,12 @@ public class ClubManagerController {
         this.model = model;
         
         loadClubs();
+        setupSearchFunctionality();
         setupContextMenu();
     }
     
     public void loadClubs() {
-        final var tableModel = (ImmutableTableModel) view.getClubsTable().getModel();
+        final var tableModel = view.getTableModel();
         TableUtils.clearTable(tableModel);
         
         final var clubs = model.getAllClubs();
@@ -46,6 +50,45 @@ public class ClubManagerController {
         }
 
         TableUtils.adjustColumnWidths(view.getClubsTable());
+    }
+
+    private void setupSearchFunctionality() {
+        view.setSearchFieldListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent e) {
+                applySearchFilter();
+            }
+
+            @Override
+            public void removeUpdate(final DocumentEvent e) {
+                applySearchFilter();
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent e) {
+                applySearchFilter();
+            }
+        });
+    }
+
+    public void openAddClubWindow() {
+        final var addClubWindow = new AddClubWindow(view);
+        
+        addClubWindow.setSaveButtonListener(e -> {
+            final String name = addClubWindow.getClubName();
+            final String address = addClubWindow.getClubAddress();
+            final String city = addClubWindow.getClubCity();
+            
+            if (!name.isEmpty() && !address.isEmpty() && !city.isEmpty()) {
+                if (model.addClub(name, address, city)) {
+                    loadClubs();
+                    addClubWindow.dispose();
+                }
+            }
+        });
+        
+        addClubWindow.setCancelButtonListener(e -> addClubWindow.dispose());
+        addClubWindow.setVisible(true);
     }
 
     private void setupContextMenu() {
@@ -79,6 +122,18 @@ public class ClubManagerController {
         });
         
         addCourtItem.addActionListener(e -> handleAddCourtAction());
+    }
+
+    private void applySearchFilter() {
+        final String text = view.getSearchField().getText();
+        final var sorter = view.getTableSorter();
+
+        if (text.trim().length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            // Filter on the name column (index 1)
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
+        }
     }
 
     private Club getSelectedClub() {
