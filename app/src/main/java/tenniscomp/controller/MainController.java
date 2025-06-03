@@ -2,9 +2,10 @@ package tenniscomp.controller;
 
 import java.sql.Connection;
 
+import tenniscomp.controller.user.LoginController;
 import tenniscomp.model.ModelImpl;
-import tenniscomp.view.LoginSelector;
-import tenniscomp.view.LoginWindow;
+import tenniscomp.view.user.LoginSelector;
+import tenniscomp.view.user.LoginWindow;
 
 public class MainController {
 
