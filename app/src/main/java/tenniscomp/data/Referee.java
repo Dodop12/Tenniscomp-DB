@@ -2,6 +2,10 @@ package tenniscomp.data;
 
 import java.sql.Connection;
 
+import tenniscomp.data.sql.DAOException;
+import tenniscomp.data.sql.DAOUtils;
+import tenniscomp.data.sql.Queries;
+
 public class Referee {
     private final int refereeId;
     private final String name;

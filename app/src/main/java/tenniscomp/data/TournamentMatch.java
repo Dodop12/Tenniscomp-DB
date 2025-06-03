@@ -6,6 +6,10 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.data.sql.DAOException;
+import tenniscomp.data.sql.DAOUtils;
+import tenniscomp.data.sql.Queries;
+
 public class TournamentMatch extends Match {
     private final String date;
     private final int tournamentId;

@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import tenniscomp.data.sql.DAOException;
+import tenniscomp.data.sql.DAOUtils;
+import tenniscomp.data.sql.Queries;
+
 public class Club {
     private final int clubId;
     private final String name;

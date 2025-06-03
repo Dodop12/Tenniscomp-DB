@@ -1,4 +1,4 @@
-package tenniscomp.data;
+package tenniscomp.data.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

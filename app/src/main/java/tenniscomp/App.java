@@ -3,7 +3,7 @@ package tenniscomp;
 import java.sql.SQLException;
 
 import tenniscomp.controller.MainController;
-import tenniscomp.data.DAOUtils;
+import tenniscomp.data.sql.DAOUtils;
 
 public class App {
 

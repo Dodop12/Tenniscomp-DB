@@ -1,4 +1,4 @@
-package tenniscomp.data;
+package tenniscomp.data.sql;
 
 public final class Queries {
 
