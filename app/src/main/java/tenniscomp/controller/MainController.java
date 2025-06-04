@@ -26,7 +26,7 @@ public class MainController {
         loginSelector.dispose();
         final var model = new ModelImpl(connection);
         final var loginView = new LoginWindow(isReferee);
-        new LoginController(loginView, model);
+        new LoginController(connection, loginView, model);
     }
     
 }

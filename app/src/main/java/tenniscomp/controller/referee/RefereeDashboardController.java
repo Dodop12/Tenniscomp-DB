@@ -1,6 +1,7 @@
 package tenniscomp.controller.referee;
 
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.MouseInputAdapter;
 
+import tenniscomp.controller.MainController;
 import tenniscomp.controller.club.ClubManagerController;
 import tenniscomp.controller.league.LeagueDetailsController;
 import tenniscomp.controller.player.PlayerManagerController;
@@ -38,11 +40,14 @@ import tenniscomp.view.umpire.UmpireManager;
 
 public class RefereeDashboardController {
     
+    private final Connection connection;
     private final RefereeDashboard view;
     private final Model model;
     private final Referee referee;
     
-    public RefereeDashboardController(final RefereeDashboard view, final Model model, final Referee referee) {
+    public RefereeDashboardController(final Connection connection, final RefereeDashboard view,
+        final Model model, final Referee referee) {
+        this.connection = connection;
         this.view = view;
         this.model = model;
         this.referee = referee;
@@ -130,6 +135,8 @@ public class RefereeDashboardController {
                 }
             }
         });
+
+        view.setLogoutListener(e -> handleLogout());
     }
 
     private void openTournamentDetails() {
@@ -319,6 +326,20 @@ public class RefereeDashboardController {
         }
 
         return true;
+    }
+
+    private void handleLogout() {
+        final int response = JOptionPane.showConfirmDialog(
+            view,
+            "Sei sicuro di voler uscire?",
+            "Conferma logout",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (response == JOptionPane.YES_OPTION) {
+            view.dispose();
+            new MainController(this.connection).start();
+        }
     }
 
     private void showError(final String message) {

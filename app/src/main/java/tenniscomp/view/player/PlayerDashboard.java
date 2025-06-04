@@ -3,10 +3,13 @@ package tenniscomp.view.player;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +32,6 @@ public class PlayerDashboard extends JFrame {
     private static final String MATCHES_PLAYED_STAT = "Partite giocate";
     private static final String MATCHES_WON_STAT = "Partite vinte";
     private static final String WIN_RATE_STAT = "Win rate";
-    private static final String TOURNAMENTS_WON_STAT = "Tornei vinti";
 
     private final JLabel nameLabel;
     private final JLabel rankingLabel;
@@ -46,11 +48,12 @@ public class PlayerDashboard extends JFrame {
     private final JLabel totalMatchesLabel;
     private final JLabel matchesWonLabel;
     private final JLabel winRateLabel;
-    private final JLabel tournamentTitlesLabel;
+
+    private final JButton logoutButton;
 
     public PlayerDashboard() {
         setTitle("TennisComp - Giocatore");
-        setSize(1000, 700);
+        setSize(1000, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
@@ -115,21 +118,27 @@ public class PlayerDashboard extends JFrame {
         this.totalMatchesLabel = new JLabel("0", SwingConstants.CENTER);
         this.matchesWonLabel = new JLabel("0", SwingConstants.CENTER);
         this.winRateLabel = new JLabel("0%", SwingConstants.CENTER);
-        this.tournamentTitlesLabel = new JLabel("0", SwingConstants.CENTER);
         
         final var matchesPlayedPanel = createStatPanel(this.totalMatchesLabel, MATCHES_PLAYED_STAT);
         final var matchesWonPanel = createStatPanel(this.matchesWonLabel, MATCHES_WON_STAT);
         final var winRatePanel = createStatPanel(this.winRateLabel, WIN_RATE_STAT);
-        final var tournamentWinsPanel = createStatPanel(this.tournamentTitlesLabel, TOURNAMENTS_WON_STAT);
         
         this.statsPanel.add(matchesPlayedPanel);
         this.statsPanel.add(matchesWonPanel);
         this.statsPanel.add(winRatePanel);
-        this.statsPanel.add(tournamentWinsPanel);
+
+        final var logoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        logoutPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        this.logoutButton = new JButton("Logout");
+        logoutPanel.add(this.logoutButton);
+
+        final var bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(statsPanel, BorderLayout.CENTER);
+        bottomPanel.add(logoutPanel, BorderLayout.SOUTH);
         
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
-        add(statsPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
         
         setLocationRelativeTo(null);
         setVisible(true);
@@ -165,7 +174,10 @@ public class PlayerDashboard extends JFrame {
         this.totalMatchesLabel.setText(String.valueOf(totalMatches));
         this.matchesWonLabel.setText(String.valueOf(matchesWon));
         this.winRateLabel.setText(String.valueOf(winRate) + "%");
-        this.tournamentTitlesLabel.setText(String.valueOf(tournamentTitles));
+    }
+
+    public void setLogoutListener(final ActionListener listener) {
+        this.logoutButton.addActionListener(listener);
     }
     
     private JPanel createStatPanel(JLabel statLabel, final String title) {

@@ -1,5 +1,7 @@
 package tenniscomp.controller.user;
 
+import java.sql.Connection;
+
 import javax.swing.JOptionPane;
 
 import tenniscomp.model.Model;
@@ -9,10 +11,12 @@ import tenniscomp.view.user.RegisterWindow;
 
 public class RegisterController {
 
+    private final Connection connection;
     private final RegisterWindow view;
     private final Model model;
 
-    public RegisterController(final RegisterWindow view, final Model model) {
+    public RegisterController(final Connection connection, final RegisterWindow view, final Model model) {
+        this.connection = connection;
         this.view = view;
         this.model = model;
 
@@ -43,7 +47,7 @@ public class RegisterController {
             view.showMessage("Registrazione completata con successo!", JOptionPane.INFORMATION_MESSAGE);
             this.view.dispose();
             final var loginView = new LoginWindow(false);
-            new LoginController(loginView, model); // Create a controller for the new login view
+            new LoginController(connection, loginView, model); // Create a controller for the new login view
         } else {
             view.showMessage("Errore nella registrazione.", JOptionPane.ERROR_MESSAGE);
         }

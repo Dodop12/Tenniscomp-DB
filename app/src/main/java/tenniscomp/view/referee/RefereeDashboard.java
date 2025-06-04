@@ -26,18 +26,19 @@ public class RefereeDashboard extends JFrame {
     private final JLabel nameLabel;
     private final JLabel titleLabel;
 
+    private final JTable tournamentsTable;
+    private final JTable leaguesTable;
+
     private final JButton addTournamentButton;
     private final JButton addLeagueButton;
     private final JButton managePlayersButton;
     private final JButton manageClubsButton;
     private final JButton manageUmpiresButton;
-
-    private final JTable tournamentsTable;
-    private final JTable leaguesTable;
+    private final JButton logoutButton;
 
     public RefereeDashboard() {
         setTitle("TennisComp - Giudice Arbitro");
-        setSize(1000, 700);
+        setSize(1000, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
@@ -103,10 +104,19 @@ public class RefereeDashboard extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         centerPanel.add(tournamentsPanel);
         centerPanel.add(leaguesPanel);
+
+        final var logoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        logoutPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        this.logoutButton = new JButton("Logout");
+        logoutPanel.add(this.logoutButton);
+
+        final var bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(centerPanel, BorderLayout.CENTER);
+        bottomPanel.add(logoutPanel, BorderLayout.SOUTH);
         
         add(refereeInfoPanel, BorderLayout.NORTH);
         add(managementPanel, BorderLayout.CENTER);
-        add(centerPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
         
         centerPanel.setPreferredSize(new Dimension(getWidth(), 500));
         managementPanel.setPreferredSize(new Dimension(getWidth(), 50));
@@ -122,7 +132,7 @@ public class RefereeDashboard extends JFrame {
     public JTable getLeaguesTable() {
         return leaguesTable;
     }
-    
+
     public void setRefereeName(final String name) {
         nameLabel.setText(name);
     }
@@ -149,5 +159,9 @@ public class RefereeDashboard extends JFrame {
 
     public void setManageUmpiresListener(final ActionListener listener) {
         this.manageUmpiresButton.addActionListener(listener);
+    }
+
+    public void setLogoutListener(final ActionListener listener) {
+        this.logoutButton.addActionListener(listener);
     }
 }

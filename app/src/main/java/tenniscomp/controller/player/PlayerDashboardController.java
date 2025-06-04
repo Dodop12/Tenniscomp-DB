@@ -1,32 +1,37 @@
 package tenniscomp.controller.player;
 
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.MouseInputAdapter;
 
+import tenniscomp.controller.MainController;
 import tenniscomp.data.Player;
 import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 import tenniscomp.utils.MatchType;
-import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.player.PlayerDashboard;
 
 public class PlayerDashboardController {
     
+    private final Connection connection;
     private final PlayerDashboard view;
     private final Model model;
     private final Player player;
 
     private int matchesCount = 0;
     private int matchesWon = 0;
-    private int tournamentTitles = 0;
+    private final int tournamentTitles = 0;
     
-    public PlayerDashboardController(final PlayerDashboard view, final Model model, final Player player) {
+    public PlayerDashboardController(final Connection connection, final PlayerDashboard view,
+            final Model model, final Player player) {
+        this.connection = connection;
         this.view = view;
         this.model = model;
         this.player = player;
@@ -104,7 +109,7 @@ public class PlayerDashboardController {
 
     private void setupListeners() {
         // Double-click listener for tournament registration
-        view.getTournamentsTable().addMouseListener(new MouseInputAdapter() {
+        this.view.getTournamentsTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -112,6 +117,8 @@ public class PlayerDashboardController {
                 }
             }
         });
+
+        this.view.setLogoutListener(e -> handleLogout());
     }
 
     private void loadTournamentMatches(final ImmutableTableModel tableModel) {
@@ -177,7 +184,6 @@ public class PlayerDashboardController {
         }
     }
 
-    // TODO: tournament wins
     private void updateStats(final String result) {
         this.matchesCount++;
         if ("W".equals(result)) {
@@ -241,6 +247,20 @@ public class PlayerDashboardController {
             return today.isAfter(deadline);
         } catch (final Exception e) {
             return true; // If date can't be parsed, assume registration is closed
+        }
+    }
+
+    private void handleLogout() {
+        final int response = JOptionPane.showConfirmDialog(
+            view,
+            "Sei sicuro di voler uscire?",
+            "Conferma logout",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (response == JOptionPane.YES_OPTION) {
+            view.dispose();
+            new MainController(this.connection).start();
         }
     }
 

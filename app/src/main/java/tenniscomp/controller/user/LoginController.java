@@ -1,5 +1,7 @@
 package tenniscomp.controller.user;
 
+import java.sql.Connection;
+
 import javax.swing.JOptionPane;
 
 import tenniscomp.controller.player.PlayerDashboardController;
@@ -12,10 +14,12 @@ import tenniscomp.view.user.RegisterWindow;
 
 public class LoginController {
 
+    private final Connection connection;
     private final LoginWindow view;
     private final Model model;
 
-    public LoginController(final LoginWindow view, final Model model) {
+    public LoginController(final Connection connection, final LoginWindow view, final Model model) {
+        this.connection = connection;
         this.view = view;
         this.model = model;
 
@@ -43,7 +47,7 @@ public class LoginController {
                     return;
                 }
                 var dashboard = new PlayerDashboard();
-                new PlayerDashboardController(dashboard, model, player);
+                new PlayerDashboardController(connection, dashboard, model, player);
             } else {
                 final var referee = model.getRefereeByUsername(username);
                 if (referee == null) {
@@ -51,7 +55,7 @@ public class LoginController {
                     return;
                 }
                 final var refereeDashboard = new RefereeDashboard();
-                new RefereeDashboardController(refereeDashboard, model, referee);
+                new RefereeDashboardController(connection, refereeDashboard, model, referee);
             }
         } else {
             view.showMessage("Credenziali non valide.", JOptionPane.ERROR_MESSAGE);
@@ -61,7 +65,7 @@ public class LoginController {
     private void openRegisterWindow() {
         view.dispose();
         final var registerView = new RegisterWindow();
-        new RegisterController(registerView, model);
+        new RegisterController(connection, registerView, model);
     }
     
 }
