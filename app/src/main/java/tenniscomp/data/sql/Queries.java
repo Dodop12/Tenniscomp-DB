@@ -8,20 +8,18 @@ public final class Queries {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
     
-    public static final String CHECK_PLAYER_LOGIN =
+    public static final String GET_PLAYER_PASSWORD_BY_USERNAME = 
         """
-        SELECT *
+        SELECT password_hash
         FROM giocatore
         WHERE username = ?
-        AND password_hash = ?
         """;
 
-    public static final String CHECK_REFEREE_LOGIN =
+    public static final String GET_REFEREE_PASSWORD_BY_USERNAME = 
         """
-        SELECT *
+        SELECT password_hash
         FROM giudice_arbitro
         WHERE username = ?
-        AND password_hash = ?
         """;
 
     public static final String GET_PLAYER_BY_ID =
@@ -142,7 +140,7 @@ public final class Queries {
     public static final String ADD_CARD =
         """
         INSERT INTO tessera (numero, scadenza)
-        VALUES (?, ?)
+        VALUES (?, DATE_FORMAT(NOW(), '%Y-12-31'))
         """;
 
     public static final String GET_CARD_BY_ID =
@@ -189,10 +187,10 @@ public final class Queries {
         )
         """;
 
-    public static final String UPDATE_CARD_EXPIRY_DATE =
+    public static final String RENEW_CARD =
         """
         UPDATE tessera
-        SET scadenza = ?
+        SET scadenza = DATE_FORMAT(NOW(), '%Y-12-31')
         WHERE id_tessera = ?
         """;
 
