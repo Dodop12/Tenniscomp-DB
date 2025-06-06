@@ -68,10 +68,10 @@ public final class CommonUtils {
         return String.format("%07d", 1000000 + random.nextInt(9000000));
     }
     
-    public static String generateCardExpiryDate() {
+    public static String getCardExpiryDate() {
         // When the card is generated, it is valid until the end of the current year
         final int currentYear = LocalDate.now().getYear();
-        return LocalDate.of(currentYear, 12, 31).format(YMD_DATE_FORMATTER);
+        return LocalDate.of(currentYear, 12, 31).format(DMY_DATE_FORMATTER);
     }
 
     /**

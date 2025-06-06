@@ -175,16 +175,16 @@ public class PlayerManagerController {
             cardNumber = CommonUtils.generateCardNumber();
         } while (model.checkCardNumberExists(cardNumber));
 
-        final String expiryDate = CommonUtils.generateCardExpiryDate();
+        final var expiryDate = CommonUtils.getCardExpiryDate();
 
         final int result = showConfirm(
             "Conferma tesseramento giocatore " + player.getSurname() + " " + player.getName()
                 + "\n\nNumero tessera: " + cardNumber
-                + "\nData di scadenza: " + CommonUtils.convertDateFormat(expiryDate),
+                + "\nData di scadenza: " + expiryDate,
             "Tesseramento - " + player.getSurname() + " " + player.getName()
         );
         if (result == JOptionPane.OK_OPTION) {
-            model.addCard(cardNumber, expiryDate);
+            model.addCard(cardNumber);
             final var card = model.getCardByNumber(cardNumber);
             if (card == null) {
                 showError("Errore durante il tesseramento del giocatore.");
@@ -210,16 +210,16 @@ public class PlayerManagerController {
             return;
         }
 
-        final String newExpiryDate = CommonUtils.generateCardExpiryDate();
+        final var newExpiryDate = CommonUtils.getCardExpiryDate();
         final int result = showConfirm(
             "Conferma rinnovo tessera per " + player.getSurname() + " " + player.getName()
                 + "\nNumero tessera: " + card.getCardNumber()
                 + "\n\nVecchia scadenza: " + CommonUtils.convertDateFormat(card.getExpiryDate())
-                + "\nNuova scadenza: " + CommonUtils.convertDateFormat(newExpiryDate),
+                + "\nNuova scadenza: " + newExpiryDate,
             "Rinnovo tessera - " + player.getSurname() + " " + player.getName()
         );
         if (result == JOptionPane.OK_OPTION) {
-            model.updateCardExpiryDate(card.getCardId(), newExpiryDate);
+            model.renewCard(card.getCardId());
             loadPlayers();
         }
     }

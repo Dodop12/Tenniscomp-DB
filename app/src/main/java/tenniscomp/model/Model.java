@@ -52,11 +52,11 @@ public interface Model {
     List<Court> getCourtsByClub(int clubId);
     boolean courtNumberExists(int number, int clubId);
 
-    boolean addCard(String cardNumber, String expiryDate);
+    boolean addCard(String cardNumber);
     Card getCardById(int cardId);
     Card getCardByNumber(String cardNumber);
     boolean checkCardNumberExists(String cardNumber);
-    boolean updateCardExpiryDate(int cardId, String newExpiryDate);
+    boolean renewCard(int cardId);
 
     boolean addTournament(String name, String startDate, String endDate, String registrationDeadline,
             MatchType type, Gender gender, Ranking rankingLimit, double prizeMoney,

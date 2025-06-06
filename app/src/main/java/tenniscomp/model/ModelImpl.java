@@ -145,8 +145,8 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean addCard(final String cardNumber, final String expiryDate) {
-        return Card.DAO.insertCard(this.connection, cardNumber, expiryDate);
+    public boolean addCard(final String cardNumber) {
+        return Card.DAO.insertCard(this.connection, cardNumber);
     }
 
     @Override
@@ -165,8 +165,8 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public boolean updateCardExpiryDate(final int cardId, final String newExpiryDate) {
-        return Card.DAO.updateCardExpiryDate(this.connection, cardId, newExpiryDate);
+    public boolean renewCard(final int cardId) {
+        return Card.DAO.renewCard(this.connection, cardId);
     }
 
     @Override

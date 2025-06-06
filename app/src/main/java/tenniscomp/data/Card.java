@@ -67,9 +67,9 @@ public class Card {
             }
         }
 
-        public static boolean insertCard(final Connection connection, final String cardNumber, final String expiryDate) {
+        public static boolean insertCard(final Connection connection, final String cardNumber) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.ADD_CARD, cardNumber, expiryDate);
+                var statement = DAOUtils.prepare(connection, Queries.ADD_CARD, cardNumber);
             ) {
                 return statement.executeUpdate() == 1;
             } catch (final Exception e) {
@@ -91,9 +91,9 @@ public class Card {
             }
         }
 
-        public static boolean updateCardExpiryDate(final Connection connection, final int cardId, final String newExpiryDate) {
+        public static boolean renewCard(final Connection connection, final int cardId) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.UPDATE_CARD_EXPIRY_DATE, newExpiryDate, cardId);
+                var statement = DAOUtils.prepare(connection, Queries.RENEW_CARD, cardId);
             ) {
                 return statement.executeUpdate() == 1;
             } catch (final Exception e) {
