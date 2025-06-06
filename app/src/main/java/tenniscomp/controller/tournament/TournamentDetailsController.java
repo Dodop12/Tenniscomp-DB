@@ -10,6 +10,7 @@ import tenniscomp.data.Player;
 import tenniscomp.data.Tournament;
 import tenniscomp.model.Model;
 import tenniscomp.utils.CommonUtils;
+import tenniscomp.utils.MatchType;
 import tenniscomp.utils.TableUtils;
 import tenniscomp.view.tournament.AddTournamentMatchWindow;
 import tenniscomp.view.tournament.TournamentDetailsWindow;
@@ -112,8 +113,12 @@ public class TournamentDetailsController {
     private void openAddMatchWindow() {
         final var registeredPlayers = model.getTournamentPlayers(this.tournament.getTournamentId());
         
-        if (registeredPlayers.size() < 2) {
-            showError("Sono necessari almeno 2 giocatori iscritti per inserire una partita.");
+        final int minPlayers = tournament.getType() == MatchType.SINGOLARE ? 2 : 4;
+        if (registeredPlayers.size() < minPlayers) {
+            final String message = tournament.getType() == MatchType.SINGOLARE 
+                ? "Sono necessari almeno 2 giocatori iscritti per inserire una partita."
+                : "Sono necessari almeno 4 giocatori iscritti per inserire una partita di doppio.";
+            showError(message);
             return;
         }
         
@@ -125,36 +130,73 @@ public class TournamentDetailsController {
         final var umpires = model.getAllUmpires();
 
         final var addMatchWindow = new AddTournamentMatchWindow(view, registeredPlayers, courts, umpires);
-        addMatchWindow.setMatchType(this.tournament.getType().getLabel());
-        addMatchWindow.setMatchTypeEditable(false);
+        addMatchWindow.setTournamentType(this.tournament.getType());
         
         addMatchWindow.setSaveButtonListener(e -> {
             final var matchDate = addMatchWindow.getMatchDate();
-            final var winner = addMatchWindow.getWinner();
-            final var opponent = addMatchWindow.getOpponent();
             final var court = addMatchWindow.getCourt();
             final var umpire = addMatchWindow.getUmpire();
             final var result = addMatchWindow.getResult();
             
-            if (matchDate != null && winner != null && opponent != null && 
-                    court != null && !result.isEmpty()) {
+            if (matchDate == null || matchDate.isEmpty() || court == null || result.isEmpty()) {
+                showError("Tutti i campi sono obbligatori.");
+                return;
+            }
+            
+            final Integer umpireId = umpire != null ? umpire.getUmpireId() : null;
+            boolean success = false;
+            
+            if (tournament.getType() == MatchType.SINGOLARE) {
+                final var winner = addMatchWindow.getWinner();
+                final var opponent = addMatchWindow.getOpponent();
+                
+                if (winner == null || opponent == null) {
+                    showError("Seleziona i giocatori.");
+                    return;
+                }
                 
                 if (winner.getPlayerId() == opponent.getPlayerId()) {
                     showError("I giocatori selezionati devono essere diversi.");
                     return;
                 }
                 
-                final Integer umpireId = umpire != null ? umpire.getUmpireId() : null;
-                
-                if (model.addTournamentMatch(matchDate, result, tournament.getTournamentId(), court.getCourtId(), 
-                        umpireId, List.of(winner.getPlayerId()), List.of(opponent.getPlayerId()))) {
-                    loadMatches();
-                    addMatchWindow.dispose();
-                } else {
-                    showError("Errore durante il salvataggio della partita.");
-                }
+                success = model.addTournamentMatch(matchDate, result, tournament.getTournamentId(), 
+                        court.getCourtId(), umpireId, winner.getPlayerId(), opponent.getPlayerId());
             } else {
-                showError("Tutti i campi sono obbligatori.");
+                // Doubles match
+                final var winnerPair = addMatchWindow.getWinnerPair();
+                final var opponentPair = addMatchWindow.getOpponentPair();
+                
+                if (winnerPair == null || opponentPair == null) {
+                    showError("Seleziona due giocatori per ogni coppia.");
+                    return;
+                }
+                
+                // Check that all players are different
+                final var allPlayers = new ArrayList<Player>();
+                allPlayers.addAll(List.of(winnerPair.x(), winnerPair.y()));
+                allPlayers.addAll(List.of(opponentPair.x(), opponentPair.y()));
+                if (allPlayers.stream().distinct().count() != allPlayers.size()) {
+                    showError("I giocatori selezionati devono essere diversi.");
+                    return;
+                }
+            
+                final var winnerIds = List.of(winnerPair.x(), winnerPair.y()).stream()
+                    .map(Player::getPlayerId)
+                    .toList();
+                final var opponentIds = List.of(opponentPair.x(), opponentPair.y()).stream()
+                    .map(Player::getPlayerId)
+                    .toList();
+                
+                success = model.addTournamentMatch(matchDate, result, tournament.getTournamentId(), 
+                        court.getCourtId(), umpireId, winnerIds, opponentIds);
+            }
+            
+            if (success) {
+                loadMatches();
+                addMatchWindow.dispose();
+            } else {
+                showError("Errore durante il salvataggio della partita.");
             }
         });
         
