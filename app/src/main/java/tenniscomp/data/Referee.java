@@ -5,6 +5,7 @@ import java.sql.Connection;
 import tenniscomp.data.sql.DAOException;
 import tenniscomp.data.sql.DAOUtils;
 import tenniscomp.data.sql.Queries;
+import tenniscomp.utils.PasswordUtils;
 
 public class Referee {
     private final int refereeId;
@@ -77,10 +78,14 @@ public class Referee {
 
         public static boolean checkLogin(final Connection connection, final String username, final String password) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.CHECK_REFEREE_LOGIN, username, password);
+                var statement = DAOUtils.prepare(connection, Queries.GET_REFEREE_PASSWORD_BY_USERNAME, username);
                 var resultSet = statement.executeQuery();
             ) {
-                return resultSet.next();
+                if (resultSet.next()) {
+                    final String storedHash = resultSet.getString("password_hash");
+                    return PasswordUtils.verifyPassword(password, storedHash);
+                }
+                return false;
             } catch (final Exception e) {
                 e.printStackTrace();
                 return false;

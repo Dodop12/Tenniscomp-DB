@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import tenniscomp.model.Model;
 import tenniscomp.utils.Gender;
+import tenniscomp.utils.PasswordUtils;
 import tenniscomp.view.user.LoginWindow;
 import tenniscomp.view.user.RegisterWindow;
 
@@ -40,8 +41,9 @@ public class RegisterController {
             return;
         }
 
+        final String hashedPassword = PasswordUtils.hashPasswordWithSalt(password);
         final boolean success = model.registerPlayer(surname, name, email, birthDate,
-                Gender.fromCode(gender), phone, username, password);
+                Gender.fromCode(gender), phone, username, hashedPassword);
 
         if (success) {
             view.showMessage("Registrazione completata con successo!", JOptionPane.INFORMATION_MESSAGE);

@@ -11,6 +11,7 @@ import tenniscomp.data.sql.DAOUtils;
 import tenniscomp.data.sql.Queries;
 import tenniscomp.utils.Gender;
 import tenniscomp.utils.LeagueCategory;
+import tenniscomp.utils.PasswordUtils;
 import tenniscomp.utils.Ranking;
 
 public class Player {
@@ -121,10 +122,15 @@ public class Player {
 
         public static boolean checkLogin(final Connection connection, final String username, final String password) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.CHECK_PLAYER_LOGIN, username, password);
+                var statement = DAOUtils.prepare(connection, Queries.GET_PLAYER_PASSWORD_BY_USERNAME,
+                    username);
                 var resultSet = statement.executeQuery();
             ) {
-                return resultSet.next();
+                if (resultSet.next()) {
+                    final String storedHash = resultSet.getString("password_hash");
+                    return PasswordUtils.verifyPassword(password, storedHash);
+                }
+                return false;
             } catch (final Exception e) {
                 e.printStackTrace();
                 return false;
