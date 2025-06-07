@@ -59,7 +59,7 @@ public class RefereeDashboardController {
     }
     
     private void loadRefereeData() {
-        view.setRefereeName(referee.getName() + " " + referee.getSurname());
+        view.setRefereeName(referee.getSurname() + " " + referee.getName());
         view.setRefereeTitle(referee.getTitle());
 
         TableUtils.adjustColumnWidths(view.getTournamentsTable());
