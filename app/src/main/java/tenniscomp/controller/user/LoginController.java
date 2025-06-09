@@ -46,7 +46,8 @@ public class LoginController {
                     view.showMessage("Errore durante il recupero dei dati del giocatore.", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                var dashboard = new PlayerDashboard();
+                final var dashboard = new PlayerDashboard();
+                dashboard.display();
                 new PlayerDashboardController(connection, dashboard, model, player);
             } else {
                 final var referee = model.getRefereeByUsername(username);
@@ -54,8 +55,9 @@ public class LoginController {
                     view.showMessage("Errore durante il recupero dei dati del giudice arbitro.", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                final var refereeDashboard = new RefereeDashboard();
-                new RefereeDashboardController(connection, refereeDashboard, model, referee);
+                final var dashboard = new RefereeDashboard();
+                dashboard.display();
+                new RefereeDashboardController(connection, dashboard, model, referee);
             }
         } else {
             view.showMessage("Credenziali non valide.", JOptionPane.ERROR_MESSAGE);

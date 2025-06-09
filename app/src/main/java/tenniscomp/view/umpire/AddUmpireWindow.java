@@ -1,5 +1,6 @@
 package tenniscomp.view.umpire;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -22,6 +23,9 @@ import tenniscomp.utils.Gender;
 
 public class AddUmpireWindow extends JDialog {
 
+    private static final double WIDTH_RATIO = 0.25;
+    private static final double HEIGHT_RATIO = 0.3;
+
     private final JTextField nameField = new JTextField();
     private final JTextField surnameField = new JTextField();
     private final JTextField emailField = new JTextField();
@@ -37,10 +41,9 @@ public class AddUmpireWindow extends JDialog {
 
     public AddUmpireWindow(final JFrame parent) {
         super(parent, "Aggiungi Arbitro", true);
-        setSize(500, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        final var panel = new JPanel(new GridLayout(9, 2, 2, 5));
+        final var panel = new JPanel(new GridLayout(8, 2, 2, 5));
 
         this.birthDatePicker = createDatePicker();
 
@@ -62,9 +65,15 @@ public class AddUmpireWindow extends JDialog {
         panel.add(this.cancelButton);
         panel.add(this.saveButton);
         
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        panel.setPreferredSize(new Dimension(width, height));
+
         add(panel);
         getRootPane().setDefaultButton(this.saveButton);
 
+        pack();
         setLocationRelativeTo(parent);
     }
 

@@ -1,5 +1,6 @@
 package tenniscomp.view.user;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -18,10 +19,13 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.Gender;
 
 public class RegisterWindow extends JFrame {
 
+    private static final double WIDTH_RATIO = 0.34;
+    private static final double HEIGHT_RATIO = 0.42;
     private final JTextField nameField = new JTextField();
     private final JTextField surnameField = new JTextField();
     private final JTextField emailField = new JTextField();
@@ -37,9 +41,12 @@ public class RegisterWindow extends JFrame {
 
     public RegisterWindow() {
         setTitle("Registrazione Giocatore");
-        setSize(650, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        setPreferredSize(new Dimension(width, height));
 
         final var panel = new JPanel(new GridLayout(10, 2, 2, 5));
 
@@ -70,6 +77,8 @@ public class RegisterWindow extends JFrame {
         add(panel);
         getRootPane().setDefaultButton(this.registerButton);
 
+        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

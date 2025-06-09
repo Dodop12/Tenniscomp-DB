@@ -1,6 +1,7 @@
 package tenniscomp.view.league;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -17,9 +18,13 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 
 public class LeagueDetailsWindow extends JFrame {
+
+    private static final double WIDTH_RATIO = 0.52;
+    private static final double HEIGHT_RATIO = 0.45;
 
     private static final String FONT_STYLE = "Arial";
     private static final String TEAMS_TITLE = "Squadre";
@@ -27,10 +32,6 @@ public class LeagueDetailsWindow extends JFrame {
 
     private final JSplitPane tablesPanel;
     private final JLabel leagueNameLabel;
-    /* private final JLabel seriesLabel;
-    private final JLabel categoryLabel;
-    private final JLabel genderLabel; 
-    private final JLabel yearLabel; */
     
     private final JTable teamsTable;
     private final JTable tiesTable;
@@ -46,7 +47,7 @@ public class LeagueDetailsWindow extends JFrame {
         setLayout(new BorderLayout(10, 10));
         setLocationRelativeTo(parent);
         
-        final var infoPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+        final var infoPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         infoPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createEmptyBorder(10, 10, 10, 10),
             BorderFactory.createTitledBorder("Informazioni Campionato")
@@ -56,23 +57,7 @@ public class LeagueDetailsWindow extends JFrame {
         this.leagueNameLabel.setFont(new Font(FONT_STYLE, Font.BOLD, 18));
         this.leagueNameLabel.setHorizontalAlignment(SwingConstants.LEFT);
         
-        // TODO: decommentare se servono
-        /* this.seriesLabel = new JLabel("Serie: ");
-        this.seriesLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
-        
-        this.categoryLabel = new JLabel("Categoria: ");
-        this.categoryLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
-        
-        this.genderLabel = new JLabel("Genere: ");
-        this.genderLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14));
-        
-        this.yearLabel = new JLabel("Anno: ");
-        this.yearLabel.setFont(new Font(FONT_STYLE, Font.PLAIN, 14)); */
-        
         infoPanel.add(this.leagueNameLabel);
-        /* infoPanel.add(this.seriesLabel);
-        infoPanel.add(this.categoryLabel);
-        infoPanel.add(this.genderLabel); */
         
         final var teamsPanel = new JPanel(new BorderLayout());
         final String[] teamsColumns = {"ID", "Circolo", "Città", "Num. Giocatori"};
@@ -107,6 +92,11 @@ public class LeagueDetailsWindow extends JFrame {
         this.tablesPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         tablesPanel.setLeftComponent(teamsPanel);
         tablesPanel.setRightComponent(tiesPanel);
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        this.tablesPanel.setPreferredSize(new Dimension(width, height));
         
         final var lowerButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.closeButton = new JButton("Chiudi");
@@ -118,6 +108,9 @@ public class LeagueDetailsWindow extends JFrame {
         add(infoPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
         add(lowerButtonPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
     
     public void setLeagueName(final String series, final String category, final String gender, final int year) {
@@ -125,23 +118,6 @@ public class LeagueDetailsWindow extends JFrame {
         this.leagueNameLabel.setText("Campionato a squadre Serie "
                 + series + " " + category + " " + genderText + " " + year);
     }
-    
-    /* public void setSeries(final String series) {
-        this.seriesLabel.setText("Serie: " + series);
-    }
-    
-    public void setCategory(final String category) {
-        this.categoryLabel.setText("Categoria: " + category);
-    }
-    
-    public void setGender(final String gender) {
-        String genderText = "M".equals(gender) ? "Maschile" : "Femminile";
-        this.genderLabel.setText("Genere: " + genderText);
-    }
-    
-    public void setYear(final int year) {
-        this.yearLabel.setText("Anno: " + year); 
-    } */
     
     public JTable getTeamsTable() {
         return teamsTable;

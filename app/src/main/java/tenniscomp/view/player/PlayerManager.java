@@ -1,6 +1,7 @@
 package tenniscomp.view.player;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
@@ -15,9 +16,13 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 
 public class PlayerManager extends JFrame {
+
+    private static final double WIDTH_RATIO = 0.55;
+    private static final double HEIGHT_RATIO = 0.45;
     
     private final JTextField searchField;
     private final JButton closeButton;
@@ -27,7 +32,6 @@ public class PlayerManager extends JFrame {
 
     public PlayerManager() {
         setTitle("Gestione Giocatori");
-        setSize(1000, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
@@ -59,12 +63,15 @@ public class PlayerManager extends JFrame {
         
         final var tableScrollPane = new JScrollPane(playersTable);
         tableScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        tableScrollPane.setPreferredSize(new Dimension(width, height));
         
         add(searchPanel, BorderLayout.NORTH);
         add(tableScrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
-        
-        setLocationRelativeTo(null);
     }
     
     public JTable getPlayersTable() {
@@ -92,6 +99,8 @@ public class PlayerManager extends JFrame {
     }
     
     public void display() {
+        pack();
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 }

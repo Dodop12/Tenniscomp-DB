@@ -27,7 +27,6 @@ public class AssignClubWindow extends JDialog {
     public AssignClubWindow(final JFrame parent, final Player player, final Model model, final List<Club> clubs) {
         super(parent, "Assegna Circolo", true);
         setLayout(new BorderLayout(10, 10));
-        setSize(400, 200);
         
         final JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -60,6 +59,7 @@ public class AssignClubWindow extends JDialog {
         add(contentPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
         
+        pack();
         setLocationRelativeTo(parent);
     }
     

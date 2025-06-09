@@ -1,6 +1,7 @@
 package tenniscomp.view.tournament;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -22,6 +23,9 @@ import tenniscomp.utils.CommonUtils;
 
 public class TournamentDetailsWindow extends JFrame {
 
+    private static final double WIDTH_RATIO = 0.52;
+    private static final double HEIGHT_RATIO = 0.35;
+
     private static final String FONT_STYLE = "Arial";
     private static final String REGISTRATIONS_TITLE = "Iscrizioni";
     private static final String MATCHES_TITLE = "Partite";
@@ -41,10 +45,8 @@ public class TournamentDetailsWindow extends JFrame {
 
     public TournamentDetailsWindow(final JFrame parent) {
         setTitle("Dettagli Torneo");
-        setSize(1000, 700);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
-        setLocationRelativeTo(parent);
         
         final var infoPanel = new JPanel(new GridLayout(5, 1, 5, 5));
         infoPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -101,6 +103,11 @@ public class TournamentDetailsWindow extends JFrame {
         this.tablesPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         this.tablesPanel.setLeftComponent(registrationsPanel);
         this.tablesPanel.setRightComponent(matchesPanel);
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        this.tablesPanel.setPreferredSize(new Dimension(width, height));
         
         final var lowerButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         this.closeButton = new JButton("Chiudi");
@@ -113,6 +120,9 @@ public class TournamentDetailsWindow extends JFrame {
         add(infoPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
         add(lowerButtonPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
     
     public void setTournamentName(final String name) {
@@ -157,10 +167,10 @@ public class TournamentDetailsWindow extends JFrame {
     }
     
     public void display() {
-        setVisible(true);
         SwingUtilities.invokeLater(() -> {
             this.tablesPanel.setDividerLocation(0.35);
             this.tablesPanel.setContinuousLayout(true);
         });
+        setVisible(true);
     }
 }

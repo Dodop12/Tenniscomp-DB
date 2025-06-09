@@ -1,5 +1,7 @@
 package tenniscomp.utils;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -97,6 +99,10 @@ public final class CommonUtils {
             case 2 -> players.get(0).getSurname() + "/" + players.get(1).getSurname();
             default -> throw new IllegalArgumentException("Invalid number of players (must be 1 or 2 per team).");
         };
+    }
+
+    public static Dimension getScreenSize() {
+        return Toolkit.getDefaultToolkit().getScreenSize();
     }
 
     private static int calculateAgeAtYearEnd(final String birthDate) {

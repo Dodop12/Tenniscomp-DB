@@ -58,7 +58,6 @@ public class AddTournamentMatchWindow extends JDialog {
     public AddTournamentMatchWindow(final JFrame parent, final List<Player> players,
             final List<Court> courts, final List<Umpire> umpires) {
         super(parent, "Aggiungi Partita", true);
-        setSize(500, 500);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(parent);
@@ -98,6 +97,9 @@ public class AddTournamentMatchWindow extends JDialog {
         
         // Initialize with singles layout by default
         updateLayout(MatchType.SINGOLARE);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
 
     private void updateLayout(final MatchType type) {
@@ -127,6 +129,7 @@ public class AddTournamentMatchWindow extends JDialog {
 
         this.mainPanel.revalidate();
         this.mainPanel.repaint();
+        pack();
     }
 
     private void addRow(final String label, final JComponent component) {

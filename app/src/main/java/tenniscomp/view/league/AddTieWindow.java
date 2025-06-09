@@ -36,10 +36,8 @@ public class AddTieWindow extends JDialog {
 
     public AddTieWindow(final JFrame parent) {
         super(parent, "Aggiungi Partita", true);
-        setSize(400, 230);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-        setLocationRelativeTo(parent);
 
         final var mainPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
@@ -67,6 +65,9 @@ public class AddTieWindow extends JDialog {
 
         add(mainPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
 
     public String getTieDate() {

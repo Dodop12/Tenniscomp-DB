@@ -51,7 +51,6 @@ public class AddTournamentWindow extends JDialog {
 
     public AddTournamentWindow(final JFrame parent, final List<Club> clubs) {
         super(parent, "Aggiungi Torneo", true);
-        setSize(800, 600);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
 
@@ -132,6 +131,8 @@ public class AddTournamentWindow extends JDialog {
         
         add(southPanel, BorderLayout.SOUTH);
         
+        pack();
+        setLocationRelativeTo(parent);
         setupPrizeMoneyListener();
     }
     

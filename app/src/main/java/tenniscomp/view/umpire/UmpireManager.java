@@ -1,6 +1,7 @@
 package tenniscomp.view.umpire;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
@@ -15,9 +16,13 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 
 public class UmpireManager extends JFrame {
+
+    private static final double WIDTH_RATIO = 0.45;
+    private static final double HEIGHT_RATIO = 0.4;
     
     private final JTextField searchField;
     private final JButton addUmpireButton;
@@ -28,7 +33,6 @@ public class UmpireManager extends JFrame {
 
     public UmpireManager() {
         setTitle("Gestione Arbitri");
-        setSize(1000, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
@@ -61,12 +65,15 @@ public class UmpireManager extends JFrame {
         
         final var tableScrollPane = new JScrollPane(umpiresTable);
         tableScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        tableScrollPane.setPreferredSize(new Dimension(width, height));
         
         add(topPanel, BorderLayout.NORTH);
         add(tableScrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
-        
-        setLocationRelativeTo(null);
     }
     
     public JTable getUmpiresTable() {
@@ -98,6 +105,8 @@ public class UmpireManager extends JFrame {
     }
     
     public void display() {
+        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 }

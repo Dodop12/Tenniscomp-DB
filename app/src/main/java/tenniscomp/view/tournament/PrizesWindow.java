@@ -44,9 +44,6 @@ public class PrizesWindow extends JDialog {
     public PrizesWindow(final JDialog parent, final double totalPrizePool) {
         super(parent, "Configura Premi", true);
         this.totalPrizePool = totalPrizePool;
-        
-        setSize(500, 400);
-        setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
 
         final var headerPanel = new JPanel(new GridLayout(3, 1, 5, 5));
@@ -107,6 +104,9 @@ public class PrizesWindow extends JDialog {
         southPanel.add(summaryPanel, BorderLayout.CENTER);
         southPanel.add(buttonPanel, BorderLayout.SOUTH);
         add(southPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
 
     public DecimalFormat getCurrencyFormat() {

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -22,6 +23,10 @@ import tenniscomp.utils.ImmutableTableModel;
 
 public class PlayerDashboard extends JFrame {
 
+    private static final double WIDTH_RATIO = 0.55;
+    private static final double HEIGHT_RATIO = 0.47;
+    private static final double CARD_WEIGHT_RATIO = 0.3;
+    private static final double CARD_HEIGHT_RATIO = 0.2;
     private static final String FONT_STYLE = "Arial";
     private static final String CARD_TITLE = "Tessera Giocatore";
     private static final String CARD_NUMBER_TEXT = "Numero tessera";
@@ -53,7 +58,6 @@ public class PlayerDashboard extends JFrame {
 
     public PlayerDashboard() {
         setTitle("TennisComp - Giocatore");
-        setSize(1000, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
@@ -79,7 +83,6 @@ public class PlayerDashboard extends JFrame {
         final var cardPanel = new JPanel();
         cardPanel.setLayout(new GridLayout(2, 1));
         cardPanel.setBorder(BorderFactory.createTitledBorder(CARD_TITLE));
-        cardPanel.setPreferredSize(new Dimension(300, 100));
         
         this.cardNumberLabel = new JLabel(CARD_NUMBER_TEXT + ":");
         this.cardExpiryDateLabel = new JLabel(EXP_DATE_TEXT + ":");
@@ -111,6 +114,13 @@ public class PlayerDashboard extends JFrame {
         centerPanel.add(tournamentsScrollPane);
         centerPanel.add(matchesScrollPane);
         
+        final var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        final var width = (int) (screenSize.width * WIDTH_RATIO);
+        final var height = (int) (screenSize.height * HEIGHT_RATIO);
+        centerPanel.setPreferredSize(new Dimension(width, height));
+        cardPanel.setPreferredSize(new Dimension((int) (width * CARD_WEIGHT_RATIO),
+                (int) (height * CARD_HEIGHT_RATIO)));
+        
         // Bottom stats panel
         statsPanel = new JPanel(new GridLayout(1, 4, 10, 0));
         statsPanel.setBorder(BorderFactory.createTitledBorder(STATS_TITLE));
@@ -139,9 +149,6 @@ public class PlayerDashboard extends JFrame {
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
-        
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     public JTable getTournamentsTable() {
@@ -180,7 +187,7 @@ public class PlayerDashboard extends JFrame {
         this.logoutButton.addActionListener(listener);
     }
     
-    private JPanel createStatPanel(JLabel statLabel, final String title) {
+    private JPanel createStatPanel(final JLabel statLabel, final String title) {
         final var panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         
@@ -193,5 +200,12 @@ public class PlayerDashboard extends JFrame {
         panel.add(statLabel, BorderLayout.CENTER);
         
         return panel;
+    }
+
+    public void display() {
+        pack();
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 }

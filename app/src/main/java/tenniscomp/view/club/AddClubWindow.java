@@ -23,7 +23,6 @@ public class AddClubWindow extends JDialog {
     
     public AddClubWindow(final JFrame parent) {
         super(parent, "Aggiungi Nuovo Circolo", true);
-        setSize(400, 250);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
@@ -58,6 +57,7 @@ public class AddClubWindow extends JDialog {
         add(fieldsPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
         
+        pack();
         setLocationRelativeTo(parent);
     }
     

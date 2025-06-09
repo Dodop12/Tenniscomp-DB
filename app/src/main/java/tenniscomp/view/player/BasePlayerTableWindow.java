@@ -1,6 +1,7 @@
 package tenniscomp.view.player;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 
 /**
@@ -22,6 +24,9 @@ import tenniscomp.utils.ImmutableTableModel;
  */
 public abstract class BasePlayerTableWindow extends JDialog {
     
+    private static final double WIDTH_RATIO = 0.45;
+    private static final double HEIGHT_RATIO = 0.3;
+
     private final JLabel infoLabel;
     private final JTextField searchField;
     private final JTable playersTable;
@@ -32,7 +37,6 @@ public abstract class BasePlayerTableWindow extends JDialog {
     protected BasePlayerTableWindow(final JFrame parent, final String title) {
         super(parent, title, true);
         
-        setSize(1000, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         setLocationRelativeTo(parent);
@@ -69,10 +73,18 @@ public abstract class BasePlayerTableWindow extends JDialog {
         
         final var tableScrollPane = new JScrollPane(playersTable);
         tableScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        tableScrollPane.setPreferredSize(new Dimension(width, height));
         
         add(topPanel, BorderLayout.NORTH);
         add(tableScrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
     
     /**

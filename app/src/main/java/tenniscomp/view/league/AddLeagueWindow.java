@@ -34,8 +34,6 @@ public class AddLeagueWindow extends JDialog {
 
     public AddLeagueWindow(final JFrame parent) {
         super(parent, "Aggiungi Campionato", true);
-        setSize(400, 300);
-        setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
 
         final var formPanel = new JPanel(new GridLayout(4, 2, 10, 10));
@@ -81,6 +79,9 @@ public class AddLeagueWindow extends JDialog {
         buttonsPanel.add(this.cancelButton);
         
         add(buttonsPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
 
     public String getSeries() {

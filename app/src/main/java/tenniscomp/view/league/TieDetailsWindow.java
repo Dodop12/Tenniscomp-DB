@@ -1,6 +1,7 @@
 package tenniscomp.view.league;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -16,9 +17,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 
 public class TieDetailsWindow extends JDialog {
+
+    private static final double WIDTH_RATIO = 0.45;
+    private static final double HEIGHT_RATIO = 0.3;
 
     private static final String FONT_STYLE = "Arial";
     private static final String MATCHES_TITLE = "Partite dell'incontro";
@@ -30,10 +35,8 @@ public class TieDetailsWindow extends JDialog {
 
     public TieDetailsWindow(final JFrame parent) {
         super(parent, "Dettagli Incontro", true);
-        setSize(800, 500);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
-        setLocationRelativeTo(parent);
         
         final var infoPanel = new JPanel(new GridLayout(1, 1, 5, 5));
         infoPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -59,6 +62,11 @@ public class TieDetailsWindow extends JDialog {
         
         final var matchesScrollPane = new JScrollPane(matchesTable);
         matchesScrollPane.setBorder(BorderFactory.createTitledBorder(MATCHES_TITLE));
+        
+        final var screenSize = CommonUtils.getScreenSize();
+        final var width = (int) (screenSize.width * WIDTH_RATIO);
+        final var height = (int) (screenSize.height * HEIGHT_RATIO);
+        matchesScrollPane.setPreferredSize(new Dimension(width, height));
 
         matchesPanel.add(matchesButtonPanel, BorderLayout.NORTH);
         matchesPanel.add(matchesScrollPane, BorderLayout.CENTER);
@@ -70,6 +78,9 @@ public class TieDetailsWindow extends JDialog {
         add(infoPanel, BorderLayout.NORTH);
         add(matchesPanel, BorderLayout.CENTER);
         add(lowerButtonPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
     
     public void setTieInfo(final String homeTeam, final String awayTeam, final String date, final String result) {

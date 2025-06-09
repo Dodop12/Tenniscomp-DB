@@ -15,10 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import tenniscomp.utils.CommonUtils;
 import tenniscomp.utils.ImmutableTableModel;
 
 public class RefereeDashboard extends JFrame {
 
+    private static final double WIDTH_RATIO = 0.55;
+    private static final double HEIGHT_RATIO = 0.47;
     private static final String FONT_STYLE = "Arial";
     private static final String TOURNAMENTS_TITLE = "Tornei";
     private static final String TEAM_COMPETITIONS_TITLE = "Campionati a Squadre";
@@ -38,7 +41,6 @@ public class RefereeDashboard extends JFrame {
 
     public RefereeDashboard() {
         setTitle("TennisComp - Giudice Arbitro");
-        setSize(1000, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
@@ -105,6 +107,11 @@ public class RefereeDashboard extends JFrame {
         centerPanel.add(tournamentsPanel);
         centerPanel.add(leaguesPanel);
 
+        final var screenSize = CommonUtils.getScreenSize();
+        final var width = (int) (screenSize.width * WIDTH_RATIO);
+        final var height = (int) (screenSize.height * HEIGHT_RATIO);
+        centerPanel.setPreferredSize(new Dimension(width, height));
+
         final var logoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         logoutPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         this.logoutButton = new JButton("Logout");
@@ -117,12 +124,6 @@ public class RefereeDashboard extends JFrame {
         add(refereeInfoPanel, BorderLayout.NORTH);
         add(managementPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
-        
-        centerPanel.setPreferredSize(new Dimension(getWidth(), 500));
-        managementPanel.setPreferredSize(new Dimension(getWidth(), 50));
-        
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     public JTable getTournamentsTable() {
@@ -163,5 +164,12 @@ public class RefereeDashboard extends JFrame {
 
     public void setLogoutListener(final ActionListener listener) {
         this.logoutButton.addActionListener(listener);
+    }
+
+    public void display() {
+        pack();
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 }

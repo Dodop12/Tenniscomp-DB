@@ -1,5 +1,6 @@
 package tenniscomp.view.user;
 
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -9,8 +10,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import tenniscomp.utils.CommonUtils;
+
 public class LoginWindow extends JFrame {
 
+    private static final double WIDTH_RATIO = 0.4;
+    private static final double HEIGHT_RATIO = 0.55;
+    private static final double WINDOW_GAP_RATIO = 0.25;
+    private static final double COMP_WIDTH_RATIO = 0.13;
+    private static final double COMP_HEIGHT_RATIO = 0.05;
     private final JTextField usernameField;
     private final JPasswordField passwordField;
     private final JButton loginButton;
@@ -19,24 +27,36 @@ public class LoginWindow extends JFrame {
 
     public LoginWindow(final boolean isAdmin) {
         setTitle("Login");
-        setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
 
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        final int height = (int) (screenSize.height * HEIGHT_RATIO);
+        setPreferredSize(new Dimension(width, height));
+
+        final int windowGap = (int) (width * WINDOW_GAP_RATIO);
+        final int compWidth = (int) (width * COMP_WIDTH_RATIO);
+        final int compHeight = (int) (height * COMP_HEIGHT_RATIO);
+        final int compGap = (int) (windowGap / 2);
         final JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setBounds(200, 200, 100, 30);
+        usernameLabel.setBounds(windowGap, windowGap, compWidth, compHeight);
         final JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(200, 250, 100, 30);
+        passwordLabel.setBounds(windowGap, windowGap + (int) (windowGap / 4), compWidth, compHeight);
 
         this.usernameField = new JTextField(20);
-        usernameField.setBounds(300, 200, 300, 30);
+        usernameField.setBounds(windowGap + compGap, windowGap,
+                windowGap + compGap, compHeight);
         passwordField = new JPasswordField(20);
-        passwordField.setBounds(300, 250, 300, 30);
+        passwordField.setBounds(windowGap + compGap, windowGap + (int) (windowGap / 4),
+                windowGap + compGap, compHeight);
 
         this.loginButton = new JButton("Login");
-        this.loginButton.setBounds(300, 300, 120, 30);
+        this.loginButton.setBounds(windowGap + compGap, windowGap + compGap,
+                compWidth, compHeight);
         this.registerButton = new JButton("Registrati");
-        registerButton.setBounds(480, 300, 120, 30);
+        registerButton.setBounds(2 * (windowGap + compGap) - compWidth, windowGap + compGap,
+                compWidth, compHeight);
 
         this.add(usernameLabel);
         this.add(usernameField);
@@ -51,6 +71,7 @@ public class LoginWindow extends JFrame {
             registerButton.setEnabled(false);
         }
 
+        pack();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

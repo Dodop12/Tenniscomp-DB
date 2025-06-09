@@ -38,10 +38,8 @@ public class AddLeagueMatchWindow extends JDialog {
     public AddLeagueMatchWindow(final JDialog parent, final List<Player> homeTeamPlayers, 
             final List<Player> awayTeamPlayers, final List<Court> courts, final List<Umpire> umpires) {
         super(parent, "Aggiungi Partita Campionato", true);
-        setSize(450, 500);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-        setLocationRelativeTo(parent);
 
         final var mainPanel = new JPanel(new GridLayout(9, 2, 10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
@@ -123,6 +121,8 @@ public class AddLeagueMatchWindow extends JDialog {
         add(buttonsPanel, BorderLayout.SOUTH);
 
         updatePlayerFieldsVisibility();
+        pack();
+        setLocationRelativeTo(parent);
     }
 
     private void updatePlayerFieldsVisibility() {

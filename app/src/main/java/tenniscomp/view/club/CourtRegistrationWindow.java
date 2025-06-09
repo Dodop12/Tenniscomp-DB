@@ -32,13 +32,11 @@ public class CourtRegistrationWindow extends JDialog {
     public CourtRegistrationWindow(final JFrame parent, final Club club) {
         super(parent, "Registrazione Campo", true);
         
-        setSize(400, 300);
-        setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
         
         final var titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titlePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        titlePanel.add(new JLabel("Registra un nuovo campo per " + club.getName() + " - " + club.getCity()));
+        titlePanel.add(new JLabel("Registra un nuovo campo per " + club.getName() + " (" + club.getCity() + ")"));
         
         final var formPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -76,6 +74,9 @@ public class CourtRegistrationWindow extends JDialog {
         add(titlePanel, BorderLayout.NORTH);
         add(formPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(parent);
     }
     
     public int getCourtNumber() {
