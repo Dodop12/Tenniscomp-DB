@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import tenniscomp.data.League;
+import tenniscomp.data.LeagueTie;
 import tenniscomp.data.Player;
 import tenniscomp.model.Model;
 import tenniscomp.utils.CommonUtils;
@@ -36,13 +37,12 @@ public class LeagueDetailsController {
     }
 
     private void loadLeagueData() {
-        view.setLeagueName(league.getSeries().name(), league.getCategory().getLabel(),
-                league.getGender().getType(), league.getYear());
-        // TODO: decommentare se servono
-        /* view.setSeries(league.getSeries());
-        view.setCategory(league.getCategory());
-        view.setGender(league.getGender());
-        view.setYear(league.getYear()); */
+        view.setLeagueName(
+            league.getSeries().name(),
+            league.getCategory().getLabel(),
+            league.getGender().getType(),
+            league.getYear()
+        );
     }
 
     private void loadTeams() {
@@ -74,7 +74,11 @@ public class LeagueDetailsController {
         TableUtils.clearTable(tableModel);
         
         final var ties = model.getLeagueTies(league.getLeagueId());
-        for (final var tie : ties) {
+        for (var tie : ties) {
+            // If the result is outdated, refresh the tie instance
+            if (updateTieResult(tie)) {
+                tie = model.getLeagueTieById(tie.getTieId());
+            }
             final Object[] rowData = {
                 tie.getTieId(),
                 CommonUtils.convertDateFormat(tie.getDate()),
@@ -231,6 +235,18 @@ public class LeagueDetailsController {
                 .filter(player -> player.getClubId() != null)
                 .filter(player -> !model.isPlayerInLeague(player.getPlayerId(), this.league.getLeagueId()))
                 .toList();
+    }
+
+    private boolean updateTieResult(final LeagueTie tie) {
+        final var homeWins = model.getTieMatchWinsByTeam(tie.getHomeTeamId(), tie.getTieId());
+        final var awayWins = model.getTieMatchWinsByTeam(tie.getAwayTeamId(), tie.getTieId());
+        final var newResult = homeWins + "-" + awayWins;
+
+        if (!newResult.equals(tie.getResult())) {
+            model.updateLeagueTieResult(tie.getTieId(), newResult);
+            return true;
+        }
+        return false;
     }
 
     private void showError(final String message) {
