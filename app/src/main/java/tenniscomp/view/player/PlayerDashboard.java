@@ -176,8 +176,7 @@ public class PlayerDashboard extends JFrame {
         cardExpiryDateLabel.setText(EXP_DATE_TEXT + ":  " + expiryDate);
     }
 
-    public void setMatchStats(final int totalMatches, final int matchesWon,
-            final int winRate, final int tournamentTitles) {
+    public void setMatchStats(final int totalMatches, final int matchesWon, final int winRate) {
         this.totalMatchesLabel.setText(String.valueOf(totalMatches));
         this.matchesWonLabel.setText(String.valueOf(matchesWon));
         this.winRateLabel.setText(String.valueOf(winRate) + "%");
