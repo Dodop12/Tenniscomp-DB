@@ -36,8 +36,25 @@ public class RegisterController {
         final String password = this.view.getPassword();
         final String confirm = this.view.getConfirmedPassword();
 
+        if (surname == null || name == null || email == null || birthDate == null
+                || username == null || gender == null || phone == null || password == null || confirm == null
+                || surname.isEmpty() || name.isEmpty() || email.isEmpty() || username.isEmpty()
+                || phone.isEmpty() || password.isEmpty()) {
+            view.showMessage("Tutti i campi sono obbligatori.", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // TODO: controllo mail valida
+        // TODO: controllo nome e cognome no numeri
+        // TODO: controllo telefono solo numeri
+
         if (!password.equals(confirm)) {
-            view.showMessage("Le password non corrispondono.", JOptionPane.WARNING_MESSAGE);
+            view.showMessage("Le password non corrispondono.", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (model.playerUsernameExists(username)) {
+            view.showMessage("L'username specificato esiste già.", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

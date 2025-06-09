@@ -1,5 +1,6 @@
 package tenniscomp.controller.umpire;
 
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -79,13 +80,18 @@ public class UmpireManagerController {
             final String gender = addUmpireWindow.getGender();
             final String phone = addUmpireWindow.getPhone();
             final String title = addUmpireWindow.getTitle();
+
+            if (surname == null || name == null || email == null || birthDate == null
+                   || gender == null || phone == null || title == null
+                   || surname.isEmpty() || name.isEmpty() || email.isEmpty())  {
+                showError("Tutti i campi sono obbligatori.");
+                return;
+            }
             
-            if (!surname.isEmpty() && !name.isEmpty() && !email.isEmpty() && !phone.isEmpty()) {
-                if (model.addUmpire(surname, name, email, birthDate, 
-                        Gender.fromCode(gender), phone, title)) {
-                    loadUmpires();
-                    addUmpireWindow.dispose();
-                }
+            if (model.addUmpire(surname, name, email, birthDate, 
+                    Gender.fromCode(gender), phone, title)) {
+                loadUmpires();
+                addUmpireWindow.dispose();
             }
         });
         
@@ -101,5 +107,14 @@ public class UmpireManagerController {
         } else {
             view.getTableSorter().setRowFilter(RowFilter.regexFilter("(?i)" + searchText, 1)); // Filter by surname (column 1)
         }
+    }
+
+     private void showError(final String message) {
+        JOptionPane.showMessageDialog(
+            this.view,
+            message,
+            "Errore",
+            JOptionPane.ERROR_MESSAGE
+        );
     }
 }

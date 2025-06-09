@@ -88,7 +88,7 @@ public class AddUmpireWindow extends JDialog {
     public String getBirthDate() {
         final var selectedDate = this.birthDatePicker.getDate();
         if (selectedDate == null) {
-            throw new IllegalArgumentException("Data di nascita non specificata");
+            return null;
         }
         return selectedDate.format(CommonUtils.getYmdDateFormatter());
     }
@@ -96,7 +96,7 @@ public class AddUmpireWindow extends JDialog {
     public String getGender() {
         final var gender = (String) genderComboBox.getSelectedItem();
         if(gender == null) {
-            throw new IllegalArgumentException("Sesso non specificato");
+            return null;
         }
         return gender.substring(0, 1);
     }

@@ -27,6 +27,7 @@ public interface Model {
     boolean registerPlayer(String surname, String name, String email, String birthDate,
             Gender gender, String phone, String username, String password);
     boolean loginPlayer(String username, String password);
+    boolean playerUsernameExists(String username);
     Player getPlayerById(int playerId);
     Player getPlayerByUsername(String username);
     List<Player> getPlayersByCategoryAndGender(LeagueCategory category, Gender gender);

@@ -7,6 +7,15 @@ public final class Queries {
         INSERT INTO giocatore (cognome, nome, email, data_nascita, sesso, telefono, username, password_hash)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
+
+    public static final String CHECK_PLAYER_USERNAME_EXISTS =
+        """
+        SELECT EXISTS (
+            SELECT 1
+            FROM giocatore
+            WHERE username = ?
+        )    
+        """;
     
     public static final String GET_PLAYER_PASSWORD_BY_USERNAME = 
         """

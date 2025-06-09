@@ -93,15 +93,15 @@ public class RegisterWindow extends JFrame {
     public String getBirthDate() {
         final var date = this.birthDatePicker.getDate();
         if (date == null) {
-            throw new IllegalArgumentException("Data di nascita non specificata");
+            return null;
         }
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     public String getGender() {
         final var gender = (String) genderComboBox.getSelectedItem();
-        if(gender == null) {
-            throw new IllegalArgumentException("Sesso non specificato");
+        if (gender == null) {
+            return null;
         }
         return gender.substring(0, 1);
     }

@@ -44,6 +44,11 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public boolean playerUsernameExists(final String username) {
+        return Player.DAO.playerUsernameExists(this.connection, username);
+    }
+
+    @Override
     public Player getPlayerById(final int playerId) {
         return Player.DAO.getPlayerById(this.connection, playerId);
     }

@@ -137,6 +137,20 @@ public class Player {
             }
         }
 
+        public static boolean playerUsernameExists(final Connection connection, final String username) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.CHECK_PLAYER_USERNAME_EXISTS, username);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean(1);
+                }
+                return false;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
         public static Player getPlayerById(final Connection connection, final int playerId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.GET_PLAYER_BY_ID, playerId);

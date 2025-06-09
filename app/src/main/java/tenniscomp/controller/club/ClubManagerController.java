@@ -78,13 +78,17 @@ public class ClubManagerController {
             final String name = addClubWindow.getClubName();
             final String address = addClubWindow.getClubAddress();
             final String city = addClubWindow.getClubCity();
-            
-            if (!name.isEmpty() && !address.isEmpty() && !city.isEmpty()) {
-                if (model.addClub(name, address, city)) {
-                    loadClubs();
-                    addClubWindow.dispose();
-                }
+
+            if (name == null || address == null || city == null
+                    || name.isEmpty() || address.isEmpty() || city.isEmpty()) {
+                showError("Tutti i campi sono obbligatori.");
+                return;
             }
+            
+            if (model.addClub(name, address, city)) {
+                loadClubs();
+                addClubWindow.dispose();
+            }    
         });
         
         addClubWindow.setCancelButtonListener(e -> addClubWindow.dispose());
@@ -163,7 +167,7 @@ public class ClubManagerController {
             final boolean indoor = courtRegistrationWindow.isIndoor();
 
             if (model.courtNumberExists(courtNumber, club.getClubId())) {
-                showError("Il campo numero " + courtNumber + " esiste già in questo circolo");
+                showError("Il campo numero " + courtNumber + " esiste già in questo circolo.");
                 return;
             }
             
