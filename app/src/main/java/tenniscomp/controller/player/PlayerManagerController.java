@@ -142,6 +142,11 @@ public class PlayerManagerController {
                     // Can renew the card only if the player has one
                     renewCardItem.setEnabled(cardId != null
                         && CommonUtils.isCardExpired(model.getCardById(cardId)));
+                    
+                    rankingItem.setEnabled(cardId != null
+                        && !CommonUtils.isCardExpired(model.getCardById(cardId)));
+                    clubItem.setEnabled(cardId != null
+                        &&! CommonUtils.isCardExpired(model.getCardById(cardId)));
                 }
 
                 contextMenu.show(e.getComponent(), e.getX(), e.getY());
