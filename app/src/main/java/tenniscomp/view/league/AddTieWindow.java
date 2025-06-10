@@ -1,6 +1,7 @@
 package tenniscomp.view.league;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -25,6 +26,8 @@ import tenniscomp.data.Team;
 import tenniscomp.utils.CommonUtils;
 
 public class AddTieWindow extends JDialog {
+
+    private static final double WIDTH_RATIO = 0.09;
     
     private final DatePicker datePicker;
     private final JComboBox<String> homeComboBox;
@@ -50,6 +53,11 @@ public class AddTieWindow extends JDialog {
 
         mainPanel.add(new JLabel("Squadra ospitante:"));
         this.homeComboBox = new JComboBox<>();
+
+        final var screenSize = CommonUtils.getScreenSize();
+        final int width = (int) (screenSize.width * WIDTH_RATIO);
+        this.homeComboBox.setPreferredSize(new Dimension(width, this.homeComboBox.getPreferredSize().height));
+
         mainPanel.add(this.homeComboBox);
  
         mainPanel.add(new JLabel("Squadra ospite:"));
