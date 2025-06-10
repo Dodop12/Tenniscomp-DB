@@ -114,9 +114,8 @@ public class LeagueDetailsWindow extends JFrame {
     }
     
     public void setLeagueName(final String series, final String category, final String gender, final int year) {
-        final String genderText = "M".equals(gender) ? "Maschile" : "Femminile";
         this.leagueNameLabel.setText("Campionato a squadre Serie "
-                + series + " " + category + " " + genderText + " " + year);
+                + series + " " + category + " " + gender + " " + year);
     }
     
     public JTable getTeamsTable() {
