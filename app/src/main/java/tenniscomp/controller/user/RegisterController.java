@@ -1,6 +1,7 @@
 package tenniscomp.controller.user;
 
 import java.sql.Connection;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -11,6 +12,10 @@ import tenniscomp.view.user.LoginWindow;
 import tenniscomp.view.user.RegisterWindow;
 
 public class RegisterController {
+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+        "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+    );
 
     private final Connection connection;
     private final RegisterWindow view;
@@ -44,9 +49,11 @@ public class RegisterController {
             return;
         }
 
-        // TODO: controllo mail valida
-        // TODO: controllo nome e cognome no numeri
-        // TODO: controllo telefono solo numeri
+        // Check mail format
+        if (!EMAIL_PATTERN.matcher(email.trim()).matches()) {
+            view.showMessage("Formato della mail invalido.", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         if (!password.equals(confirm)) {
             view.showMessage("Le password non corrispondono.", JOptionPane.ERROR_MESSAGE);
