@@ -488,4 +488,40 @@ public final class Queries {
         AND pc.id_incontro = ?
         AND gpc.vincitore = TRUE
         """;
+
+    public static final String COUNT_PLAYER_SINGLES_MATCHES =
+        """
+        SELECT 
+            (SELECT COUNT(*)
+            FROM giocatore_partita_torneo gpt
+            JOIN partita_torneo pt ON gpt.id_partita_torneo = pt.id_partita_torneo
+            JOIN torneo t ON pt.id_torneo = t.id_torneo
+            WHERE gpt.id_giocatore = ?
+            AND t.tipo = 'Singolare')
+            +
+            (SELECT COUNT(*)
+            FROM giocatore_partita_campionato gpc
+            JOIN partita_campionato pc ON gpc.id_partita_campionato = pc.id_partita_campionato
+            WHERE gpc.id_giocatore = ?
+            AND pc.tipo = 'Singolare')
+        """;
+
+    public static final String COUNT_PLAYER_SINGLES_WINS =
+        """
+        SELECT 
+            (SELECT COUNT(*)
+            FROM giocatore_partita_torneo gpt
+            JOIN partita_torneo pt ON gpt.id_partita_torneo = pt.id_partita_torneo
+            JOIN torneo t ON pt.id_torneo = t.id_torneo
+            WHERE gpt.id_giocatore = ?
+            AND t.tipo = 'Singolare'
+            AND gpt.vincitore = TRUE)
+            +
+            (SELECT COUNT(*)
+            FROM giocatore_partita_campionato gpc
+            JOIN partita_campionato pc ON gpc.id_partita_campionato = pc.id_partita_campionato
+            WHERE gpc.id_giocatore = ?
+            AND pc.tipo = 'Singolare'
+            AND gpc.vincitore = TRUE)
+        """;
 }

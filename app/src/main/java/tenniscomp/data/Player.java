@@ -384,6 +384,35 @@ public class Player {
             }
         }
 
+        public static int getPlayerSinglesMatchesCount(final Connection connection, final int playerId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.COUNT_PLAYER_SINGLES_MATCHES, playerId, playerId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+                return 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static int getPlayerSinglesWinsCount(final Connection connection, final int playerId) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.COUNT_PLAYER_SINGLES_WINS, playerId, playerId);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+                return 0;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+
         public static boolean isPlayerInLeague(final Connection connection, final int playerId, final int leagueId) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.CHECK_PLAYER_IN_LEAGUE, playerId, leagueId);

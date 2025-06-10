@@ -68,7 +68,17 @@ public class ModelImpl implements Model {
         return Player.DAO.getAllPlayers(this.connection);
     }
 
-     @Override
+    @Override
+    public int getPlayerSinglesMatchesCount(final int playerId) {
+        return Player.DAO.getPlayerSinglesMatchesCount(this.connection, playerId);
+    }
+
+    @Override
+    public int getPlayerSinglesWinsCount(final int playerId) {
+        return Player.DAO.getPlayerSinglesWinsCount(this.connection, playerId);
+    }
+
+    @Override
     public boolean updatePlayerRanking(final int playerId, final Ranking newRanking) {
         return Player.DAO.updatePlayerRanking(this.connection, playerId, newRanking);
     }

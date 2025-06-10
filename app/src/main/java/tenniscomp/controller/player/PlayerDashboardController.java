@@ -3,7 +3,9 @@ package tenniscomp.controller.player;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.MouseInputAdapter;
@@ -24,10 +26,6 @@ public class PlayerDashboardController {
     private final PlayerDashboard view;
     private final Model model;
     private final Player player;
-
-    private int matchesCount = 0;
-    private int matchesWon = 0;
-    private final int tournamentTitles = 0;
     
     public PlayerDashboardController(final Connection connection, final PlayerDashboard view,
             final Model model, final Player player) {
@@ -39,7 +37,7 @@ public class PlayerDashboardController {
         loadPlayerData();
         loadTournaments();
         loadMatches();
-        displayStats();
+        updateStats();
         setupListeners();
     }
 
@@ -65,6 +63,7 @@ public class PlayerDashboardController {
         TableUtils.clearTable(tableModel);
         
         final var tournaments = model.getEligibleTournaments(this.player.getRanking(), this.player.getGender());
+        final Set<Integer> regTournamentRows = new HashSet<>();
          for (final var tournament : tournaments) {
             final Object[] rowData = {
                 tournament.getTournamentId(),
@@ -79,10 +78,14 @@ public class PlayerDashboardController {
             tableModel.addRow(rowData);
 
             final boolean isRegistered = model.isPlayerRegisteredForTournament(
-                this.player.getPlayerId(), tournament.getTournamentId());
+            this.player.getPlayerId(), tournament.getTournamentId());
             if (isRegistered) {
-                TableUtils.highlightRow(table, tableModel.getRowCount() - 1);
+                regTournamentRows.add(tableModel.getRowCount() - 1);
             }
+        }
+        
+        if (!regTournamentRows.isEmpty()) {
+            TableUtils.highlightRows(table, regTournamentRows);
         }
 
         TableUtils.adjustColumnWidths(table);
@@ -99,12 +102,15 @@ public class PlayerDashboardController {
         TableUtils.adjustColumnWidths(table);
     }
 
-    private void displayStats() {
-        final double winRate = this.matchesCount > 0 ?
-            (double) this.matchesWon / this.matchesCount * 100 : 0.0;
+    private void updateStats() {
+        final int playerId = this.player.getPlayerId();
+        final int matchesCount = model.getPlayerSinglesMatchesCount(playerId);
+        final int matchesWon = model.getPlayerSinglesWinsCount(playerId);
+
+        final double winRate = matchesCount > 0 ?
+            (double) matchesWon / matchesCount * 100 : 0.0;
         
-        this.view.setMatchStats(this.matchesCount, this.matchesWon,
-                (int) winRate, this.tournamentTitles);
+        this.view.setMatchStats(matchesCount, matchesWon, (int) winRate);
     }
 
     private void setupListeners() {
@@ -147,6 +153,7 @@ public class PlayerDashboardController {
                     match.getResult(),
                 };
                 tableModel.addRow(rowData);
+                updateStats();
             }
         }
     }
@@ -169,7 +176,6 @@ public class PlayerDashboardController {
                         " " + league.getCategory().getLabel();
                 final String result = model.isPlayerLeagueMatchWinner(this.player.getPlayerId(), match.getMatchId())
                         ? "W" : "L";
-                updateStats(result);
                 
                 final Object[] rowData = {
                     "LM" + match.getMatchId(),
@@ -182,14 +188,6 @@ public class PlayerDashboardController {
                 tableModel.addRow(rowData);
             }
         }
-    }
-
-    private void updateStats(final String result) {
-        this.matchesCount++;
-        if ("W".equals(result)) {
-            this.matchesWon++;
-        }
-        displayStats(); // Refresh stats panel
     }
 
     private void handleTournamentRegistration() {

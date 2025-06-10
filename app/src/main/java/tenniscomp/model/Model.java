@@ -32,6 +32,8 @@ public interface Model {
     Player getPlayerByUsername(String username);
     List<Player> getPlayersByCategoryAndGender(LeagueCategory category, Gender gender);
     List<Player> getAllPlayers();
+    int getPlayerSinglesMatchesCount(int playerId);
+    int getPlayerSinglesWinsCount(int playerId);
     boolean updatePlayerRanking(int playerId, Ranking newRanking);
     boolean updatePlayerCard(int playerId, int cardId);
     boolean updatePlayerClub(final int playerId, final Integer clubId);
