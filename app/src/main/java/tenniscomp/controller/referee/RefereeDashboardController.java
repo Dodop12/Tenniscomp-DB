@@ -294,7 +294,7 @@ public class RefereeDashboardController {
             return false;
         }
 
-        final var formatter = CommonUtils.getDmyDateFormatter();
+        final var formatter = CommonUtils.getYmdDateFormatter();
         final LocalDate start, end, deadline;
         try {
             start = LocalDate.parse(startDate, formatter);

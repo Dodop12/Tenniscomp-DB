@@ -220,7 +220,10 @@ public class AddTournamentWindow extends JDialog {
     }
     
     public List<Double> getPrizeDistribution() {
-        return new ArrayList<>(this.prizeDistribution);
+        if (this.prizeDistribution != null) {
+            return new ArrayList<>(this.prizeDistribution);
+        }
+        return new ArrayList<>();
     }
 
     public void setPrizeDistribution(final List<Double> prizeDistribution) {
