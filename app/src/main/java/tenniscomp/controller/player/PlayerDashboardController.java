@@ -78,7 +78,7 @@ public class PlayerDashboardController {
             tableModel.addRow(rowData);
 
             final boolean isRegistered = model.isPlayerRegisteredForTournament(
-            this.player.getPlayerId(), tournament.getTournamentId());
+                    this.player.getPlayerId(), tournament.getTournamentId());
             if (isRegistered) {
                 regTournamentRows.add(tableModel.getRowCount() - 1);
             }
@@ -199,7 +199,7 @@ public class PlayerDashboardController {
             final var tournament = model.getTournamentById(tournamentId);
 
             final boolean isRegistered = model.isPlayerRegisteredForTournament(
-                this.player.getPlayerId(), tournamentId);
+                    this.player.getPlayerId(), tournamentId);
             if (!isRegistered) {
                 final var cardId = player.getCardId();
                 if (cardId == null || CommonUtils.isCardExpired(model.getCardById(cardId))) {

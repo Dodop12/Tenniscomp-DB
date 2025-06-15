@@ -233,12 +233,6 @@ public class PlayerManagerController {
         if (player == null) {
             throw new IllegalArgumentException("Player not found");
         }
-        if (CommonUtils.isCardExpired(model.getCardById(player.getCardId()))) {
-            showError(
-                "La tessera del giocatore è scaduta. È necessario rinnovarla prima di aggiornare la classifica."
-            );
-            return;
-        }
 
         final var allRankings = Ranking.getAllLabels().stream()
                 .filter(e -> !e.equals(player.getRanking().getLabel())) // Exclude current ranking
