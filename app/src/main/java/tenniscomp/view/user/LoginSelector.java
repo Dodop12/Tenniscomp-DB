@@ -23,7 +23,7 @@ public class LoginSelector extends JFrame {
     private final JButton refereeButton;
 
     public LoginSelector() {
-        setTitle("TennisComp - Seleziona utente");
+        setTitle("TennisComp");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         final var screenSize = CommonUtils.getScreenSize();
