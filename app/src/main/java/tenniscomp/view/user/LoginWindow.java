@@ -17,7 +17,7 @@ public class LoginWindow extends JFrame {
     private static final double WIDTH_RATIO = 0.4;
     private static final double HEIGHT_RATIO = 0.55;
     private static final double WINDOW_GAP_RATIO = 0.25;
-    private static final double COMP_WIDTH_RATIO = 0.13;
+    private static final double COMP_WIDTH_RATIO = 0.17;
     private static final double COMP_HEIGHT_RATIO = 0.05;
     private final JTextField usernameField;
     private final JPasswordField passwordField;
